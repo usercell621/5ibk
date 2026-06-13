@@ -1,0 +1,35 @@
+/* Efek smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar untuk filter bar horizontal */
+::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background: #121316;
+}
+::-webkit-scrollbar-thumb {
+    background: #2c2e36;
+    border-radius: 10px;
+}
+
+/* Style asal untuk butang filter */
+.filter-btn {
+    background-color: #1a1b20;
+    border: 1px solid #2c2e36;
+    color: #a1a1aa;
+}
+.filter-btn:hover {
+    background-color: #22242a;
+    color: #ffffff;
+}
+/* Style bila butang filter dipilih */
+.active-filter {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
