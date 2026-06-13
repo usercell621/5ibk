@@ -5,18 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Saya</title>
     <style>
+        /* 1. Muka Depan / Background */
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 50px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a1a; /* Warna kelabu gelap (dark mode) */
+            color: #ffffff; /* Tulisan warna putih */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        h1 { color: #333; }
-        p { color: #666; }
+
+        /* 2. Kotak Profile / Kandungan */
+        .kad-profile {
+            background-color: #262626; /* Kotak kelabu cerah sikit */
+            padding: 40px;
+            border-radius: 20px; /* Bagi bucu kotak jadi bulat/smooth */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Kesan bayang-bayang */
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        /* 3. Makeup Tulisan Tajuk */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #00ff88; /* Warna hijau neon gempak */
+        }
+
+        /* 4. Makeup Tulisan Penerangan */
+        p {
+            font-size: 1.1rem;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        /* 5. Makeup Butang (Button) */
+        .butang-hubungi {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #00ff88;
+            color: #1a1a1a;
+            text-decoration: none; /* Buang garis bawah kat link */
+            border-radius: 50px; /* Butang bentuk bujur */
+            font-weight: bold;
+            transition: 0.3s; /* Bagi smooth masa touch */
+        }
+
+        /* Kesan bila letak arrow mouse atas butang */
+        .butang-hubungi:hover {
+            background-color: #ffffff;
+            box-shadow: 0 0 15px #00ff88; /* Butang jadi bercahaya */
+            transform: scale(1.05); /* Butang besar sikit */
+        }
     </style>
 </head>
 <body>
-    <h1>Selamat Datang ke Website Saya!</h1>
-    <p>Ini adalah website pertama saya yang di-host menggunakan GitHub Pages.</p>
+
+    <!-- Di bawah ni struktur kedudukan barang (HTML) -->
+    <div class="kad-profile">
+        <h1>Anep</h1>
+        <p>Student & Kreator | Minat Graphic Design, Bola Sepak & Streetwear.</p>
+        <p>Selamat datang ke website rasmi saya yang di-host menggunakan GitHub Pages.</p>
+        <a href="#" class="butang-hubungi">Hubungi Saya</a>
+    </div>
+
 </body>
 </html>
