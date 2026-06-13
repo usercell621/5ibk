@@ -18,7 +18,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Global state untuk memegang data memori & event terpilih
+// Global state untuk data memori & event terpilih
 let allMemories = [];
 let activeEventFilter = "Semua Gambar";
 
@@ -28,21 +28,42 @@ const eventFilterContainer = document.getElementById('eventFilterContainer');
 const existingEventsDatalist = document.getElementById('existingEvents');
 const postForm = document.getElementById('postForm');
 const uploadStatus = document.getElementById('uploadStatus');
-
-// LOGIK MODAL POPUP (Buka/Tutup)
 const uploadModal = document.getElementById('uploadModal');
+
+// ==========================================
+// LOGIK MODAL POPUP (OPEN / CLOSE) - FIXED!
+// ==========================================
 document.getElementById('openModalBtn').addEventListener('click', () => {
     uploadModal.classList.remove('hidden');
-    setTimeout(() => { uploadModal.classList.remove('opacity-0'); uploadModal.querySelector('div').classList.remove('scale-95'); }, 10);
+    // Bagi delay 50ms untuk animation opacity & scale berjalan smooth
+    setTimeout(() => { 
+        uploadModal.classList.remove('opacity-0'); 
+        uploadModal.querySelector('div').classList.remove('scale-95'); 
+    }, 50);
 });
+
 const closeModal = () => {
     uploadModal.classList.add('opacity-0');
     uploadModal.querySelector('div').classList.add('scale-95');
-    setTimeout(() => uploadModal.classList.add('hidden'), 3000);
+    // Dipendekkan ke 300ms (0.3 saat) mengikut kelajuan animasi CSS asli
+    setTimeout(() => { 
+        uploadModal.classList.add('hidden'); 
+    }, 300);
 };
+
 document.getElementById('closeModalBtn').addEventListener('click', closeModal);
 
+// Tutup modal kalau user klik kawasan luar modal (overlay gelap)
+uploadModal.addEventListener('click', (e) => {
+    if (e.target === uploadModal) {
+        closeModal();
+    }
+});
+
+
+// ==========================================
 // 1. FUNGSI MUAT NAIK GAMBAR BESERTA EVENT
+// ==========================================
 postForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const eventName = document.getElementById('eventInput').value.trim();
@@ -66,14 +87,20 @@ postForm.addEventListener('submit', async (e) => {
 
         postForm.reset();
         uploadStatus.innerText = "Selesai di-upload!";
-        setTimeout(() => { uploadStatus.classList.add('hidden'); closeModal(); }, 1500);
+        setTimeout(() => { 
+            uploadStatus.classList.add('hidden'); 
+            closeModal(); 
+        }, 1500);
     } catch (err) {
         console.error(err);
         uploadStatus.innerText = "Gagal memuat naik. Sila cuba lagi.";
     }
 });
 
-// 2. FUNGSI MENYUSUN & MENAPIS LAYOUT GAMBAR (REAL-TIME)
+
+// ==========================================
+// 2. FUNGSI MENYUSUN & MENAPIS LAYOUT (REAL-TIME)
+// ==========================================
 const q = query(collection(db, "memori"), orderBy("createdAt", "desc"));
 onSnapshot(q, (querySnapshot) => {
     allMemories = [];
@@ -94,15 +121,19 @@ function renderFilters(eventsList) {
     existingEventsDatalist.innerHTML = "";
     eventFilterContainer.innerHTML = "";
 
-    // Butang untuk paparan semua gambar
+    // Butang default "Semua Gambar"
     const allBtn = document.createElement('button');
     allBtn.className = `filter-btn px-4 py-2 rounded-xl text-xs font-medium transition-all ${activeEventFilter === "Semua Gambar" ? "active-filter" : ""}`;
     allBtn.innerText = "Semua Gambar";
-    allBtn.addEventListener('click', () => { activeEventFilter = "Semua Gambar"; updateFilterUI(allBtn); renderGallery(); });
+    allBtn.addEventListener('click', () => { 
+        activeEventFilter = "Semua Gambar"; 
+        updateFilterUI(allBtn); 
+        renderGallery(); 
+    });
     eventFilterContainer.appendChild(allBtn);
 
     eventsList.forEach(event => {
-        // Masukkan dalam auto-complete senarai input
+        // Masukkan dalam auto-complete list form input
         const option = document.createElement('option');
         option.value = event;
         existingEventsDatalist.appendChild(option);
@@ -111,7 +142,11 @@ function renderFilters(eventsList) {
         const btn = document.createElement('button');
         btn.className = `filter-btn px-4 py-2 rounded-xl text-xs font-medium transition-all ${activeEventFilter === event ? "active-filter" : ""}`;
         btn.innerText = event;
-        btn.addEventListener('click', () => { activeEventFilter = event; updateFilterUI(btn); renderGallery(); });
+        btn.addEventListener('click', () => { 
+            activeEventFilter = event; 
+            updateFilterUI(btn); 
+            renderGallery(); 
+        });
         eventFilterContainer.appendChild(btn);
     });
 }
@@ -121,7 +156,7 @@ function updateFilterUI(activeButton) {
     activeButton.classList.add('active-filter');
 }
 
-// Render gambar masuk ke dalam layout grid yang cantik
+// Pasang gambar dalam layout grid
 function renderGallery() {
     galleryGrid.innerHTML = "";
 
@@ -130,18 +165,17 @@ function renderGallery() {
         : allMemories.filter(m => m.event === activeEventFilter);
 
     if (filtered.length === 0) {
-        galleryGrid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12 text-sm">Tiada gambar dalam album ini.</div>`;
+        galleryGrid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12 text-sm">Tiada gambar dalam album ini. Pergi ke "+ Kongsi Memori" untuk jadi yang pertama!</div>`;
         return;
     }
 
     filtered.forEach(data => {
         const card = document.createElement('div');
-        // Layout kad dengan border gelap, rounded, dan zoom-effect semasa hover
         card.className = "group relative bg-[#1a1b20] rounded-2xl overflow-hidden border border-[#2c2e36] hover:border-gray-700 transition-all duration-300 shadow-md";
         
         card.innerHTML = `
             <div class="w-full h-64 overflow-hidden bg-[#121316]">
-                <img src="${data.imageUrl}" alt="${data.event}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 loading="lazy"">
+                <img src="${data.imageUrl}" alt="${data.event}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                 <span class="bg-blue-600 text-white text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-md">${data.event}</span>
