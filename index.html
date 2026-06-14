@@ -1,225 +1,258 @@
 <!DOCTYPE html>
-<html lang="ms">
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Arkib Memori Zaman Sekolah</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Memories</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+nav{
+    background:white;
+    padding:20px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+.hero{
+    height:70vh;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    position:absolute;
+    opacity:0;
+    transition:1s;
+}
+
+.hero img.active{
+    opacity:1;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+}
+
+.hero-content{
+    position:absolute;
+    z-index:2;
+    color:white;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+}
+
+.hero-content h1{
+    font-size:55px;
+}
+
+.hero-content p{
+    margin-top:15px;
+}
+
+.container{
+    padding:50px 8%;
+}
+
+.section-title{
+    margin-bottom:20px;
+}
+
+.upload-box{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:40px;
+}
+
+select,input{
+    padding:10px;
+    margin:10px 0;
+}
+
+button{
+    padding:10px 20px;
+    border:none;
+    background:black;
+    color:white;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+.events{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.event-card{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+    gap:10px;
+    margin-top:15px;
+}
+
+.gallery img{
+    width:100%;
+    height:100px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.delete-btn{
+    width:100%;
+    margin-top:5px;
+    background:red;
+}
+</style>
 </head>
-<body class="bg-[#121316] text-gray-200 font-sans min-h-screen">
+<body>
 
-<!-- Header -->
-<header class="border-b border-[#22242a] bg-[#1a1b20] sticky top-0 z-40 backdrop-blur-md bg-opacity-90 p-4 flex justify-between items-center">
-  <div>
-    <h1 class="text-xl font-bold flex items-center gap-2 text-white">
-      🎓 Zaman Sekolah Archive
-    </h1>
-    <p class="text-xs text-gray-500">Susunan memori mengikut acara & hari penting kita.</p>
-  </div>
-  <button id="openModalBtn" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow-lg">
-    + Kongsi Memori
-  </button>
-</header>
+<nav>
+    <div class="logo">School Memories</div>
+</nav>
 
-<!-- Isi utama -->
-<main class="max-w-6xl mx-auto p-4">
-  <!-- Pilihan acara -->
-  <div class="mb-4">
-    <h2 class="text-xs uppercase font-semibold mb-2 flex items-center gap-2 text-gray-500">
-      <span class="w-1.5 h-3 bg-blue-500 rounded-full"></span> Pilih Acara / Album
-    </h2>
-    <div id="eventButtons" class="flex overflow-x-auto gap-2"></div>
-    <button id="showAllBtn" class="mt-2 px-4 py-2 text-xs bg-green-500 hover:bg-green-400 rounded-xl">Tunjuk Semua Gambar</button>
-  </div>
+<section class="hero">
+    <img src="https://picsum.photos/id/1011/1500/700" class="slide active">
+    <img src="https://picsum.photos/id/1015/1500/700" class="slide">
+    <img src="https://picsum.photos/id/1016/1500/700" class="slide">
 
-  <!-- Galeri gambar -->
-  <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    <div id="noImageMsg" class="col-span-full text-center text-gray-500 py-8">Tiada gambar lagi. Muat naik gambar untuk kongsi memori.</div>
-  </div>
-</main>
+    <div class="overlay"></div>
 
-<!-- Modal upload -->
-<div id="uploadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300 flex justify-center items-center p-4">
-  <div class="bg-[#1a1b20] rounded-2xl p-6 max-w-md w-full transform scale-95 transition-transform duration-300">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-bold text-white">Muat Naik Gambar</h3>
-      <button id="closeModalBtn" class="text-gray-400 hover:text-white text-xl">&times;</button>
+    <div class="hero-content">
+        <h1>Kenangan Sekolah</h1>
+        <p>Menyimpan memori terindah bersama rakan-rakan.</p>
     </div>
-    <form id="uploadForm" class="space-y-4">
-      <div>
-        <label class="block text-xs uppercase font-semibold mb-2 text-gray-400">Pilih Gambar</label>
-        <input type="file" id="imageFile" accept="image/*" required class="w-full bg-[#121316] border border-[#2c2e36] rounded-xl p-2 text-xs cursor-pointer" />
-      </div>
-      <div>
-        <label class="block text-xs uppercase font-semibold mb-2 text-gray-400">Nama Acara</label>
-        <input type="text" id="eventNameInput" list="eventList" placeholder="Contoh: Birthday Cikgu" class="w-full bg-[#121316] border border-[#2c2e36] rounded-xl p-2 text-xs focus:outline-none focus:border-blue-500" required />
-        <datalist id="eventList"></datalist>
-        <button type="button" id="addEventBtn" class="mt-2 px-2 py-1 bg-green-500 hover:bg-green-400 rounded text-xs">Tambah Event</button>
-      </div>
-      <div>
-        <button type="submit" class="w-full px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs">Muat Naik</button>
-      </div>
-    </form>
-  </div>
+</section>
+
+<div class="container">
+
+<h2 class="section-title">Upload Gambar</h2>
+
+<div class="upload-box">
+
+<select id="eventSelect">
+    <option>Hari Sukan</option>
+    <option>Hari Guru</option>
+    <option>Graduasi</option>
+    <option>Kem Motivasi</option>
+</select>
+
+<br>
+
+<input type="file" id="imageInput" accept="image/*">
+
+<br>
+
+<button onclick="uploadImage()">Upload</button>
+
 </div>
 
-<!-- Lightbox gambar -->
-<div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden opacity-0 transition-opacity duration-200 flex flex-col items-center justify-center p-4">
-  <div class="absolute top-4 right-4 flex gap-3 z-50">
-    <a id="downloadLink" href="#" download class="flex items-center bg-zinc-800 px-3 py-2 rounded-xl text-xs hover:bg-zinc-700 text-white gap-2"><i class="fa-solid fa-download"></i> Muat Turun</a>
-    <button id="closeLightbox" class="w-9 h-9 bg-zinc-800 flex items-center justify-center rounded-xl hover:bg-zinc-700 text-white text-xl">&times;</button>
-  </div>
-  <div class="max-w-4xl max-h-[70vh] flex items-center justify-center overflow-hidden rounded-xl">
-    <img id="lightboxImg" src="" class="max-w-full max-h-[70vh] object-contain" />
-  </div>
-  <div class="mt-4 text-center max-w-2xl px-4">
-    <span id="lightboxEvent" class="bg-blue-600/20 text-blue-400 border border-blue-500/30 text-[10px] font-bold uppercase px-2 py-1 rounded-md"></span>
-    <p id="lightboxDesc" class="text-sm text-gray-300 mt-2 italic">Memori ini...</p>
-    <button id="deleteImageBtn" class="mt-2 px-3 py-1 bg-red-500 hover:bg-red-400 rounded text-xs text-white">Hapus Gambar</button>
-  </div>
+<h2 class="section-title">Album Event</h2>
+
+<div class="events">
+
+<div class="event-card">
+    <h3>Hari Sukan</h3>
+    <div class="gallery" id="Hari Sukan"></div>
 </div>
 
-<!-- Footer -->
-<footer class="mt-8 py-4 text-center text-xs text-gray-600 border-t border-[#22242a]">
-  &copy; <span id="currentYear"></span>
-</footer>
+<div class="event-card">
+    <h3>Hari Guru</h3>
+    <div class="gallery" id="Hari Guru"></div>
+</div>
+
+<div class="event-card">
+    <h3>Graduasi</h3>
+    <div class="gallery" id="Graduasi"></div>
+</div>
+
+<div class="event-card">
+    <h3>Kem Motivasi</h3>
+    <div class="gallery" id="Kem Motivasi"></div>
+</div>
+
+</div>
+
+</div>
 
 <script>
-  document.getElementById('currentYear').textContent = new Date().getFullYear();
+const slides = document.querySelectorAll(".slide");
+let current = 0;
 
-  const gallery = document.getElementById('gallery');
-  const noImageMsg = document.getElementById('noImageMsg');
-  const eventButtonsContainer = document.getElementById('eventButtons');
+setInterval(() => {
+    slides[current].classList.remove("active");
+    current = (current + 1) % slides.length;
+    slides[current].classList.add("active");
+}, 4000);
 
-  const events = {}; // Simpan data event dan gambar
-  let currentFilter = 'Semua Gambar';
+function uploadImage(){
 
-  // Buka modal
-  document.getElementById('openModalBtn').onclick = () => {
-    document.getElementById('uploadModal').classList.remove('hidden');
-    document.getElementById('uploadModal').classList.add('flex', 'opacity-100');
-  };
-  // Tutup modal
-  document.getElementById('closeModalBtn').onclick = () => {
-    document.getElementById('uploadModal').classList.add('hidden');
-    document.getElementById('uploadModal').classList.remove('flex', 'opacity-100');
-  };
+    const fileInput = document.getElementById("imageInput");
+    const eventName = document.getElementById("eventSelect").value;
 
-  // Tambah event baru
-  document.getElementById('addEventBtn').onclick = () => {
-    const eventName = document.getElementById('eventNameInput').value.trim();
-    if (eventName && !events[eventName]) {
-      events[eventName] = [];
-      // Tambah ke datalist
-      const option = document.createElement('option');
-      option.value = eventName;
-      document.getElementById('eventList').appendChild(option);
-      // Tambah button filter
-      const btn = document.createElement('button');
-      btn.className = 'px-4 py-2 rounded-xl text-xs font-medium bg-blue-200 hover:bg-blue-300 transition';
-      btn.textContent = eventName;
-      btn.onclick = () => {
-        currentFilter = eventName;
-        updateFilter();
-        // Highlight button
-        document.querySelectorAll('#eventButtons button').forEach(b => b.classList.remove('border-2', 'border-blue-600'));
-        btn.classList.add('border-2', 'border-blue-600');
-      };
-      eventButtonsContainer.appendChild(btn);
-      document.getElementById('eventNameInput').value = '';
+    if(!fileInput.files[0]){
+        alert("Pilih gambar dahulu");
+        return;
     }
-  };
 
-  // Filter gambar
-  function updateFilter() {
-    for (const event in events) {
-      const groupDiv = document.querySelector(`.group-${event}`);
-      if (groupDiv) {
-        groupDiv.parentElement.style.display = (currentFilter === 'Semua Gambar' || currentFilter === event) ? '' : 'none';
-      }
-    }
-  }
+    const reader = new FileReader();
 
-  // Muat naik gambar
-  document.getElementById('uploadForm').onsubmit = e => {
-    e.preventDefault();
-    const file = document.getElementById('imageFile').files[0];
-    const eventName = document.getElementById('eventNameInput').value.trim();
-    if (file && eventName && events.hasOwnProperty(eventName)) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        let groupDiv = document.querySelector(`.group-${eventName}`);
-        if (!groupDiv) {
-          const header = document.createElement('div');
-          header.className = 'col-span-full font-semibold text-gray-700 mt-4 mb-2';
-          header.textContent = eventName;
-          groupDiv = document.createElement('div');
-          groupDiv.className = 'grid grid-cols-2 gap-2';
-          groupDiv.classList.add(`group-${eventName}`);
-          // Tambah ke galeri
-          gallery.appendChild(header);
-          gallery.appendChild(groupDiv);
-        }
+    reader.onload = function(e){
 
-        // Gambar
-        const imgDiv = document.createElement('div');
-        imgDiv.className = 'cursor-pointer rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform';
+        const gallery = document.getElementById(eventName);
 
-        const img = document.createElement('img');
+        const wrapper = document.createElement("div");
+
+        const img = document.createElement("img");
         img.src = e.target.result;
-        img.alt = eventName;
-        img.className = 'w-full h-48 object-cover';
 
-        // Klik untuk lightbox dan delete
-        img.onclick = () => {
-          document.getElementById('lightbox').classList.remove('hidden');
-          document.getElementById('lightbox').classList.add('flex', 'opacity-100');
-          document.getElementById('lightboxImg').src = img.src;
-          document.getElementById('lightboxEvent').textContent = eventName;
-          document.getElementById('lightboxDesc').textContent = 'Memori ini...';
-          document.getElementById('downloadLink').href = img.src;
-          // Simpan gambar untuk delete
-          document.getElementById('deleteImageBtn').onclick = () => {
-            groupDiv.removeChild(imgDiv);
-            // Jika tiada gambar lagi dalam event, hapus tajuk dan div
-            if (groupDiv.children.length === 0) {
-              groupDiv.previousSibling.remove(); // hapus tajuk
-              groupDiv.remove(); // hapus div
-            }
-            document.getElementById('lightbox').classList.add('hidden');
-            document.getElementById('lightbox').classList.remove('flex', 'opacity-100');
-          };
+        const btn = document.createElement("button");
+        btn.innerText = "Delete";
+        btn.className = "delete-btn";
+
+        btn.onclick = () => {
+            wrapper.remove();
         };
 
-        // Tambah gambar ke div
-        imgDiv.appendChild(img);
-        groupDiv.appendChild(imgDiv);
+        wrapper.appendChild(img);
+        wrapper.appendChild(btn);
 
-        // Simpan data
-        events[eventName].push({ src: e.target.result, alt: eventName });
+        gallery.appendChild(wrapper);
+    };
 
-        // Reset form
-        document.getElementById('uploadForm').reset();
-        if (noImageMsg) noImageMsg.style.display = 'none';
-
-        updateFilter();
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Tutup lightbox
-  document.getElementById('closeLightbox').onclick = () => {
-    document.getElementById('lightbox').classList.add('hidden');
-    document.getElementById('lightbox').classList.remove('flex', 'opacity-100');
-  };
-
-  document.getElementById('showAllBtn').onclick = () => {
-    currentFilter = 'Semua Gambar';
-    updateFilter();
-    document.querySelectorAll('#eventButtons button').forEach(b => b.classList.remove('border-2', 'border-blue-600'));
-  };
+    reader.readAsDataURL(fileInput.files[0]);
+}
 </script>
 
 </body>
