@@ -179,7 +179,6 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
 
-<!-- MODAL TAMBAH EVENT -->
 <div class="modal-bg" id="addModal">
   <div class="modal">
     <button class="close-x" onclick="closeAddModal()">×</button>
@@ -196,7 +195,6 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   </div>
 </div>
 
-<!-- MODAL URUS LATAR BELAKANG -->
 <div class="modal-bg" id="bgModal">
   <div class="modal">
     <button class="close-x" onclick="closeBgModal()">×</button>
@@ -231,11 +229,11 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   <img id="lightboxImg" src="" alt="">
 </div>
 
-<!-- FIREBASE SDK SCRIPTS -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
+// CONFIG FIREBASE KAU
 const firebaseConfig = {
   apiKey: "AIzaSyC9nXPZMXkS6EyEgOwIZ6NHuKX2DOa1uKA",
   authDomain: "ibk-465f5.firebaseapp.com",
@@ -247,6 +245,7 @@ const firebaseConfig = {
   databaseURL: "https://ibk-465f5-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
+// Hubungkan ke Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
@@ -267,7 +266,7 @@ let slideIndex = 0;
 let slideTimer = null;
 const ITEM_W = 200;
 
-// SINKRONISASI DATA REAL-TIME (DENGAN FIX DATABASE KOSONG)
+// AMBIL DATA LIVE DARI FIREBASE (DENGAN FIX POLAROID KOSONG)
 db.ref('galleryData').on('value', (snapshot) => {
   const data = snapshot.val() || {};
   
