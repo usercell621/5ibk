@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+[6/15/2026 12:27 AM] hanief: <!DOCTYPE html>
 <html lang="ms">
 <head>
 <meta charset="UTF-8">
@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden}
 
-/* HERO SLIDESHOW */
+/* HERO SLIDESHOW ADJUSTMENTS */
 .hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000}
 .hero-bg{position:absolute;inset:0;z-index:1}
 .hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease-in-out;z-index:1}
@@ -17,14 +17,14 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.4),rgba(0,0,0,.1) 50%,rgba(0,0,0,.85));z-index:3}
 .hero-content{position:relative;z-index:4;text-align:center;pointer-events:none}
 
+/* BUTTON MANAGEMENT OVER HIERARCHY */
+.hero-manage-btn{position:absolute;top:24px;right:24px;z-index:10;background:rgba(255,255,255,0.05);border:1px solid #222;color:#888;font-size:10px;letter-spacing:2px;padding:10px 16px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;backdrop-filter:blur(4px)}
+.hero-manage-btn:hover{background:#fff;color:#000;border-color:#fff}
+
 .hero-eyebrow{font-size:11px;letter-spacing:6px;color:#888;text-transform:uppercase;margin-bottom:16px}
 .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,15vw,12rem);line-height:.85;color:#fff;display:flex;flex-direction:column;align-items:center}
 .hero-title .sub{font-size:clamp(2rem,5vw,4rem);letter-spacing:10px;color:#888;font-family:'Inter',sans-serif;font-weight:300}
 .hero-badge{display:inline-block;margin-top:24px;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#555;border-top:1px solid #222;border-bottom:1px solid #222;padding:8px 24px}
-
-/* BG MANAGEMENT BUTTON */
-.bg-manage-btn{position:absolute;bottom:24px;left:24px;z-index:10;background:rgba(0,0,0,0.6);border:1px solid #333;color:#aaa;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px)}
-.bg-manage-btn:hover{background:#fff;color:#000;border-color:#fff}
 
 /* POLAROID SECTION */
 .polaroid-section{background:#000;overflow:hidden;border-top:1px solid #111;border-bottom:1px solid #111;position:relative}
@@ -33,6 +33,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .polaroid-track-wrap::before{left:0;background:linear-gradient(to right,#000,transparent)}
 .polaroid-track-wrap::after{right:0;background:linear-gradient(to left,#000,transparent)}
 .polaroid-track{display:flex;gap:28px;width:max-content;align-items:center;transition:transform .4s cubic-bezier(.25,.46,.45,.94)}
+.polaroid-track.animating{animation:none}
 .polaroid-track.auto{animation:scrollLeft 35s linear infinite}
 @keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(calc(-50% - 14px))}}
 
@@ -40,8 +41,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .pol-nav:hover{background:rgba(255,255,255,0.18);border-color:#888}
 .pol-nav.left{left:16px}
 .pol-nav.right{right:16px}
-
-.polaroid{background:#fff;padding:12px 12px 36px;box-shadow:4px 4px 20px rgba(0,0,0,.8);flex-shrink:0;transform-origin:bottom center;transition:transform .3s;cursor:pointer;position:relative}
+[6/15/2026 12:27 AM] hanief: .polaroid{background:#fff;padding:12px 12px 36px;box-shadow:4px 4px 20px rgba(0,0,0,.8);flex-shrink:0;transform-origin:bottom center;transition:transform .3s;cursor:pointer;position:relative}
 .polaroid:nth-child(odd){transform:rotate(-2deg)}
 .polaroid:nth-child(even){transform:rotate(2deg)}
 .polaroid:hover{transform:rotate(0deg) scale(1.08) translateY(-8px);z-index:10}
@@ -76,8 +76,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .fab{position:fixed;bottom:36px;right:36px;width:60px;height:60px;background:#fff;border-radius:50%;border:none;cursor:pointer;z-index:500;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.5);transition:transform .2s,background .2s}
 .fab:hover{transform:scale(1.1) rotate(90deg);background:#e0e0e0}
 .fab svg{width:28px;height:28px;stroke:#000;fill:none;stroke-width:2.5;stroke-linecap:round}
-
-/* MODALS */
+[6/15/2026 12:27 AM] hanief: /* MODALS */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center;padding:20px}
 .modal-bg.open{display:flex}
 .modal{background:#0d0d0d;border:1px solid #1e1e1e;width:100%;max-width:460px;padding:40px;position:relative}
@@ -96,14 +95,13 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .close-x{position:absolute;top:16px;right:20px;background:none;border:none;color:#555;font-size:24px;cursor:pointer;line-height:1;font-family:'Inter',sans-serif}
 .close-x:hover{color:#fff}
 
-/* MANAGED HERO LIST IN MODAL */
-.bg-thumb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;max-height:160px;overflow-y:auto;padding-right:4px}
-.bg-thumb{aspect-ratio:1;background:#222;position:relative;border:1px solid #333}
-.bg-thumb img{width:100%;height:100%;object-fit:cover}
-.bg-thumb-del{position:absolute;top:2px;right:2px;width:16px;height:16px;background:rgba(0,0,0,0.8);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.bg-thumb-del:hover{background:#c00}
-
-/* GALLERY SCREEN */
+/* HERO SLIDESHOW MANAGER GRID */
+.hero-grid-preview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-height:200px;overflow-y:auto;margin-top:16px;padding-right:4px}
+.hero-preview-item{position:relative;aspect-ratio:16/9;background:#111;border:1px solid #222}
+.hero-preview-item img{width:100%;height:100%;object-fit:cover}
+.hero-preview-del{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(0,0,0,.8);border:none;color:#fff;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.hero-preview-del:hover{background:#c00}
+[6/15/2026 12:27 AM] hanief: /* GALLERY SCREEN */
 .gallery-screen{display:none;position:fixed;inset:0;background:#000;z-index:800;flex-direction:column}
 .gallery-screen.open{display:flex}
 .gallery-topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid #111;background:#000;flex-shrink:0}
@@ -142,6 +140,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 <body>
 
 <section class="hero">
+  <button class="hero-manage-btn" onclick="openHeroModal()">Urus Gambar Latar</button>
   <div class="hero-bg" id="heroBgContainer"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -152,7 +151,6 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
     </div>
     <div class="hero-badge">Sekolah Menengah · 2025</div>
   </div>
-  <button class="bg-manage-btn" onclick="openBgModal()">Urus Latar Belakang</button>
 </section>
 
 <div class="polaroid-section">
@@ -174,11 +172,11 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 <footer class="footer-credit">
   Created by <span>anepimut</span>
 </footer>
-
-<button class="fab" onclick="openAddModal()">
+[6/15/2026 12:27 AM] hanief: <button class="fab" onclick="openAddModal()">
   <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
 
+<!-- MODAL TAMBAH EVENT -->
 <div class="modal-bg" id="addModal">
   <div class="modal">
     <button class="close-x" onclick="closeAddModal()">×</button>
@@ -195,17 +193,19 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   </div>
 </div>
 
-<div class="modal-bg" id="bgModal">
+<!-- MODAL URUS GAMBAR HERO BACKGROUND (SLIDESHOW) -->
+<div class="modal-bg" id="heroModal">
   <div class="modal">
-    <button class="close-x" onclick="closeBgModal()">×</button>
-    <div class="modal-title">GAMBAR SLIDESHOW</div>
-    <div class="bg-thumb-grid" id="bgThumbGrid"></div>
-    <div class="upload-zone" onclick="document.getElementById('bgSlidesInput').click()">
-      <input type="file" id="bgSlidesInput" accept="image/*" multiple>
-      <p>+ Tambah Gambar Latar Belakang</p>
+    <button class="close-x" onclick="closeHeroModal()">×</button>
+    <div class="modal-title">URUS GAMBAR LATAR</div>
+    <div class="upload-zone" onclick="document.getElementById('heroMultipleInput').click()">
+      <input type="file" id="heroMultipleInput" accept="image/*" multiple>
+      <p>↑ Klik untuk tambah gambar kelas (Boleh pilih banyak)</p>
     </div>
-    <div class="modal-actions">
-      <button class="btn-white" onclick="closeBgModal()">SELESAI</button>
+    <p style="font-size:10px; color:#555; text-transform:uppercase; letter-spacing:1px;">Gambar Tersedia:</p>
+    <div class="hero-grid-preview" id="heroGridPreview"></div>
+    <div class="modal-actions" style="margin-top:20px">
+      <button class="btn-white" style="width:100%" onclick="closeHeroModal()">SELESAI</button>
     </div>
   </div>
 </div>
@@ -230,9 +230,16 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 </div>
 
 <script>
-let events=JSON.parse(localStorage.getItem('ibk_events')||'[]');
-let heroSlides=JSON.parse(localStorage.getItem('ibk_hero_slides')||'[]');
-let memberPhotos=JSON.parse(localStorage.getItem('ibk_member_photos')||'[]');
+let events=JSON.parse(localStorage.getItem('ibk_events')'[]');
+let memberPhotos=[];
+try{memberPhotos=JSON.parse(localStorage.getItem('ibk_members'))[];}catch(e){}
+if(!Array.isArray(memberPhotos)memberPhotos.length!==25)memberPhotos=Array(25).fill(null);
+
+// Ambil array gambar slideshow hero dari LocalStorage
+let heroSlides=JSON.parse(localStorage.getItem('ibk_hero_slides')'[]');
+let currentId=null,coverDataUrl=null;
+let slideIndex=0;
+let slideTimer=null;
 
 const memberNames = [
   "adam", "asya", "darin", "dina", "amir", 
@@ -242,28 +249,21 @@ const memberNames = [
   "sofia", "tasnim", "qaseh", "qayyum", "qash"
 ];
 
-if(!Array.isArray(memberPhotos) || memberPhotos.length !== 25) {
-  memberPhotos = Array(25).fill(null);
-}
-
-let currentId=null,coverDataUrl=null;
-let slideIndex=0;
-let slideTimer=null;
-const ITEM_W=200;
-
 function persist(){
   localStorage.setItem('ibk_events',JSON.stringify(events));
-  localStorage.setItem('ibk_hero_slides',JSON.stringify(heroSlides));
-  localStorage.setItem('ibk_member_photos',JSON.stringify(memberPhotos));
+  localStorage.setItem('ibk_members',JSON.stringify(memberPhotos));
 }
 
-// ── HERO SLIDESHOW ──
+function persistHero(){
+  localStorage.setItem('ibk_hero_slides',JSON.stringify(heroSlides));
+}
+[6/15/2026 12:27 AM] hanief: // ── HERO SLIDESHOW LOGIC ──
 function initSlideshow(){
   const container = document.getElementById('heroBgContainer');
   clearInterval(slideTimer);
   
-  if(!heroSlides || heroSlides.length === 0){
-    container.innerHTML = `<div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1470')"></div>`;
+  if(heroSlides.length === 0){
+    container.innerHTML = <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1470')"></div>;
     return;
   }
   
@@ -273,7 +273,7 @@ function initSlideshow(){
   
   slideIndex = 0;
   if(heroSlides.length > 1){
-    slideTimer = setInterval(nextSlide, 4000);
+    slideTimer = setInterval(nextSlide, 4000); // Tukar gambar setiap 4 saat
   }
 }
 
@@ -285,44 +285,49 @@ function nextSlide(){
   slides[slideIndex].classList.add('active');
 }
 
-function openBgModal(){
-  document.getElementById('bgModal').classList.add('open');
-  renderBgThumbs();
+function openHeroModal(){
+  document.getElementById('heroModal').classList.add('open');
+  renderHeroPreviews();
 }
-function closeBgModal(){
-  document.getElementById('bgModal').classList.remove('open');
-  initSlideshow();
+function closeHeroModal(){
+  document.getElementById('heroModal').classList.remove('open');
 }
-function renderBgThumbs(){
-  const grid = document.getElementById('bgThumbGrid');
-  grid.innerHTML = heroSlides.map((src, i) => `
-    <div class="bg-thumb">
-      <img src="${src}">
-      <button class="bg-thumb-del" onclick="deleteBgSlide(${i})">×</button>
-    </div>
-  `).join('');
-}
-document.getElementById('bgSlidesInput').onchange = function(){
+
+document.getElementById('heroMultipleInput').onchange = function(){
   const files = Array.from(this.files);
-  let loaded = 0;
+  let processed = 0;
   files.forEach(f => {
     const r = new FileReader();
     r.onload = e => {
       heroSlides.push(e.target.result);
-      loaded++;
-      if(loaded === files.length) {
-        persist();
-        renderBgThumbs();
+      processed++;
+      if(processed === files.length){
+        persistHero();
+        renderHeroPreviews();
+        initSlideshow();
       }
     };
     r.readAsDataURL(f);
   });
   this.value = '';
 };
-function deleteBgSlide(i){
-  heroSlides.splice(i, 1);
-  persist();
-  renderBgThumbs();
+
+function renderHeroPreviews(){
+  const container = document.getElementById('heroGridPreview');
+  if(!heroSlides.length){ container.innerHTML = '<p style="font-size:11px;color:#333;padding:10px 0;">Tiada gambar diupload.</p>'; return; }
+  container.innerHTML = heroSlides.map((src, idx) => `
+    <div class="hero-preview-item">
+      <img src="${src}">
+      <button class="hero-preview-del" onclick="deleteHeroSlide(${idx})">×</button>
+    </div>
+  `).join('');
+}
+
+function deleteHeroSlide(idx){
+  heroSlides.splice(idx, 1);
+  persistHero();
+  renderHeroPreviews();
+  initSlideshow();
 }
 
 // ── POLAROID STRIP ──
@@ -330,6 +335,7 @@ const track=document.getElementById('polaroidTrack');
 let polOffset=0;
 let isAuto=true;
 let autoTimer=null;
+const ITEM_W=200; 
 
 function buildStrip(){
   let html='';
@@ -339,56 +345,47 @@ function buildStrip(){
       const name=memberNames[i];
       const size=176; 
       
-      html+=`<div class="polaroid" onclick="openMemberUpload(${i})">`;
+      html+=<div class="polaroid" onclick="openMemberUpload(${i})">;
+      
       if(src){
-        html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">`;
-        html+=`<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
-        html+=`<div class="pol-label">${name}</div>`;
-      } else {
-        html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
-        html+=`<div class="pol-label" style="color:#aaa">Upload (${name})</div>`;
+        html+=<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">;
+        html+=<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>;
       }
-      html+=`</div>`;
+      else{
+        html+=<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>;
+      }
+      
+      html+=<div class="pol-label">${src ? name : 'Klik upload (' + name + ')'}</div></div>;
     }
   }
   track.innerHTML=html;
 }
 
-function openMemberUpload(idx){
-  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
-  inp.onchange=()=>{
-    const f=inp.files[0]; if(!f)return;
-    const r=new FileReader();
-    r.onload=e=>{
-      memberPhotos[idx]=e.target.result;
-      persist();
-      buildStrip();
-    };
-    r.readAsDataURL(f);
-  };
-  inp.click();
-}
-
 function deleteMemberPhoto(idx, e){
   e.stopPropagation();
-  if(!confirm('Padam gambar polaroid ' + memberNames[idx] + '?')) return;
+  if(!confirm('Padam gambar ' + memberNames[idx] + '?')) return;
   memberPhotos[idx] = null;
   persist();
   buildStrip();
 }
 
 function stopAuto(){
-  isAuto=false; track.classList.remove('auto');
-  track.style.transform=`translateX(${polOffset}px)`;
+  isAuto=false;
+  track.classList.remove('auto');
+  track.style.transform=translateX(${polOffset}px);
   clearTimeout(autoTimer);
 }
+
 function resumeAuto(){
   clearTimeout(autoTimer);
   autoTimer=setTimeout(()=>{
-    isAuto=true; polOffset=0;
-    track.style.transform=''; track.classList.add('auto');
+    isAuto=true;
+    polOffset=0;
+    track.style.transform='';
+    track.classList.add('auto');
   },4000);
 }
+
 function slideBy(dir){
   stopAuto();
   polOffset+=dir*-(ITEM_W);
@@ -396,19 +393,30 @@ function slideBy(dir){
   if(polOffset<maxOffset)polOffset=0;
   if(polOffset>0)polOffset=maxOffset+ITEM_W;
   track.style.transition='transform .4s cubic-bezier(.25,.46,.45,.94)';
-  track.style.transform=`translateX(${polOffset}px)`;
+  track.style.transform=translateX(${polOffset}px);
   resumeAuto();
 }
+
 document.getElementById('polLeft').onclick=()=>slideBy(-1);
 document.getElementById('polRight').onclick=()=>slideBy(1);
+[6/15/2026 12:27 AM] hanief: function openMemberUpload(idx){
+  const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=()=>{
+    const f=inp.files[0];if(!f)return;
+    const r=new FileReader();
+    r.onload=e=>{memberPhotos[idx]=e.target.result;persist();buildStrip();};
+    r.readAsDataURL(f);
+  };
+  inp.click();
+}
 
-// ── EVENTS LOGIC ──
+// ── EVENTS ──
 function buildGrid(){
   const grid=document.getElementById('eventsGrid');
   if(!events.length){grid.innerHTML='<div class="no-events">Tiada event — tekan + untuk tambah</div>';return;}
   grid.innerHTML=events.map(ev=>`
     <div class="event-card" onclick="openGallery('${ev.id}')">
-      ${ev.cover?`<img class="event-card-img" src="${ev.cover}" alt="${ev.name}">`:`<div class="event-card-placeholder">◼</div>`}
+      ${ev.cover?<img class="event-card-img" src="${ev.cover}" alt="${ev.name}">:<div class="event-card-placeholder">◼️</div>}
       <div class="event-card-overlay">
         <div class="event-card-name">${ev.name}</div>
         <div class="event-card-count">${(ev.photos||[]).length} gambar</div>
@@ -447,8 +455,8 @@ function closeGallery(){document.getElementById('galleryScreen').classList.remov
 function renderGallery(ev){
   const content=document.getElementById('galContent');
   const photos=ev.photos||[];
-  if(!photos.length){content.innerHTML=`<div class="gallery-empty"><div class="big">IBK</div><p>Belum ada gambar</p><p style="color:#222;margin-top:4px">Tekan Upload Gambar untuk mula</p></div>`;return;}
-  content.innerHTML=`<div class="gallery-grid">${photos.map((p,i)=>`<div class="g-item"><img src="${p}" alt="Photo ${i+1}" onclick="openLightbox('${p}')"><button class="g-item-del" onclick="deletePhoto(${i},event)">×</button></div>`).join('')}</div>`;
+  if(!photos.length){content.innerHTML=<div class="gallery-empty"><div class="big">IBK</div><p>Belum ada gambar</p><p style="color:#222;margin-top:4px">Tekan Upload Gambar untuk mula</p></div>;return;}
+  content.innerHTML=<div class="gallery-grid">${photos.map((p,i)=><div class="g-item"><img src="${p}" alt="Photo ${i+1}" onclick="openLightbox('${p}')"><button class="g-item-del" onclick="deletePhoto(${i},event)">×</button></div>).join('')}</div>;
 }
 document.getElementById('galUpload').onchange=function(){
   const ev=events.find(e=>e.id===currentId);if(!ev)return;
@@ -473,13 +481,12 @@ function deleteCurrentEvent(){
   events=events.filter(e=>e.id!==currentId);
   persist();buildGrid();closeGallery();
 }
-
-function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open');}
+[6/15/2026 12:27 AM] hanief: function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open');}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
 document.getElementById('lightbox').onclick=function(e){if(e.target===this)closeLightbox();};
 document.getElementById('addModal').onclick=function(e){if(e.target===this)closeAddModal();};
-document.getElementById('bgModal').onclick=function(e){if(e.target===this)closeBgModal();};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeGallery();closeAddModal();closeBgModal();}});
+document.getElementById('heroModal').onclick=function(e){if(e.target===this)closeHeroModal();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeGallery();closeAddModal();closeHeroModal();}});
 
 initSlideshow();
 buildStrip();
