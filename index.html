@@ -9,7 +9,7 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
-body{background:#0a0a0a;color:white}
+body{background:#0a0a0a;color:white;overflow:hidden}
 
 /* NAV */
 nav{
@@ -25,65 +25,12 @@ nav{
 }
 .logo{font-weight:800;letter-spacing:2px}
 
-/* HERO */
-.hero{
+/* HOME */
+#home{
     height:100vh;
-    position:relative;
-    overflow:hidden;
+    padding:100px 8% 40px;
+    overflow:auto;
 }
-.hero img{
-    position:absolute;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    opacity:0;
-    transition:1s;
-}
-.hero img.active{opacity:1}
-.hero::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.6);
-}
-.hero-content{
-    position:absolute;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    text-align:center;
-}
-.hero-content h1{font-size:55px;font-weight:800}
-.hero-content p{opacity:.7;margin-top:10px}
-
-/* BUTTON + FLOAT */
-.fab-container{
-    position:fixed;
-    right:25px;
-    bottom:25px;
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-    z-index:20;
-}
-
-.fab{
-    width:55px;
-    height:55px;
-    border-radius:50%;
-    background:white;
-    color:black;
-    font-size:22px;
-    border:none;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 10px 30px rgba(0,0,0,0.5);
-}
-
-/* EVENTS */
-.container{padding:80px 8%}
-.section-title{margin-bottom:20px;font-weight:700}
 
 .events{
     display:grid;
@@ -105,42 +52,50 @@ nav{
     position:absolute;
     top:10px;
     right:10px;
-    background:red;
+    background:none;
     border:none;
     color:white;
-    border-radius:6px;
-    padding:5px;
+    font-size:18px;
     cursor:pointer;
+    opacity:0.6;
 }
 
-/* GALLERY VIEW */
-.viewer{
+/* VIEW MODE (NO BACK) */
+#viewer{
     position:fixed;
     inset:0;
     background:#000;
     display:none;
     flex-direction:column;
-    overflow-y:auto;
-    z-index:999;
+    z-index:100;
 }
 
-.viewer-header{
-    padding:20px;
+.viewer-top{
     display:flex;
     justify-content:space-between;
+    padding:15px 20px;
     align-items:center;
-    position:sticky;
-    top:0;
     background:#000;
 }
 
 .viewer-title{font-weight:700}
+
+.viewer-actions button{
+    background:none;
+    border:none;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    margin-left:10px;
+    opacity:0.7;
+}
 
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
     gap:10px;
     padding:20px;
+    overflow:auto;
 }
 
 .grid img{
@@ -148,212 +103,238 @@ nav{
     height:120px;
     object-fit:cover;
     border-radius:8px;
-    cursor:pointer;
 }
 
-/* FULL IMAGE */
-.full{
+/* FLOAT BUTTON */
+.fab{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    background:white;
+    color:black;
+    font-size:28px;
+    border:none;
+    cursor:pointer;
+    z-index:200;
+}
+
+/* POPUP */
+.popup{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.95);
+    background:rgba(0,0,0,0.8);
     display:none;
-    align-items:center;
     justify-content:center;
-    flex-direction:column;
-    z-index:1000;
+    align-items:center;
+    z-index:300;
 }
 
-.full img{
-    max-width:90%;
-    max-height:80vh;
-    border-radius:10px;
+.box{
+    width:300px;
+    background:#111;
+    padding:20px;
+    border-radius:12px;
 }
 
-.actions{
-    margin-top:20px;
-    display:flex;
-    gap:20px;
-    font-size:22px;
-}
-
-.icon-btn{
-    background:none;
+.box input, .box select{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    background:#1a1a1a;
     border:none;
     color:white;
-    cursor:pointer;
-    font-size:22px;
 }
 
-/* UPLOAD INPUT HIDDEN */
-input{display:none}
-
+.box button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    background:white;
+    color:black;
+    font-weight:600;
+    cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
 <nav>
-    <div class="logo">5 IBK GALLERIES</div>
+<div class="logo">5 IBK GALLERIES</div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-    <img class="slide active" src="https://picsum.photos/id/1011/1600/900">
-    <img class="slide" src="https://picsum.photos/id/1015/1600/900">
-    <img class="slide" src="https://picsum.photos/id/1016/1600/900">
-
-    <div class="hero-content">
-        <h1>5 IBK GALLERIES</h1>
-        <p>Every memory stays forever</p>
-    </div>
-</section>
-
-<!-- EVENTS -->
-<div class="container">
-    <h2 class="section-title">Events</h2>
+<!-- HOME -->
+<div id="home">
+    <h2 style="margin-bottom:20px;">Events</h2>
     <div class="events" id="events"></div>
 </div>
 
-<!-- FLOAT BUTTONS -->
-<div class="fab-container">
-    <button class="fab" onclick="addEvent()">＋</button>
-    <button class="fab" onclick="document.getElementById('file').click()">⬆</button>
-</div>
-
-<input type="file" id="file" accept="image/*">
-
 <!-- VIEWER -->
-<div class="viewer" id="viewer">
-    <div class="viewer-header">
+<div id="viewer">
+    <div class="viewer-top">
         <div class="viewer-title" id="viewerTitle"></div>
+        <div class="viewer-actions">
+            <button onclick="deleteEvent()">🗑</button>
+        </div>
     </div>
     <div class="grid" id="grid"></div>
 </div>
 
-<!-- FULL IMAGE -->
-<div class="full" id="full">
-    <img id="fullImg">
-    <div class="actions">
-        <button class="icon-btn" onclick="downloadImg()">⬇</button>
-        <button class="icon-btn" onclick="deleteImg()">🗑</button>
+<!-- FLOAT BUTTON -->
+<button class="fab" onclick="openPopup()">+</button>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+    <div class="box">
+
+        <select id="mode" onchange="switchMode()">
+            <option value="upload">Upload Memory</option>
+            <option value="add">Add Event</option>
+        </select>
+
+        <select id="eventSelect"></select>
+
+        <input type="text" id="newEvent" placeholder="New event name" style="display:none;">
+
+        <input type="file" id="file" accept="image/*">
+
+        <button onclick="handleAction()">Confirm</button>
+
     </div>
 </div>
 
 <script>
 
-let data = {};
-let currentEvent = "";
-let currentImgEl = null;
+let data={}
+let currentEvent=""
 
-/* HERO SLIDE */
-let slides = document.querySelectorAll(".slide");
-let i=0;
-setInterval(()=>{
-    slides[i].classList.remove("active");
-    i=(i+1)%slides.length;
-    slides[i].classList.add("active");
-},4000);
+document.getElementById("file").value=""
 
-/* INIT DEFAULT EVENTS */
-["Hari Sukan","Graduasi","Hari Guru"].forEach(addEventCard);
-
-/* ADD EVENT */
-function addEvent(){
-    let name = prompt("Event name:");
-    if(!name) return;
-    addEventCard(name);
-}
+/* DEFAULT EVENTS */
+["Hari Sukan","Graduasi","Hari Guru"].forEach(addEventCard)
 
 function addEventCard(name){
 
-    if(data[name]) return;
+    if(data[name]) return
 
-    data[name]=[];
+    data[name]=[]
 
-    let card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
+    let div=document.createElement("div")
+    div.className="card"
+    div.innerHTML=`
         <h3>${name}</h3>
-        <button class="del-event" onclick="deleteEvent('${name}')">✕</button>
-    `;
+        <button class="del-event" onclick="removeEvent('${name}',event)">✕</button>
+    `
 
-    card.onclick=()=>openEvent(name);
+    div.onclick=()=>openEvent(name)
 
-    document.getElementById("events").appendChild(card);
+    document.getElementById("events").appendChild(div)
+
+    updateSelect()
 }
 
-/* DELETE EVENT */
-function deleteEvent(name){
-    delete data[name];
-    document.querySelectorAll(".card").forEach(c=>{
-        if(c.innerText.includes(name)) c.remove();
-    });
+/* UPDATE SELECT */
+function updateSelect(){
+
+    let sel=document.getElementById("eventSelect")
+    sel.innerHTML=""
+
+    Object.keys(data).forEach(e=>{
+        let opt=document.createElement("option")
+        opt.value=e
+        opt.textContent=e
+        sel.appendChild(opt)
+    })
 }
 
-/* OPEN EVENT */
+/* OPEN EVENT (NO BACK) */
 function openEvent(name){
-    currentEvent=name;
-    document.getElementById("viewer").style.display="flex";
-    document.getElementById("viewerTitle").innerText=name;
-    renderGrid();
+
+    currentEvent=name
+    document.getElementById("home").style.display="none"
+    document.getElementById("viewer").style.display="flex"
+
+    document.getElementById("viewerTitle").innerText=name
+
+    render()
 }
 
-/* RENDER IMAGES */
-function renderGrid(){
+/* RENDER */
+function render(){
 
-    let grid=document.getElementById("grid");
-    grid.innerHTML="";
+    let grid=document.getElementById("grid")
+    grid.innerHTML=""
 
     data[currentEvent].forEach((src,i)=>{
 
-        let img=document.createElement("img");
-        img.src=src;
+        let img=document.createElement("img")
+        img.src=src
 
-        img.onclick=()=>{
-            currentImgEl=i;
-            document.getElementById("fullImg").src=src;
-            document.getElementById("full").style.display="flex";
-        };
-
-        grid.appendChild(img);
-    });
+        grid.appendChild(img)
+    })
 }
 
-/* UPLOAD */
-document.getElementById("file").addEventListener("change",function(e){
+/* DELETE EVENT */
+function removeEvent(name,e){
+    e.stopPropagation()
+    delete data[name]
+    location.reload()
+}
 
-    if(!currentEvent){
-        alert("Open event first");
-        return;
+/* POPUP */
+function openPopup(){
+    document.getElementById("popup").style.display="flex"
+}
+
+function switchMode(){
+
+    let mode=document.getElementById("mode").value
+
+    document.getElementById("file").style.display =
+        mode==="upload"?"block":"none"
+
+    document.getElementById("eventSelect").style.display =
+        mode==="upload"?"block":"none"
+
+    document.getElementById("newEvent").style.display =
+        mode==="add"?"block":"none"
+}
+
+/* ACTION */
+function handleAction(){
+
+    let mode=document.getElementById("mode").value
+
+    if(mode==="add"){
+
+        let name=document.getElementById("newEvent").value
+        if(!name) return
+
+        addEventCard(name)
     }
 
-    let file=e.target.files[0];
-    if(!file) return;
+    if(mode==="upload"){
 
-    let reader=new FileReader();
+        let file=document.getElementById("file").files[0]
+        let event=document.getElementById("eventSelect").value
 
-    reader.onload=function(ev){
-        data[currentEvent].push(ev.target.result);
-        renderGrid();
-    };
+        if(!file||!event) return
 
-    reader.readAsDataURL(file);
+        let reader=new FileReader()
 
-    this.value=""; // RESET FILE INPUT
-});
+        reader.onload=function(e){
+            data[event].push(e.target.result)
+            if(event===currentEvent) render()
+        }
 
-/* FULL VIEW */
-function downloadImg(){
-    let a=document.createElement("a");
-    a.href=document.getElementById("fullImg").src;
-    a.download="image";
-    a.click();
-}
+        reader.readAsDataURL(file)
+    }
 
-function deleteImg(){
-    data[currentEvent].splice(currentImgEl,1);
-    document.getElementById("full").style.display="none";
-    renderGrid();
+    document.getElementById("popup").style.display="none"
 }
 
 </script>
