@@ -39,10 +39,15 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .polaroid:nth-child(odd){transform:rotate(-2deg)}
 .polaroid:nth-child(even){transform:rotate(2deg)}
 .polaroid:hover{transform:rotate(0deg) scale(1.08) translateY(-8px);z-index:10}
-.pol-img{object-fit:cover;display:block}
+.pol-img{-fit:cover;display:block}
 .pol-placeholder{background:#ddd;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase;flex-direction:column;gap:4px}
 .pol-placeholder span{font-size:22px;color:#ccc}
 .pol-label{font-family:'Inter',sans-serif;font-size:9px;color:#555;text-align:center;margin-top:10px;letter-spacing:1px}
+
+/* Butang Delete Baru untuk Polaroid */
+.pol-item-del{position:absolute;top:15px;right:15px;width:24px;height:24px;background:rgba(0,0,0,.8);border:none;border-radius:50%;color:#fff;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:background .2s;line-height:1;z-index:15}
+.polaroid:hover .pol-item-del{display:flex}
+.pol-item-del:hover{background:#c00}
 
 .section-hdr{padding:60px 60px 0}
 .section-label{font-size:10px;letter-spacing:5px;color:#444;text-transform:uppercase}
@@ -223,13 +228,31 @@ function buildStrip(){
       const isCentre=i===12;
       const size=isCentre?176:126;
       const pad=isCentre?'12px 12px 36px':'10px 10px 30px';
+      
       html+=`<div class="polaroid" style="padding:${pad}" onclick="openMemberUpload(${i})">`;
-      if(src){html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="M${i+1}">`;}
-      else{html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;}
+      
+      if(src){
+        html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="M${i+1}">`;
+        // Butang padam ditambah di sini jika gambar wujud
+        html+=`<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
+      }
+      else{
+        html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
+      }
+      
       html+=`<div class="pol-label">${src?'Member '+(i+1):'Klik upload'}</div></div>`;
     }
   }
   track.innerHTML=html;
+}
+
+// Fungsi Baru: Padam gambar ahli/polaroid
+function deleteMemberPhoto(idx, e){
+  e.stopPropagation(); // Elakkan fungsi openMemberUpload dari ter-trigger
+  if(!confirm('Padam gambar Member ' + (idx + 1) + '?')) return;
+  memberPhotos[idx] = null;
+  persist();
+  buildStrip();
 }
 
 function stopAuto(){
