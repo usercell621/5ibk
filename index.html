@@ -9,7 +9,7 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
-body{background:#0a0a0a;color:white;overflow:hidden}
+body{background:#0a0a0a;color:white;overflow-x:hidden}
 
 /* NAV */
 nav{
@@ -23,33 +23,29 @@ nav{
     backdrop-filter:blur(10px);
     z-index:10;
 }
-.logo{font-weight:800;letter-spacing:2px}
+.logo{font-weight:800}
 
-/* HERO SLIDESHOW (KEKAL) */
+/* HERO */
 .hero{
     height:100vh;
     position:relative;
     overflow:hidden;
 }
-
 .hero img{
     position:absolute;
     width:100%;
     height:100%;
     object-fit:cover;
     opacity:0;
-    transition:1s ease;
+    transition:1s;
 }
-
 .hero img.active{opacity:1}
-
 .hero::after{
     content:"";
     position:absolute;
     inset:0;
     background:rgba(0,0,0,0.6);
 }
-
 .hero-content{
     position:absolute;
     top:50%;
@@ -57,29 +53,12 @@ nav{
     transform:translate(-50%,-50%);
     text-align:center;
 }
+.hero-content h1{font-size:55px;font-weight:900}
 
-.hero-content h1{
-    font-size:60px;
-    font-weight:900;
-    letter-spacing:3px;
+/* EVENTS */
+.container{
+    padding:80px 8%;
 }
-
-.hero-content p{
-    opacity:0.7;
-    margin-top:10px;
-}
-
-/* HOME */
-#home{
-    position:absolute;
-    top:100vh;
-    width:100%;
-    height:100vh;
-    background:#0a0a0a;
-    padding:90px 8% 40px;
-    overflow:auto;
-}
-
 .events{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -96,50 +75,27 @@ nav{
 
 .card h3{font-weight:600}
 
-.del-event{
+.del{
     position:absolute;
     top:10px;
     right:10px;
     background:none;
     border:none;
     color:white;
-    font-size:18px;
-    cursor:pointer;
     opacity:0.6;
-}
-
-/* VIEWER */
-#viewer{
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:none;
-    flex-direction:column;
-    z-index:100;
-}
-
-.viewer-top{
-    display:flex;
-    justify-content:space-between;
-    padding:15px 20px;
-    align-items:center;
-}
-
-.viewer-actions button{
-    background:none;
-    border:none;
-    color:white;
-    font-size:18px;
     cursor:pointer;
 }
 
-/* GRID */
+/* GALLERY */
+#galleryPage{
+    display:none;
+    padding:80px 8%;
+}
+
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
     gap:10px;
-    padding:20px;
-    overflow:auto;
 }
 
 .grid img{
@@ -149,7 +105,7 @@ nav{
     border-radius:8px;
 }
 
-/* FLOAT BTN */
+/* FLOAT BUTTON */
 .fab{
     position:fixed;
     right:20px;
@@ -162,28 +118,26 @@ nav{
     font-size:28px;
     border:none;
     cursor:pointer;
-    z-index:200;
 }
 
-/* POPUP */
-.popup{
+/* PANEL */
+.panel{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.8);
+    background:rgba(0,0,0,0.85);
     display:none;
     justify-content:center;
     align-items:center;
-    z-index:300;
 }
 
 .box{
-    width:320px;
+    width:300px;
     background:#111;
     padding:20px;
     border-radius:12px;
 }
 
-.box input,.box select{
+.box input, .box select{
     width:100%;
     padding:10px;
     margin:8px 0;
@@ -197,11 +151,9 @@ nav{
     padding:10px;
     background:white;
     border:none;
-    font-weight:600;
     cursor:pointer;
+    font-weight:600;
 }
-
-input[type=file]{color:white}
 </style>
 </head>
 
@@ -211,90 +163,77 @@ input[type=file]{color:white}
 <div class="logo">5 IBK GALLERIES</div>
 </nav>
 
-<!-- HERO SLIDESHOW (KEKAL) -->
+<!-- HERO -->
 <section class="hero">
-
     <img class="slide active" src="https://picsum.photos/id/1011/1600/900">
     <img class="slide" src="https://picsum.photos/id/1015/1600/900">
     <img class="slide" src="https://picsum.photos/id/1016/1600/900">
 
     <div class="hero-content">
         <h1>5 IBK GALLERIES</h1>
-        <p>Every memory stays forever</p>
     </div>
-
 </section>
 
-<!-- HOME -->
-<div id="home">
-    <h2 style="margin-bottom:20px;">Events</h2>
+<!-- EVENTS -->
+<div class="container" id="home">
+    <h2>Events</h2>
     <div class="events" id="events"></div>
 </div>
 
-<!-- VIEWER -->
-<div id="viewer">
-    <div class="viewer-top">
-        <div id="viewerTitle"></div>
-        <button onclick="deleteEvent()">🗑</button>
-    </div>
-
+<!-- GALLERY PAGE -->
+<div id="galleryPage">
+    <h2 id="title"></h2>
     <div class="grid" id="grid"></div>
 </div>
 
 <!-- FLOAT -->
-<button class="fab" onclick="openPopup()">+</button>
+<button class="fab" onclick="openPanel()">+</button>
 
-<!-- POPUP -->
-<div class="popup" id="popup">
+<!-- PANEL -->
+<div class="panel" id="panel">
     <div class="box">
 
-        <select id="mode" onchange="switchMode()">
-            <option value="upload">Upload Memory</option>
+        <select id="mode" onchange="modeChange()">
+            <option value="upload">Upload Image</option>
             <option value="add">Add Event</option>
         </select>
 
         <select id="eventSelect"></select>
 
-        <input type="text" id="newEvent" placeholder="New event name" style="display:none;">
+        <input type="text" id="eventName" placeholder="Event name">
 
         <input type="file" id="file">
 
-        <button onclick="handle()">Confirm</button>
+        <button onclick="action()">Confirm</button>
 
     </div>
 </div>
 
 <script>
 
-/* SLIDESHOW (KEKAL) */
-let slides=document.querySelectorAll(".slide")
+/* SLIDE */
+let s=document.querySelectorAll(".slide")
 let i=0
-
 setInterval(()=>{
-    slides[i].classList.remove("active")
-    i=(i+1)%slides.length
-    slides[i].classList.add("active")
+    s[i].classList.remove("active")
+    i=(i+1)%s.length
+    s[i].classList.add("active")
 },4000)
 
 /* DATA */
 let data={}
 let current=""
 
-/* DEFAULT */
-["Hari Sukan","Graduasi","Hari Guru"].forEach(addCard)
+/* INIT */
+["Hari Sukan","Graduasi","Hari Guru"].forEach(add)
 
-function addCard(name){
-
-    if(data[name]) return
+function add(name){
 
     data[name]=[]
 
     let div=document.createElement("div")
     div.className="card"
-    div.innerHTML=`
-        <h3>${name}</h3>
-        <button class="del-event" onclick="delEvent('${name}',event)">✕</button>
-    `
+    div.innerHTML=`<h3>${name}</h3><button class="del" onclick="del('${name}',event)">✕</button>`
 
     div.onclick=()=>open(name)
 
@@ -316,73 +255,82 @@ function updateSelect(){
 
 /* OPEN EVENT */
 function open(name){
+
     current=name
+
     document.getElementById("home").style.display="none"
-    document.getElementById("viewer").style.display="flex"
-    document.getElementById("viewerTitle").innerText=name
+    document.getElementById("galleryPage").style.display="block"
+
+    document.getElementById("title").innerText=name
+
     render()
 }
 
+/* RENDER */
 function render(){
-    let grid=document.getElementById("grid")
-    grid.innerHTML=""
+
+    let g=document.getElementById("grid")
+    g.innerHTML=""
+
     data[current].forEach(src=>{
+
         let img=document.createElement("img")
         img.src=src
-        grid.appendChild(img)
+        g.appendChild(img)
+
     })
 }
 
 /* DELETE EVENT */
-function delEvent(name,e){
+function del(name,e){
     e.stopPropagation()
     delete data[name]
     location.reload()
 }
 
-/* POPUP */
-function openPopup(){
-    document.getElementById("popup").style.display="flex"
+/* PANEL */
+function openPanel(){
+    document.getElementById("panel").style.display="flex"
 }
 
-function switchMode(){
+function modeChange(){
 
-    let mode=document.getElementById("mode").value
+    let m=document.getElementById("mode").value
 
-    document.getElementById("file").style.display=
-        mode==="upload"?"block":"none"
-
-    document.getElementById("eventSelect").style.display=
-        mode==="upload"?"block":"none"
-
-    document.getElementById("newEvent").style.display=
-        mode==="add"?"block":"none"
+    document.getElementById("eventSelect").style.display = m==="upload"?"block":"none"
+    document.getElementById("file").style.display = m==="upload"?"block":"none"
+    document.getElementById("eventName").style.display = m==="add"?"block":"none"
 }
 
-function handle(){
+/* ACTION */
+function action(){
 
     let mode=document.getElementById("mode").value
 
     if(mode==="add"){
-        let name=document.getElementById("newEvent").value
+        let name=document.getElementById("eventName").value
         if(!name) return
-        addCard(name)
+        add(name)
     }
 
     if(mode==="upload"){
+
         let file=document.getElementById("file").files[0]
         let event=document.getElementById("eventSelect").value
+
         if(!file) return
 
         let reader=new FileReader()
+
         reader.onload=(e)=>{
             data[event].push(e.target.result)
             if(event===current) render()
         }
+
         reader.readAsDataURL(file)
     }
 
-    document.getElementById("popup").style.display="none"
+    document.getElementById("panel").style.display="none"
 }
 
 </script>
