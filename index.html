@@ -35,7 +35,8 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .pol-nav.left{left:16px}
 .pol-nav.right{right:16px}
 
-.polaroid{background:#fff;padding:10px 10px 30px;box-shadow:4px 4px 20px rgba(0,0,0,.8);flex-shrink:0;transform-origin:bottom center;transition:transform .3s;cursor:pointer;position:relative}
+/* FIX: Semua polaroid sekarang menggunakan saiz padding yang sekata seperti slot 'nas' */
+.polaroid{background:#fff;padding:12px 12px 36px;box-shadow:4px 4px 20px rgba(0,0,0,.8);flex-shrink:0;transform-origin:bottom center;transition:transform .3s;cursor:pointer;position:relative}
 .polaroid:nth-child(odd){transform:rotate(-2deg)}
 .polaroid:nth-child(even){transform:rotate(2deg)}
 .polaroid:hover{transform:rotate(0deg) scale(1.08) translateY(-8px);z-index:10}
@@ -205,7 +206,6 @@ try{memberPhotos=JSON.parse(localStorage.getItem('ibk_members'))||[];}catch(e){}
 if(!Array.isArray(memberPhotos)||memberPhotos.length!==25)memberPhotos=Array(25).fill(null);
 let currentId=null,coverDataUrl=null;
 
-// Array Senarai Nama Ahli 5 IBK mengikut susunan tepat anda
 const memberNames = [
   "adam", "asya", "darin", "dina", "amir", 
   "hanief", "melisa", "icam", "syawal", "fauzan", 
@@ -233,19 +233,19 @@ const track=document.getElementById('polaroidTrack');
 let polOffset=0;
 let isAuto=true;
 let autoTimer=null;
-const ITEM_W=154; 
+const ITEM_W=200; // Ditingkatkan sedikit untuk menyesuaikan saiz baru yang lebih besar secara sekata
 
 function buildStrip(){
   let html='';
   for(let pass=0;pass<2;pass++){
     for(let i=0;i<25;i++){
       const src=memberPhotos[i];
-      const name=memberNames[i]; // Ambil nama dari senarai ikut index
-      const isCentre=i===12;
-      const size=isCentre?176:126;
-      const pad=isCentre?'12px 12px 36px':'10px 10px 30px';
+      const name=memberNames[i];
       
-      html+=`<div class="polaroid" style="padding:${pad}" onclick="openMemberUpload(${i})">`;
+      // FIX: Semua slot menggunakan saiz besar dan perfect berukuran 176px (Saiz slot 'nas' sebelum ini)
+      const size=176; 
+      
+      html+=`<div class="polaroid" onclick="openMemberUpload(${i})">`;
       
       if(src){
         html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">`;
@@ -255,7 +255,6 @@ function buildStrip(){
         html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
       }
       
-      // Tukar label bawah mengikut nama ahli sedia ada atau suruh klik upload fail
       html+=`<div class="pol-label">${src ? name : 'Klik upload (' + name + ')'}</div></div>`;
     }
   }
