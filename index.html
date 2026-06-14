@@ -142,91 +142,91 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 <body>
 
 <section class="hero">
-  <div class="hero-bg" id="heroBgContainer"></div>
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <p class="hero-eyebrow">Kelas Terbaik · Kenangan Abadi</p>
-    <div class="hero-title">
-      <span>5 IBK</span>
-      <span class="sub">GALLERIES</span>
-    </div>
-    <div class="hero-badge">Sekolah Menengah · 2025</div>
-  </div>
-  <button class="bg-manage-btn" onclick="openBgModal()">Urus Latar Belakang</button>
+  <div class="hero-bg" id="heroBgContainer"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Kelas Terbaik · Kenangan Abadi</p>
+    <div class="hero-title">
+      <span>5 IBK</span>
+      <span class="sub">GALLERIES</span>
+    </div>
+    <div class="hero-badge">Sekolah Menengah · 2025</div>
+  </div>
+  <button class="bg-manage-btn" onclick="openBgModal()">Urus Latar Belakang</button>
 </section>
 
 <div class="polaroid-section">
-  <button class="pol-nav left" id="polLeft">&#8249;</button>
-  <button class="pol-nav right" id="polRight">&#8250;</button>
-  <div class="polaroid-track-wrap">
-    <div class="polaroid-track auto" id="polaroidTrack"></div>
-  </div>
+  <button class="pol-nav left" id="polLeft">&#8249;</button>
+  <button class="pol-nav right" id="polRight">&#8250;</button>
+  <div class="polaroid-track-wrap">
+    <div class="polaroid-track auto" id="polaroidTrack"></div>
+  </div>
 </div>
 
 <div class="section-hdr" id="events">
-  <p class="section-label">Koleksi Kelas</p>
-  <h2 class="section-title">EVENTS</h2>
+  <p class="section-label">Koleksi Kelas</p>
+  <h2 class="section-title">EVENTS</h2>
 </div>
 <section class="events-section">
-  <div class="events-grid" id="eventsGrid"></div>
+  <div class="events-grid" id="eventsGrid"></div>
 </section>
 
 <footer class="footer-credit">
-  Created by <span>anepimut</span>
+  Created by <span>anepimut</span>
 </footer>
 
 <button class="fab" onclick="openAddModal()">
-  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+  <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
 
 <div class="modal-bg" id="addModal">
-  <div class="modal">
-    <button class="close-x" onclick="closeAddModal()">×</button>
-    <div class="modal-title">TAMBAH EVENT</div>
-    <input type="text" id="evtName" placeholder="Nama event (cth: Hari Sukan 2025)">
-    <div class="upload-zone" onclick="document.getElementById('coverInput').click()">
-      <input type="file" id="coverInput" accept="image/*">
-      <p id="coverLabel">↑ Upload gambar cover event</p>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-white" onclick="saveEvent()">SIMPAN</button>
-      <button class="btn-ghost" onclick="closeAddModal()">BATAL</button>
-    </div>
-  </div>
+  <div class="modal">
+    <button class="close-x" onclick="closeAddModal()">×</button>
+    <div class="modal-title">TAMBAH EVENT</div>
+    <input type="text" id="evtName" placeholder="Nama event (cth: Hari Sukan 2025)">
+    <div class="upload-zone" onclick="document.getElementById('coverInput').click()">
+      <input type="file" id="coverInput" accept="image/*">
+      <p id="coverLabel">↑ Upload gambar cover event</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-white" onclick="saveEvent()">SIMPAN</button>
+      <button class="btn-ghost" onclick="closeAddModal()">BATAL</button>
+    </div>
+  </div>
 </div>
 
 <div class="modal-bg" id="bgModal">
-  <div class="modal">
-    <button class="close-x" onclick="closeBgModal()">×</button>
-    <div class="modal-title">GAMBAR SLIDESHOW</div>
-    <div class="bg-thumb-grid" id="bgThumbGrid"></div>
-    <div class="upload-zone" onclick="document.getElementById('bgSlidesInput').click()">
-      <input type="file" id="bgSlidesInput" accept="image/*" multiple>
-      <p>+ Tambah Gambar Latar Belakang</p>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-white" onclick="closeBgModal()">SELESAI</button>
-    </div>
-  </div>
+  <div class="modal">
+    <button class="close-x" onclick="closeBgModal()">×</button>
+    <div class="modal-title">GAMBAR SLIDESHOW</div>
+    <div class="bg-thumb-grid" id="bgThumbGrid"></div>
+    <div class="upload-zone" onclick="document.getElementById('bgSlidesInput').click()">
+      <input type="file" id="bgSlidesInput" accept="image/*" multiple>
+      <p>+ Tambah Gambar Latar Belakang</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-white" onclick="closeBgModal()">SELESAI</button>
+    </div>
+  </div>
 </div>
 
 <div class="gallery-screen" id="galleryScreen">
-  <div class="gallery-topbar">
-    <div class="gallery-topbar-left">
-      <button class="back-btn" onclick="closeGallery()">← Balik</button>
-      <div class="gallery-topbar-name" id="galName">—</div>
-    </div>
-    <div class="gallery-topbar-right">
-      <button class="btn-danger" onclick="deleteCurrentEvent()">Padam Event</button>
-      <label class="upload-label">↑ Upload Gambar<input type="file" id="galUpload" accept="image/*" multiple></label>
-    </div>
-  </div>
-  <div class="gallery-body"><div id="galContent"></div></div>
+  <div class="gallery-topbar">
+    <div class="gallery-topbar-left">
+      <button class="back-btn" onclick="closeGallery()">← Balik</button>
+      <div class="gallery-topbar-name" id="galName">—</div>
+    </div>
+    <div class="gallery-topbar-right">
+      <button class="btn-danger" onclick="deleteCurrentEvent()">Padam Event</button>
+      <label class="upload-label">↑ Upload Gambar<input type="file" id="galUpload" accept="image/*" multiple></label>
+    </div>
+  </div>
+  <div class="gallery-body"><div id="galContent"></div></div>
 </div>
 
 <div class="lightbox" id="lightbox">
-  <button class="lightbox-close" onclick="closeLightbox()">×</button>
-  <img id="lightboxImg" src="" alt="">
+  <button class="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightboxImg" src="" alt="">
 </div>
 
 <script>
@@ -235,15 +235,15 @@ let heroSlides=JSON.parse(localStorage.getItem('ibk_hero_slides')||'[]');
 let memberPhotos=JSON.parse(localStorage.getItem('ibk_member_photos')||'[]');
 
 const memberNames = [
-  "adam", "asya", "darin", "dina", "amir", 
-  "hanief", "melisa", "icam", "syawal", "fauzan", 
-  "hadif", "irfan", "nas", "tajol", "nik", 
-  "diana", "aed", "farisya", "ernee", "ezrin", 
-  "sofia", "tasnim", "qaseh", "qayyum", "qash"
+  "adam", "asya", "darin", "dina", "amir", 
+  "hanief", "melisa", "icam", "syawal", "fauzan", 
+  "hadif", "irfan", "nas", "tajol", "nik", 
+  "diana", "aed", "farisya", "ernee", "ezrin", 
+  "sofia", "tasnim", "qaseh", "qayyum", "qash"
 ];
 
 if(!Array.isArray(memberPhotos) || memberPhotos.length !== 25) {
-  memberPhotos = Array(25).fill(null);
+  memberPhotos = Array(25).fill(null);
 }
 
 let currentId=null,coverDataUrl=null;
@@ -252,77 +252,77 @@ let slideTimer=null;
 const ITEM_W=200;
 
 function persist(){
-  localStorage.setItem('ibk_events',JSON.stringify(events));
-  localStorage.setItem('ibk_hero_slides',JSON.stringify(heroSlides));
-  localStorage.setItem('ibk_member_photos',JSON.stringify(memberPhotos));
+  localStorage.setItem('ibk_events',JSON.stringify(events));
+  localStorage.setItem('ibk_hero_slides',JSON.stringify(heroSlides));
+  localStorage.setItem('ibk_member_photos',JSON.stringify(memberPhotos));
 }
 
 // ── HERO SLIDESHOW ──
 function initSlideshow(){
-  const container = document.getElementById('heroBgContainer');
-  clearInterval(slideTimer);
-  
-  if(!heroSlides || heroSlides.length === 0){
-    container.innerHTML = `<div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1470')"></div>`;
-    return;
-  }
-  
-  container.innerHTML = heroSlides.map((src, i) => `
-    <div class="hero-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${src}')"></div>
-  `).join('');
-  
-  slideIndex = 0;
-  if(heroSlides.length > 1){
-    slideTimer = setInterval(nextSlide, 4000);
-  }
+  const container = document.getElementById('heroBgContainer');
+  clearInterval(slideTimer);
+  
+  if(!heroSlides || heroSlides.length === 0){
+    container.innerHTML = `<div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1470')"></div>`;
+    return;
+  }
+  
+  container.innerHTML = heroSlides.map((src, i) => `
+    <div class="hero-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${src}')"></div>
+  `).join('');
+  
+  slideIndex = 0;
+  if(heroSlides.length > 1){
+    slideTimer = setInterval(nextSlide, 4000);
+  }
 }
 
 function nextSlide(){
-  const slides = document.querySelectorAll('.hero-slide');
-  if(!slides.length) return;
-  slides[slideIndex].classList.remove('active');
-  slideIndex = (slideIndex + 1) % slides.length;
-  slides[slideIndex].classList.add('active');
+  const slides = document.querySelectorAll('.hero-slide');
+  if(!slides.length) return;
+  slides[slideIndex].classList.remove('active');
+  slideIndex = (slideIndex + 1) % slides.length;
+  slides[slideIndex].classList.add('active');
 }
 
 function openBgModal(){
-  document.getElementById('bgModal').classList.add('open');
-  renderBgThumbs();
+  document.getElementById('bgModal').classList.add('open');
+  renderBgThumbs();
 }
 function closeBgModal(){
-  document.getElementById('bgModal').classList.remove('open');
-  initSlideshow();
+  document.getElementById('bgModal').classList.remove('open');
+  initSlideshow();
 }
 function renderBgThumbs(){
-  const grid = document.getElementById('bgThumbGrid');
-  grid.innerHTML = heroSlides.map((src, i) => `
-    <div class="bg-thumb">
-      <img src="${src}">
-      <button class="bg-thumb-del" onclick="deleteBgSlide(${i})">×</button>
-    </div>
-  `).join('');
+  const grid = document.getElementById('bgThumbGrid');
+  grid.innerHTML = heroSlides.map((src, i) => `
+    <div class="bg-thumb">
+      <img src="${src}">
+      <button class="bg-thumb-del" onclick="deleteBgSlide(${i})">×</button>
+    </div>
+  `).join('');
 }
 document.getElementById('bgSlidesInput').onchange = function(){
-  const files = Array.from(this.files);
-  let loaded = 0;
-  files.forEach(f => {
-    const r = new FileReader();
-    r.onload = e => {
-      heroSlides.push(e.target.result);
-      loaded++;
-      if(loaded === files.length) {
-        persist();
-        renderBgThumbs();
-      }
-    };
-    r.readAsDataURL(f);
-  });
-  this.value = '';
+  const files = Array.from(this.files);
+  let loaded = 0;
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      heroSlides.push(e.target.result);
+      loaded++;
+      if(loaded === files.length) {
+        persist();
+        renderBgThumbs();
+      }
+    };
+    r.readAsDataURL(f);
+  });
+  this.value = '';
 };
 function deleteBgSlide(i){
-  heroSlides.splice(i, 1);
-  persist();
-  renderBgThumbs();
+  heroSlides.splice(i, 1);
+  persist();
+  renderBgThumbs();
 }
 
 // ── POLAROID STRIP ──
@@ -332,146 +332,146 @@ let isAuto=true;
 let autoTimer=null;
 
 function buildStrip(){
-  let html='';
-  for(let pass=0;pass<2;pass++){
-    for(let i=0;i<25;i++){
-      const src=memberPhotos[i];
-      const name=memberNames[i];
-      const size=176; 
-      
-      html+=`<div class="polaroid" onclick="openMemberUpload(${i})">`;
-      if(src){
-        html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">`;
-        html+=`<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
-        html+=`<div class="pol-label">${name}</div>`;
-      } else {
-        html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
-        html+=`<div class="pol-label" style="color:#aaa">Upload (${name})</div>`;
-      }
-      html+=`</div>`;
-    }
-  }
-  track.innerHTML=html;
+  let html='';
+  for(let pass=0;pass<2;pass++){
+    for(let i=0;i<25;i++){
+      const src=memberPhotos[i];
+      const name=memberNames[i];
+      const size=176; 
+      
+      html+=`<div class="polaroid" onclick="openMemberUpload(${i})">`;
+      if(src){
+        html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">`;
+        html+=`<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
+        html+=`<div class="pol-label">${name}</div>`;
+      } else {
+        html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
+        html+=`<div class="pol-label" style="color:#aaa">Upload (${name})</div>`;
+      }
+      html+=`</div>`;
+    }
+  }
+  track.innerHTML=html;
 }
 
 function openMemberUpload(idx){
-  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
-  inp.onchange=()=>{
-    const f=inp.files[0]; if(!f)return;
-    const r=new FileReader();
-    r.onload=e=>{
-      memberPhotos[idx]=e.target.result;
-      persist();
-      buildStrip();
-    };
-    r.readAsDataURL(f);
-  };
-  inp.click();
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
+  inp.onchange=()=>{
+    const f=inp.files[0]; if(!f)return;
+    const r=new FileReader();
+    r.onload=e=>{
+      memberPhotos[idx]=e.target.result;
+      persist();
+      buildStrip();
+    };
+    r.readAsDataURL(f);
+  };
+  inp.click();
 }
 
 function deleteMemberPhoto(idx, e){
-  e.stopPropagation();
-  if(!confirm('Padam gambar polaroid ' + memberNames[idx] + '?')) return;
-  memberPhotos[idx] = null;
-  persist();
-  buildStrip();
+  e.stopPropagation();
+  if(!confirm('Padam gambar polaroid ' + memberNames[idx] + '?')) return;
+  memberPhotos[idx] = null;
+  persist();
+  buildStrip();
 }
 
 function stopAuto(){
-  isAuto=false; track.classList.remove('auto');
-  track.style.transform=`translateX(${polOffset}px)`;
-  clearTimeout(autoTimer);
+  isAuto=false; track.classList.remove('auto');
+  track.style.transform=`translateX(${polOffset}px)`;
+  clearTimeout(autoTimer);
 }
 function resumeAuto(){
-  clearTimeout(autoTimer);
-  autoTimer=setTimeout(()=>{
-    isAuto=true; polOffset=0;
-    track.style.transform=''; track.classList.add('auto');
-  },4000);
+  clearTimeout(autoTimer);
+  autoTimer=setTimeout(()=>{
+    isAuto=true; polOffset=0;
+    track.style.transform=''; track.classList.add('auto');
+  },4000);
 }
 function slideBy(dir){
-  stopAuto();
-  polOffset+=dir*-(ITEM_W);
-  const maxOffset=-(25*ITEM_W);
-  if(polOffset<maxOffset)polOffset=0;
-  if(polOffset>0)polOffset=maxOffset+ITEM_W;
-  track.style.transition='transform .4s cubic-bezier(.25,.46,.45,.94)';
-  track.style.transform=`translateX(${polOffset}px)`;
-  resumeAuto();
+  stopAuto();
+  polOffset+=dir*-(ITEM_W);
+  const maxOffset=-(25*ITEM_W);
+  if(polOffset<maxOffset)polOffset=0;
+  if(polOffset>0)polOffset=maxOffset+ITEM_W;
+  track.style.transition='transform .4s cubic-bezier(.25,.46,.45,.94)';
+  track.style.transform=`translateX(${polOffset}px)`;
+  resumeAuto();
 }
 document.getElementById('polLeft').onclick=()=>slideBy(-1);
 document.getElementById('polRight').onclick=()=>slideBy(1);
 
 // ── EVENTS LOGIC ──
 function buildGrid(){
-  const grid=document.getElementById('eventsGrid');
-  if(!events.length){grid.innerHTML='<div class="no-events">Tiada event — tekan + untuk tambah</div>';return;}
-  grid.innerHTML=events.map(ev=>`
-    <div class="event-card" onclick="openGallery('${ev.id}')">
-      ${ev.cover?`<img class="event-card-img" src="${ev.cover}" alt="${ev.name}">`:`<div class="event-card-placeholder">◼</div>`}
-      <div class="event-card-overlay">
-        <div class="event-card-name">${ev.name}</div>
-        <div class="event-card-count">${(ev.photos||[]).length} gambar</div>
-      </div>
-    </div>`).join('');
+  const grid=document.getElementById('eventsGrid');
+  if(!events.length){grid.innerHTML='<div class="no-events">Tiada event — tekan + untuk tambah</div>';return;}
+  grid.innerHTML=events.map(ev=>`
+    <div class="event-card" onclick="openGallery('${ev.id}')">
+      ${ev.cover?`<img class="event-card-img" src="${ev.cover}" alt="${ev.name}">`:`<div class="event-card-placeholder">◼</div>`}
+      <div class="event-card-overlay">
+        <div class="event-card-name">${ev.name}</div>
+        <div class="event-card-count">${(ev.photos||[]).length} gambar</div>
+      </div>
+    </div>`).join('');
 }
 
 function openAddModal(){document.getElementById('addModal').classList.add('open');}
 function closeAddModal(){
-  document.getElementById('addModal').classList.remove('open');
-  document.getElementById('evtName').value='';
-  document.getElementById('coverLabel').textContent='↑ Upload gambar cover event';
-  coverDataUrl=null;
+  document.getElementById('addModal').classList.remove('open');
+  document.getElementById('evtName').value='';
+  document.getElementById('coverLabel').textContent='↑ Upload gambar cover event';
+  coverDataUrl=null;
 }
 document.getElementById('coverInput').onchange=function(){
-  const f=this.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=e=>{coverDataUrl=e.target.result;document.getElementById('coverLabel').textContent='✓ '+f.name;};
-  r.readAsDataURL(f);
+  const f=this.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{coverDataUrl=e.target.result;document.getElementById('coverLabel').textContent='✓ '+f.name;};
+  r.readAsDataURL(f);
 };
 function saveEvent(){
-  const name=document.getElementById('evtName').value.trim();
-  if(!name){document.getElementById('evtName').focus();return;}
-  events.push({id:'ev_'+Date.now(),name,cover:coverDataUrl||null,photos:[]});
-  persist();buildGrid();closeAddModal();
+  const name=document.getElementById('evtName').value.trim();
+  if(!name){document.getElementById('evtName').focus();return;}
+  events.push({id:'ev_'+Date.now(),name,cover:coverDataUrl||null,photos:[]});
+  persist();buildGrid();closeAddModal();
 }
 
 function openGallery(id){
-  currentId=id;
-  const ev=events.find(e=>e.id===id);if(!ev)return;
-  document.getElementById('galName').textContent=ev.name;
-  renderGallery(ev);
-  document.getElementById('galleryScreen').classList.add('open');
+  currentId=id;
+  const ev=events.find(e=>e.id===id);if(!ev)return;
+  document.getElementById('galName').textContent=ev.name;
+  renderGallery(ev);
+  document.getElementById('galleryScreen').classList.add('open');
 }
 function closeGallery(){document.getElementById('galleryScreen').classList.remove('open');}
 function renderGallery(ev){
-  const content=document.getElementById('galContent');
-  const photos=ev.photos||[];
-  if(!photos.length){content.innerHTML=`<div class="gallery-empty"><div class="big">IBK</div><p>Belum ada gambar</p><p style="color:#222;margin-top:4px">Tekan Upload Gambar untuk mula</p></div>`;return;}
-  content.innerHTML=`<div class="gallery-grid">${photos.map((p,i)=>`<div class="g-item"><img src="${p}" alt="Photo ${i+1}" onclick="openLightbox('${p}')"><button class="g-item-del" onclick="deletePhoto(${i},event)">×</button></div>`).join('')}</div>`;
+  const content=document.getElementById('galContent');
+  const photos=ev.photos||[];
+  if(!photos.length){content.innerHTML=`<div class="gallery-empty"><div class="big">IBK</div><p>Belum ada gambar</p><p style="color:#222;margin-top:4px">Tekan Upload Gambar untuk mula</p></div>`;return;}
+  content.innerHTML=`<div class="gallery-grid">${photos.map((p,i)=>`<div class="g-item"><img src="${p}" alt="Photo ${i+1}" onclick="openLightbox('${p}')"><button class="g-item-del" onclick="deletePhoto(${i},event)">×</button></div>`).join('')}</div>`;
 }
 document.getElementById('galUpload').onchange=function(){
-  const ev=events.find(e=>e.id===currentId);if(!ev)return;
-  if(!ev.photos)ev.photos=[];
-  const files=Array.from(this.files);let done=0;
-  files.forEach(f=>{
-    const r=new FileReader();
-    r.onload=e=>{ev.photos.push(e.target.result);done++;if(done===files.length){persist();buildGrid();renderGallery(ev);}};
-    r.readAsDataURL(f);
-  });
-  this.value='';
+  const ev=events.find(e=>e.id===currentId);if(!ev)return;
+  if(!ev.photos)ev.photos=[];
+  const files=Array.from(this.files);let done=0;
+  files.forEach(f=>{
+    const r=new FileReader();
+    r.onload=e=>{ev.photos.push(e.target.result);done++;if(done===files.length){persist();buildGrid();renderGallery(ev);}};
+    r.readAsDataURL(f);
+  });
+  this.value='';
 };
 function deletePhoto(idx,e){
-  e.stopPropagation();
-  const ev=events.find(e=>e.id===currentId);if(!ev)return;
-  if(!confirm('Padam gambar ini?'))return;
-  ev.photos.splice(idx,1);persist();buildGrid();renderGallery(ev);
+  e.stopPropagation();
+  const ev=events.find(e=>e.id===currentId);if(!ev)return;
+  if(!confirm('Padam gambar ini?'))return;
+  ev.photos.splice(idx,1);persist();buildGrid();renderGallery(ev);
 }
 function deleteCurrentEvent(){
-  const ev=events.find(e=>e.id===currentId);if(!ev)return;
-  if(!confirm('Padam event "'+ev.name+'" dan semua gambarnya?'))return;
-  events=events.filter(e=>e.id!==currentId);
-  persist();buildGrid();closeGallery();
+  const ev=events.find(e=>e.id===currentId);if(!ev)return;
+  if(!confirm('Padam event "'+ev.name+'" dan semua gambarnya?'))return;
+  events=events.filter(e=>e.id!==currentId);
+  persist();buildGrid();closeGallery();
 }
 
 function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open');}
