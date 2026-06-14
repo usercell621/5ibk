@@ -8,18 +8,25 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden}
+
+/* HERO SLIDESHOW ADJUSTMENTS */
 .hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#000}
-.hero-bg{position:absolute;inset:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.4;display:none}
-.hero-bg img.loaded{display:block}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3),rgba(0,0,0,.1) 50%,rgba(0,0,0,.7))}
-.hero-content{position:relative;z-index:2;text-align:center}
+.hero-bg{position:absolute;inset:0;z-index:1}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.5s ease-in-out;z-index:1}
+.hero-slide.active{opacity:.45;z-index:2}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.4),rgba(0,0,0,.1) 50%,rgba(0,0,0,.85));z-index:3}
+.hero-content{position:relative;z-index:4;text-align:center;pointer-events:none}
+
+/* BUTTON MANAGEMENT OVER HIERARCHY */
+.hero-manage-btn{position:absolute;top:24px;right:24px;z-index:10;background:rgba(255,255,255,0.05);border:1px solid #222;color:#888;font-size:10px;letter-spacing:2px;padding:10px 16px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;backdrop-filter:blur(4px)}
+.hero-manage-btn:hover{background:#fff;color:#000;border-color:#fff}
+
 .hero-eyebrow{font-size:11px;letter-spacing:6px;color:#888;text-transform:uppercase;margin-bottom:16px}
 .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,15vw,12rem);line-height:.85;color:#fff;display:flex;flex-direction:column;align-items:center}
 .hero-title .sub{font-size:clamp(2rem,5vw,4rem);letter-spacing:10px;color:#888;font-family:'Inter',sans-serif;font-weight:300}
 .hero-badge{display:inline-block;margin-top:24px;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#555;border-top:1px solid #222;border-bottom:1px solid #222;padding:8px 24px}
-#heroFileInput{display:none}
 
+/* POLAROID SECTION */
 .polaroid-section{background:#000;overflow:hidden;border-top:1px solid #111;border-bottom:1px solid #111;position:relative}
 .polaroid-track-wrap{overflow:hidden;padding:50px 0;position:relative}
 .polaroid-track-wrap::before,.polaroid-track-wrap::after{content:'';position:absolute;top:0;bottom:0;width:140px;z-index:2;pointer-events:none}
@@ -35,7 +42,6 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .pol-nav.left{left:16px}
 .pol-nav.right{right:16px}
 
-/* FIX: Semua polaroid sekarang menggunakan saiz padding yang sekata seperti slot 'nas' */
 .polaroid{background:#fff;padding:12px 12px 36px;box-shadow:4px 4px 20px rgba(0,0,0,.8);flex-shrink:0;transform-origin:bottom center;transition:transform .3s;cursor:pointer;position:relative}
 .polaroid:nth-child(odd){transform:rotate(-2deg)}
 .polaroid:nth-child(even){transform:rotate(2deg)}
@@ -49,6 +55,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .polaroid:hover .pol-item-del{display:flex}
 .pol-item-del:hover{background:#c00}
 
+/* EVENTS */
 .section-hdr{padding:60px 60px 0}
 .section-label{font-size:10px;letter-spacing:5px;color:#444;text-transform:uppercase}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;color:#fff}
@@ -71,6 +78,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .fab:hover{transform:scale(1.1) rotate(90deg);background:#e0e0e0}
 .fab svg{width:28px;height:28px;stroke:#000;fill:none;stroke-width:2.5;stroke-linecap:round}
 
+/* MODALS */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center;padding:20px}
 .modal-bg.open{display:flex}
 .modal{background:#0d0d0d;border:1px solid #1e1e1e;width:100%;max-width:460px;padding:40px;position:relative}
@@ -89,6 +97,14 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .close-x{position:absolute;top:16px;right:20px;background:none;border:none;color:#555;font-size:24px;cursor:pointer;line-height:1;font-family:'Inter',sans-serif}
 .close-x:hover{color:#fff}
 
+/* HERO SLIDESHOW MANAGER GRID */
+.hero-grid-preview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-height:200px;overflow-y:auto;margin-top:16px;padding-right:4px}
+.hero-preview-item{position:relative;aspect-ratio:16/9;background:#111;border:1px solid #222}
+.hero-preview-item img{width:100%;height:100%;object-fit:cover}
+.hero-preview-del{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(0,0,0,.8);border:none;color:#fff;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.hero-preview-del:hover{background:#c00}
+
+/* GALLERY SCREEN */
 .gallery-screen{display:none;position:fixed;inset:0;background:#000;z-index:800;flex-direction:column}
 .gallery-screen.open{display:flex}
 .gallery-topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid #111;background:#000;flex-shrink:0}
@@ -127,7 +143,8 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 <body>
 
 <section class="hero">
-  <div class="hero-bg"><img id="heroBg" alt="Class Photo"></div>
+  <button class="hero-manage-btn" onclick="openHeroModal()">Urus Gambar Latar</button>
+  <div class="hero-bg" id="heroBgContainer"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <p class="hero-eyebrow">Kelas Terbaik · Kenangan Abadi</p>
@@ -137,7 +154,6 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
     </div>
     <div class="hero-badge">Sekolah Menengah · 2025</div>
   </div>
-  <input type="file" id="heroFileInput" accept="image/*">
 </section>
 
 <div class="polaroid-section">
@@ -164,6 +180,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
 
+<!-- MODAL TAMBAH EVENT -->
 <div class="modal-bg" id="addModal">
   <div class="modal">
     <button class="close-x" onclick="closeAddModal()">×</button>
@@ -176,6 +193,23 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
     <div class="modal-actions">
       <button class="btn-white" onclick="saveEvent()">SIMPAN</button>
       <button class="btn-ghost" onclick="closeAddModal()">BATAL</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL URUS GAMBAR HERO BACKGROUND (SLIDESHOW) -->
+<div class="modal-bg" id="heroModal">
+  <div class="modal">
+    <button class="close-x" onclick="closeHeroModal()">×</button>
+    <div class="modal-title">URUS GAMBAR LATAR</div>
+    <div class="upload-zone" onclick="document.getElementById('heroMultipleInput').click()">
+      <input type="file" id="heroMultipleInput" accept="image/*" multiple>
+      <p>↑ Klik untuk tambah gambar kelas (Boleh pilih banyak)</p>
+    </div>
+    <p style="font-size:10px; color:#555; text-transform:uppercase; letter-spacing:1px;">Gambar Tersedia:</p>
+    <div class="hero-grid-preview" id="heroGridPreview"></div>
+    <div class="modal-actions" style="margin-top:20px">
+      <button class="btn-white" style="width:100%" onclick="closeHeroModal()">SELESAI</button>
     </div>
   </div>
 </div>
@@ -204,7 +238,12 @@ let events=JSON.parse(localStorage.getItem('ibk_events')||'[]');
 let memberPhotos=[];
 try{memberPhotos=JSON.parse(localStorage.getItem('ibk_members'))||[];}catch(e){}
 if(!Array.isArray(memberPhotos)||memberPhotos.length!==25)memberPhotos=Array(25).fill(null);
+
+// Ambil array gambar slideshow hero dari LocalStorage
+let heroSlides=JSON.parse(localStorage.getItem('ibk_hero_slides')||'[]');
 let currentId=null,coverDataUrl=null;
+let slideIndex=0;
+let slideTimer=null;
 
 const memberNames = [
   "adam", "asya", "darin", "dina", "amir", 
@@ -219,21 +258,89 @@ function persist(){
   localStorage.setItem('ibk_members',JSON.stringify(memberPhotos));
 }
 
-const savedHero=localStorage.getItem('ibk_heroBg');
-if(savedHero){const img=document.getElementById('heroBg');img.src=savedHero;img.classList.add('loaded');}
-document.getElementById('heroFileInput').onchange=function(){
-  const f=this.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=e=>{localStorage.setItem('ibk_heroBg',e.target.result);const img=document.getElementById('heroBg');img.src=e.target.result;img.classList.add('loaded');};
-  r.readAsDataURL(f);
+function persistHero(){
+  localStorage.setItem('ibk_hero_slides',JSON.stringify(heroSlides));
+}
+
+// ── HERO SLIDESHOW LOGIC ──
+function initSlideshow(){
+  const container = document.getElementById('heroBgContainer');
+  clearInterval(slideTimer);
+  
+  if(heroSlides.length === 0){
+    container.innerHTML = `<div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1470')"></div>`;
+    return;
+  }
+  
+  container.innerHTML = heroSlides.map((src, i) => `
+    <div class="hero-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${src}')"></div>
+  `).join('');
+  
+  slideIndex = 0;
+  if(heroSlides.length > 1){
+    slideTimer = setInterval(nextSlide, 4000); // Tukar gambar setiap 4 saat
+  }
+}
+
+function nextSlide(){
+  const slides = document.querySelectorAll('.hero-slide');
+  if(!slides.length) return;
+  slides[slideIndex].classList.remove('active');
+  slideIndex = (slideIndex + 1) % slides.length;
+  slides[slideIndex].classList.add('active');
+}
+
+function openHeroModal(){
+  document.getElementById('heroModal').classList.add('open');
+  renderHeroPreviews();
+}
+function closeHeroModal(){
+  document.getElementById('heroModal').classList.remove('open');
+}
+
+document.getElementById('heroMultipleInput').onchange = function(){
+  const files = Array.from(this.files);
+  let processed = 0;
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      heroSlides.push(e.target.result);
+      processed++;
+      if(processed === files.length){
+        persistHero();
+        renderHeroPreviews();
+        initSlideshow();
+      }
+    };
+    r.readAsDataURL(f);
+  });
+  this.value = '';
 };
 
-// ── POLAROID STRIP with < > nav ──
+function renderHeroPreviews(){
+  const container = document.getElementById('heroGridPreview');
+  if(!heroSlides.length){ container.innerHTML = '<p style="font-size:11px;color:#333;padding:10px 0;">Tiada gambar diupload.</p>'; return; }
+  container.innerHTML = heroSlides.map((src, idx) => `
+    <div class="hero-preview-item">
+      <img src="${src}">
+      <button class="hero-preview-del" onclick="deleteHeroSlide(${idx})">×</button>
+    </div>
+  `).join('');
+}
+
+function deleteHeroSlide(idx){
+  heroSlides.splice(idx, 1);
+  persistHero();
+  renderHeroPreviews();
+  initSlideshow();
+}
+
+// ── POLAROID STRIP ──
 const track=document.getElementById('polaroidTrack');
 let polOffset=0;
 let isAuto=true;
 let autoTimer=null;
-const ITEM_W=200; // Ditingkatkan sedikit untuk menyesuaikan saiz baru yang lebih besar secara sekata
+const ITEM_W=200; 
 
 function buildStrip(){
   let html='';
@@ -241,8 +348,6 @@ function buildStrip(){
     for(let i=0;i<25;i++){
       const src=memberPhotos[i];
       const name=memberNames[i];
-      
-      // FIX: Semua slot menggunakan saiz besar dan perfect berukuran 176px (Saiz slot 'nas' sebelum ini)
       const size=176; 
       
       html+=`<div class="polaroid" onclick="openMemberUpload(${i})">`;
@@ -387,8 +492,10 @@ function openLightbox(src){document.getElementById('lightboxImg').src=src;docume
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
 document.getElementById('lightbox').onclick=function(e){if(e.target===this)closeLightbox();};
 document.getElementById('addModal').onclick=function(e){if(e.target===this)closeAddModal();};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeGallery();closeAddModal();}});
+document.getElementById('heroModal').onclick=function(e){if(e.target===this)closeHeroModal();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeGallery();closeAddModal();closeHeroModal();}});
 
+initSlideshow();
 buildStrip();
 buildGrid();
 </script>
