@@ -1,194 +1,252 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Arkib Memori Zaman Sekolah</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <style>
-        /* Tambahan CSS untuk reka bentuk lebih ceria */
-        body {
-            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Arkib Memori Zaman Sekolah</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<body class="text-gray-700 font-sans min-h-screen">
+<body class="bg-[#121316] text-gray-200 font-sans min-h-screen selection:bg-blue-600 selection:text-white">
 
-    <!-- Header -->
-    <header class="border-b border-[#22242a] bg-white/20 sticky top-0 z-40 backdrop-blur-md bg-opacity-90 shadow-lg">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <div>
-                <h1 class="text-xl font-bold text-gray-800 tracking-tight flex items-center gap-2">
-                    <i class="fas fa-school"></i> 
-                    <span class="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent font-bold">Zaman Sekolah</span> Archive
-                </h1>
-                <p class="text-xs text-gray-600">Susunan memori mengikut acara & hari penting kita.</p>
-            </div>
-            <button id="openModalBtn" class="bg-yellow-400 hover:bg-yellow-300 text-gray-800 text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-lg">
-                + Kongsi Memori
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-6xl mx-auto px-4 py-8">
-        <!-- Filter Section -->
-        <section class="mb-8">
-            <h2 class="text-xs font-bold uppercase tracking-wider text-gray-700 mb-3 flex items-center gap-2">
-                <span class="w-1.5 h-3 bg-yellow-400 rounded-full"></span> Pilih Acara / Album
-            </h2>
-            <div id="eventFilterContainer" class="flex flex-wrap gap-2 pb-2 overflow-x-auto">
-                <button class="filter-btn active-filter px-4 py-2 rounded-xl text-xs font-medium bg-yellow-200 hover:bg-yellow-300 transition" aria-current="true">
-                    Semua Gambar
-                </button>
-            </div>
-        </section>
-
-        <!-- Galeri Gambar -->
-        <section>
-            <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <div class="col-span-full text-center text-gray-500 py-8" id="noImagesMsg">
-                    <p class="text-sm">Tiada gambar lagi. Muat naik gambar untuk kongsi memori.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Modal Muat Naik -->
-    <div id="uploadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-2xl w-full max-w-md p-6 shadow-lg transform scale-95 transition-transform duration-300">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-gray-800">Muat Naik Gambar</h3>
-                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-800 text-xl p-1" aria-label="Tutup">&times;</button>
-            </div>
-            <form id="postForm" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-2">Pilih Gambar</label>
-                    <input type="file" id="imageInput" accept="image/*" required
-                        class="w-full bg-gray-100 border border-gray-300 rounded-xl px-3 py-2 text-xs cursor-pointer hover:bg-gray-200" />
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-2">Nama Acara (Event)</label>
-                    <input type="text" id="eventInput" list="existingEvents" placeholder="Contoh: Birthday Cikgu / Hari Sukan" 
-                        class="w-full bg-gray-100 border border-gray-300 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-yellow-400" required>
-                    <datalist id="existingEvents"></datalist>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-2">Ceritakan Memori</label>
-                    <!-- Tiada textarea di sini -->
-                </div>
-                <div id="uploadStatus" class="hidden text-center text-xs font-medium text-blue-400 py-1"></div>
-                <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-800 font-semibold py-3 text-xs rounded-xl transition shadow-lg">
-                    Muat Naik
-                </button>
-            </form>
-        </div>
+<!-- Header -->
+<header class="border-b border-[#22242a] bg-[#1a1b20] sticky top-0 z-40 backdrop-blur-md bg-opacity-90">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <div>
+      <h1 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+        🎓 <span class="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Zaman Sekolah</span> Archive
+      </h1>
+      <p class="text-xs text-gray-500">Susunan memori mengikut acara & hari penting kita.</p>
     </div>
+    <button id="openModalBtn" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-lg">
+      + Kongsi Memori
+    </button>
+  </div>
+</header>
 
-    <!-- Lightbox Gambar -->
-    <div id="lightboxModal" class="fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
-        <div class="absolute top-4 right-4 flex items-center gap-3 z-50">
-            <a id="downloadBtn" href="#" download class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-2 rounded-xl text-xs flex items-center gap-2 transition" aria-label="Download Gambar">
-                <i class="fas fa-download"></i> Muat Turun
-            </a>
-            <button id="closeLightboxBtn" class="bg-gray-700 hover:bg-gray-600 text-white w-9 h-9 flex items-center justify-center rounded-xl text-xl" aria-label="Tutup">&times;</button>
-        </div>
-        <div class="max-w-4xl max-h-[70vh] flex items-center justify-center overflow-hidden rounded-xl">
-            <img id="lightboxImg" src="" alt="Preview" class="max-w-full max-h-[70vh] object-contain" />
-        </div>
-        <div class="max-w-2xl text-center mt-6 px-4">
-            <span id="lightboxEvent" class="bg-yellow-400/20 text-yellow-600 border border-yellow-400/30 text-[10px] font-bold uppercase px-2.5 py-1 rounded-md">Event</span>
-            <p id="lightboxDesc" class="text-sm text-gray-700 mt-3 italic">Memori ini...</p>
-        </div>
+<!-- Main Content -->
+<main class="max-w-6xl mx-auto px-4 py-8">
+  <!-- Filter Section -->
+  <section class="mb-8">
+    <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 flex items-center gap-2">
+      <span class="w-1.5 h-3 bg-blue-500 rounded-full"></span> Pilih Acara / Album
+    </h2>
+    <div id="eventFilterContainer" class="flex flex-wrap gap-2 pb-2 overflow-x-auto">
+      <button class="filter-btn active-filter px-4 py-2 rounded-xl text-xs font-medium bg-blue-200 hover:bg-blue-300 transition" aria-current="true">
+        Semua Gambar
+      </button>
     </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="text-center py-8 text-xs text-gray-600 border-t border-gray-300 mt-8">
-        &copy; <span id="currentYear"></span> <!-- Tahun automatik -->
-    </footer>
+  <!-- Galeri Gambar -->
+  <section>
+    <div id="galleryContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div class="col-span-full text-center text-gray-500 py-8" id="noImagesMsg">
+        <p class="text-sm">Tiada gambar lagi. Muat naik gambar untuk kongsi memori.</p>
+      </div>
+    </div>
+  </section>
+</main>
 
-    <!-- Script -->
-    <script class="code-block" type="module">
-      // Tahun automatik
-      document.getElementById('currentYear').textContent = new Date().getFullYear();
+<!-- Modal Muat Naik -->
+<div id="uploadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+  <div class="bg-[#1a1b20] rounded-2xl w-full max-w-md p-6 shadow-lg transform scale-95 transition-transform duration-300">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold text-white">Muat Naik Gambar</h3>
+      <button id="closeModalBtn" class="text-gray-400 hover:text-white text-xl p-1" aria-label="Tutup">&times;</button>
+    </div>
+    <form id="postForm" class="space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Pilih Gambar</label>
+        <input type="file" id="imageInput" accept="image/*" required
+          class="w-full bg-[#121316] border border-[#2c2e36] rounded-xl px-3 py-2 text-xs cursor-pointer hover:bg-gray-200" />
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Nama Acara (Event)</label>
+        <div class="flex items-center gap-2">
+          <input type="text" id="eventInput" list="existingEvents" placeholder="Contoh: Birthday Cikgu / Hari Sukan" 
+            class="w-full bg-[#121316] border border-[#2c2e36] rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-blue-500" required>
+          <button type="button" id="addEventBtn" class="bg-green-500 hover:bg-green-400 text-white px-2 py-1 rounded-xl text-xs">Tambah Event</button>
+        </div>
+        <datalist id="existingEvents"></datalist>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Ceritakan Memori</label>
+        <!-- Tiada textarea di sini -->
+      </div>
+      <div id="uploadStatus" class="hidden text-center text-xs font-medium text-blue-400 py-1"></div>
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 text-xs rounded-xl transition shadow-lg">
+        Mula Muat Naik
+      </button>
+    </form>
+  </div>
+</div>
 
-      document.addEventListener('DOMContentLoaded', () => {
-        const openBtn = document.getElementById('openModalBtn');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const modal = document.getElementById('uploadModal');
+<!-- Lightbox Gambar -->
+<div id="lightboxModal" class="fixed inset-0 bg-black/95 z-50 flex flex-col items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+  <div class="absolute top-4 right-4 flex items-center gap-3 z-50">
+    <a id="downloadBtn" href="#" download class="bg-zinc-800 hover:bg-zinc-700 text-white px-3 py-2 rounded-xl text-xs flex items-center gap-2 transition" aria-label="Download Gambar">
+      <i class="fa-solid fa-download"></i> Muat Turun
+    </a>
+    <button id="closeLightboxBtn" class="bg-zinc-800 hover:bg-zinc-700 text-white text-lg w-9 h-9 flex items-center justify-center rounded-xl" aria-label="Tutup">&times;</button>
+  </div>
+  <div class="max-w-4xl max-h-[70vh] flex items-center justify-center overflow-hidden rounded-xl">
+    <img id="lightboxImg" src="" alt="Preview Gambar" class="max-w-full max-h-[70vh] object-contain" />
+  </div>
+  <div class="max-w-2xl text-center mt-6 px-4">
+    <span id="lightboxEvent" class="bg-blue-600/20 text-blue-400 border border-blue-500/30 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md">Event</span>
+    <p id="lightboxDesc" class="text-sm text-gray-300 mt-3 italic">Memori ini...</p>
+  </div>
+</div>
 
-        const galleryGrid = document.getElementById('galleryGrid');
-        const noImagesMsg = document.getElementById('noImagesMsg');
+<!-- Footer -->
+<footer class="text-center py-8 text-xs text-gray-600 border-t border-[#22242a] mt-24">
+  &copy; <span id="currentYear"></span>
+</footer>
 
-        // Buka modal
-        openBtn.addEventListener('click', () => {
-          modal.classList.remove('hidden', 'opacity-0');
-          modal.classList.add('flex', 'opacity-100');
-        });
-        // Tutup modal
-        document.getElementById('closeModalBtn').addEventListener('click', () => {
-          modal.classList.add('hidden', 'opacity-0');
-          modal.classList.remove('flex', 'opacity-100');
-        });
+<!-- Script -->
+<script type="module">
+  // Tahun automatik
+  document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Muat naik gambar
-        document.getElementById('postForm').addEventListener('submit', function(e) {
-          e.preventDefault();
-          const fileInput = document.getElementById('imageInput');
-          const eventInput = document.getElementById('eventInput');
-          const status = document.getElementById('uploadStatus');
+  const galleryContainer = document.getElementById('galleryContainer');
+  const noImagesMsg = document.getElementById('noImagesMsg');
 
-          if (fileInput.files && fileInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              // Buat gambar baru
-              const imgDiv = document.createElement('div');
-              imgDiv.className = 'cursor-pointer rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform';
+  // Data struktur untuk menyimpan gambar mengikut event
+  const eventsData = {};
 
-              const img = document.createElement('img');
-              img.src = e.target.result;
-              img.alt = eventInput.value;
-              img.className = 'w-full h-48 object-cover';
+  // Tambah event baru
+  document.getElementById('addEventBtn').addEventListener('click', () => {
+    const eventName = document.getElementById('eventInput').value.trim();
+    if (eventName && !Object.keys(eventsData).includes(eventName)) {
+      // Tambah ke data
+      eventsData[eventName] = [];
 
-              // Data untuk lightbox
-              img.dataset.event = eventInput.value;
-              img.dataset.desc = 'Memori ini...'; // Boleh diubah kalau mahu
-              img.dataset.src = e.target.result;
+      // Tambah option ke datalist
+      const datalist = document.getElementById('existingEvents');
+      const option = document.createElement('option');
+      option.value = eventName;
+      datalist.appendChild(option);
 
-              // Klik untuk buka lightbox
-              img.addEventListener('click', () => {
-                document.getElementById('lightboxImg').src = img.dataset.src;
-                document.getElementById('lightboxEvent').textContent = img.dataset.event;
-                document.getElementById('lightboxDesc').textContent = img.dataset.desc;
-                // Set link muat turun
-                document.getElementById('downloadBtn').href = img.dataset.src;
-                // Tampilkan lightbox
-                const lb = document.getElementById('lightboxModal');
-                lb.classList.remove('hidden', 'opacity-0');
-                lb.classList.add('flex', 'opacity-100');
-              });
-
-              imgDiv.appendChild(img);
-              galleryGrid.appendChild(imgDiv);
-
-              // Reset dan tutup modal
-              document.getElementById('postForm').reset();
-              document.getElementById('uploadStatus').classList.add('hidden');
-              document.getElementById('uploadStatus').textContent = '';
-              // Tunjukkan galeri jika dulu tiada gambar
-              document.getElementById('noImagesMsg').style.display = 'none';
-            };
-            reader.readAsDataURL(fileInput.files[0]);
-          }
-        });
-
-        // Tutup lightbox
-        document.getElementById('closeLightboxBtn').addEventListener('click', () => {
-          document.getElementById('lightboxModal').classList.add('hidden', 'opacity-0');
-          document.getElementById('lightboxModal').classList.remove('flex', 'opacity-100');
-        });
+      // Tambah butang filter
+      const container = document.getElementById('eventFilterContainer');
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn px-4 py-2 rounded-xl text-xs font-medium bg-blue-200 hover:bg-blue-300 transition';
+      btn.textContent = eventName;
+      btn.setAttribute('data-event', eventName);
+      btn.addEventListener('click', () => {
+        setActiveFilter(btn);
+        filterImages(eventName);
       });
-    </script>
+      container.appendChild(btn);
+
+      // Clear input
+      document.getElementById('eventInput').value = '';
+    } else {
+      alert('Sila masukkan nama event yang belum ada atau kosong.');
+    }
+  });
+
+  // Fungsi untuk set filter aktif
+  function setActiveFilter(btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('border-2', 'border-blue-600'));
+    btn.classList.add('border-2', 'border-blue-600');
+  }
+
+  // Filter gambar ikut event
+  function filterImages(eventName) {
+    document.querySelectorAll('.image-group').forEach(group => {
+      if (group.getAttribute('data-event') === eventName || eventName === 'Semua Gambar') {
+        group.style.display = 'block';
+      } else {
+        group.style.display = 'none';
+      }
+    });
+  }
+
+  // Muat naik gambar
+  document.getElementById('postForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fileInput = document.getElementById('imageInput');
+    const eventName = document.getElementById('eventInput').value.trim();
+
+    if (fileInput.files && fileInput.files[0] && eventName) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        // Buat grup gambar jika belum ada
+        let groupDiv = document.querySelector(`.image-group[data-event="${eventName}"]`);
+        if (!groupDiv) {
+          groupDiv = document.createElement('div');
+          groupDiv.className = 'grid grid-cols-2 gap-2';
+          groupDiv.setAttribute('data-event', eventName);
+          // Tambah tajuk event
+          const eventHeader = document.createElement('div');
+          eventHeader.className = 'col-span-2 text-sm font-semibold text-gray-700 mt-4 mb-2';
+          eventHeader.textContent = eventName;
+          galleryContainer.appendChild(eventHeader);
+          galleryContainer.appendChild(groupDiv);
+        }
+
+        // Buat gambar
+        const imgDiv = document.createElement('div');
+        imgDiv.className = 'cursor-pointer rounded-lg overflow-hidden shadow-lg hover:scale-105 transition-transform';
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = eventName;
+        img.className = 'w-full h-48 object-cover';
+
+        // Data untuk lightbox
+        img.dataset.event = eventName;
+        img.dataset.src = e.target.result;
+        img.dataset.desc = 'Memori ini...';
+
+        // Klik untuk buka lightbox
+        img.addEventListener('click', () => {
+          document.getElementById('lightboxImg').src = img.dataset.src;
+          document.getElementById('lightboxEvent').textContent = img.dataset.event;
+          document.getElementById('lightboxDesc').textContent = 'Memori ini...';
+          document.getElementById('downloadBtn').href = img.dataset.src;
+          const lb = document.getElementById('lightboxModal');
+          lb.classList.remove('hidden', 'opacity-0');
+          lb.classList.add('flex', 'opacity-100');
+        });
+
+        imgDiv.appendChild(img);
+        groupDiv.appendChild(imgDiv);
+
+        // Reset borang
+        document.getElementById('postForm').reset();
+        document.getElementById('uploadStatus').classList.add('hidden');
+        document.getElementById('uploadStatus').textContent = '';
+
+        // Tunjukkan galeri jika dulu tiada gambar
+        document.getElementById('noImagesMsg').style.display = 'none';
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      alert('Sila pilih gambar dan pastikan event tidak kosong.');
+    }
+  });
+
+  // Tutup lightbox
+  document.getElementById('closeLightboxBtn').addEventListener('click', () => {
+    document.getElementById('lightboxModal').classList.add('hidden', 'opacity-0');
+    document.getElementById('lightboxModal').classList.remove('flex', 'opacity-100');
+  });
+
+  // Filter semua gambar
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    if (btn.textContent.trim() === 'Semua Gambar') {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.image-group').forEach(group => {
+          group.style.display = 'block';
+        });
+        setActiveFilter(btn);
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
