@@ -76,6 +76,7 @@
   <div class="mt-4 text-center max-w-2xl px-4">
     <span id="lightboxEvent" class="bg-blue-600/20 text-blue-400 border border-blue-500/30 text-[10px] font-bold uppercase px-2 py-1 rounded-md"></span>
     <p id="lightboxDesc" class="text-sm text-gray-300 mt-2 italic">Memori ini...</p>
+    <button id="deleteImageBtn" class="mt-2 px-3 py-1 bg-red-500 hover:bg-red-400 rounded text-xs text-white">Hapus Gambar</button>
   </div>
 </div>
 
@@ -85,7 +86,6 @@
 </footer>
 
 <script>
-  // Tahun
   document.getElementById('currentYear').textContent = new Date().getFullYear();
 
   const gallery = document.getElementById('gallery');
@@ -110,7 +110,6 @@
   document.getElementById('addEventBtn').onclick = () => {
     const eventName = document.getElementById('eventNameInput').value.trim();
     if (eventName && !events[eventName]) {
-      // Tambah ke data
       events[eventName] = [];
       // Tambah ke datalist
       const option = document.createElement('option');
@@ -128,12 +127,11 @@
         btn.classList.add('border-2', 'border-blue-600');
       };
       eventButtonsContainer.appendChild(btn);
-      // Clear input
       document.getElementById('eventNameInput').value = '';
     }
   };
 
-  // Filter gambar ikut event
+  // Filter gambar
   function updateFilter() {
     for (const event in events) {
       const groupDiv = document.querySelector(`.group-${event}`);
@@ -151,18 +149,15 @@
     if (file && eventName && events.hasOwnProperty(eventName)) {
       const reader = new FileReader();
       reader.onload = e => {
-        // Cari atau buat group gambar untuk event
         let groupDiv = document.querySelector(`.group-${eventName}`);
         if (!groupDiv) {
-          // Tajuk event
           const header = document.createElement('div');
           header.className = 'col-span-full font-semibold text-gray-700 mt-4 mb-2';
           header.textContent = eventName;
-          // Div untuk gambar
           groupDiv = document.createElement('div');
           groupDiv.className = 'grid grid-cols-2 gap-2';
           groupDiv.classList.add(`group-${eventName}`);
-          // Masukkan ke galeri
+          // Tambah ke galeri
           gallery.appendChild(header);
           gallery.appendChild(groupDiv);
         }
@@ -176,16 +171,28 @@
         img.alt = eventName;
         img.className = 'w-full h-48 object-cover';
 
-        // Data lightbox
+        // Klik untuk lightbox dan delete
         img.onclick = () => {
-          document.getElementById('lightbox').classList.remove('hidden', 'opacity-0');
+          document.getElementById('lightbox').classList.remove('hidden');
           document.getElementById('lightbox').classList.add('flex', 'opacity-100');
           document.getElementById('lightboxImg').src = img.src;
           document.getElementById('lightboxEvent').textContent = eventName;
           document.getElementById('lightboxDesc').textContent = 'Memori ini...';
           document.getElementById('downloadLink').href = img.src;
+          // Simpan gambar untuk delete
+          document.getElementById('deleteImageBtn').onclick = () => {
+            groupDiv.removeChild(imgDiv);
+            // Jika tiada gambar lagi dalam event, hapus tajuk dan div
+            if (groupDiv.children.length === 0) {
+              groupDiv.previousSibling.remove(); // hapus tajuk
+              groupDiv.remove(); // hapus div
+            }
+            document.getElementById('lightbox').classList.add('hidden');
+            document.getElementById('lightbox').classList.remove('flex', 'opacity-100');
+          };
         };
 
+        // Tambah gambar ke div
         imgDiv.appendChild(img);
         groupDiv.appendChild(imgDiv);
 
@@ -196,7 +203,6 @@
         document.getElementById('uploadForm').reset();
         if (noImageMsg) noImageMsg.style.display = 'none';
 
-        // Update filter
         updateFilter();
       };
       reader.readAsDataURL(file);
@@ -214,7 +220,6 @@
     updateFilter();
     document.querySelectorAll('#eventButtons button').forEach(b => b.classList.remove('border-2', 'border-blue-600'));
   };
-
 </script>
 
 </body>
