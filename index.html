@@ -39,13 +39,10 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .polaroid:nth-child(odd){transform:rotate(-2deg)}
 .polaroid:nth-child(even){transform:rotate(2deg)}
 .polaroid:hover{transform:rotate(0deg) scale(1.08) translateY(-8px);z-index:10}
-
-/* FIX: Mengekalkan ratio gambar supaya tidak herot/penyek */
 .pol-img{object-fit:cover;display:block}
-
 .pol-placeholder{background:#ddd;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase;flex-direction:column;gap:4px}
 .pol-placeholder span{font-size:22px;color:#ccc}
-.pol-label{font-family:'Inter',sans-serif;font-size:9px;color:#555;text-align:center;margin-top:10px;letter-spacing:1px}
+.pol-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#333;text-align:center;margin-top:10px;letter-spacing:1px;text-transform:uppercase}
 
 .pol-item-del{position:absolute;top:15px;right:15px;width:24px;height:24px;background:rgba(0,0,0,.8);border:none;border-radius:50%;color:#fff;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:background .2s;line-height:1;z-index:15}
 .polaroid:hover .pol-item-del{display:flex}
@@ -66,7 +63,6 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .event-card-count{font-size:10px;color:#555;margin-top:6px;letter-spacing:1px}
 .no-events{text-align:center;padding:80px 20px;color:#333;font-size:11px;letter-spacing:4px;text-transform:uppercase;grid-column:1/-1}
 
-/* CSS untuk bahagian Kredit */
 .footer-credit {text-align:center;padding:40px 20px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#333;border-top:1px solid #111;font-family:'Inter',sans-serif}
 .footer-credit span {color:#666;font-weight:700}
 
@@ -133,12 +129,12 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   <div class="hero-bg"><img id="heroBg" alt="Class Photo"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Every Second · Becomes Memory  </p>
+    <p class="hero-eyebrow">Kelas Terbaik · Kenangan Abadi</p>
     <div class="hero-title">
       <span>5 IBK</span>
       <span class="sub">GALLERIES</span>
     </div>
-    <div class="hero-badge">SMK PG3 · 2025</div>
+    <div class="hero-badge">Sekolah Menengah · 2025</div>
   </div>
   <input type="file" id="heroFileInput" accept="image/*">
 </section>
@@ -209,6 +205,15 @@ try{memberPhotos=JSON.parse(localStorage.getItem('ibk_members'))||[];}catch(e){}
 if(!Array.isArray(memberPhotos)||memberPhotos.length!==25)memberPhotos=Array(25).fill(null);
 let currentId=null,coverDataUrl=null;
 
+// Array Senarai Nama Ahli 5 IBK mengikut susunan tepat anda
+const memberNames = [
+  "adam", "asya", "darin", "dina", "amir", 
+  "hanief", "melisa", "icam", "syawal", "fauzan", 
+  "hadif", "irfan", "nas", "tajol", "nik", 
+  "diana", "aed", "farisya", "ernee", "ezrin", 
+  "sofia", "tasnim", "qaseh", "qayyum", "qash"
+];
+
 function persist(){
   localStorage.setItem('ibk_events',JSON.stringify(events));
   localStorage.setItem('ibk_members',JSON.stringify(memberPhotos));
@@ -228,13 +233,14 @@ const track=document.getElementById('polaroidTrack');
 let polOffset=0;
 let isAuto=true;
 let autoTimer=null;
-const ITEM_W=154; // polaroid width + gap approx
+const ITEM_W=154; 
 
 function buildStrip(){
   let html='';
   for(let pass=0;pass<2;pass++){
     for(let i=0;i<25;i++){
       const src=memberPhotos[i];
+      const name=memberNames[i]; // Ambil nama dari senarai ikut index
       const isCentre=i===12;
       const size=isCentre?176:126;
       const pad=isCentre?'12px 12px 36px':'10px 10px 30px';
@@ -242,14 +248,15 @@ function buildStrip(){
       html+=`<div class="polaroid" style="padding:${pad}" onclick="openMemberUpload(${i})">`;
       
       if(src){
-        html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="M${i+1}">`;
+        html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">`;
         html+=`<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
       }
       else{
         html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
       }
       
-      html+=`<div class="pol-label">${src?'Member '+(i+1):'Klik upload'}</div></div>`;
+      // Tukar label bawah mengikut nama ahli sedia ada atau suruh klik upload fail
+      html+=`<div class="pol-label">${src ? name : 'Klik upload (' + name + ')'}</div></div>`;
     }
   }
   track.innerHTML=html;
@@ -257,7 +264,7 @@ function buildStrip(){
 
 function deleteMemberPhoto(idx, e){
   e.stopPropagation();
-  if(!confirm('Padam gambar Member ' + (idx + 1) + '?')) return;
+  if(!confirm('Padam gambar ' + memberNames[idx] + '?')) return;
   memberPhotos[idx] = null;
   persist();
   buildStrip();
