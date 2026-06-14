@@ -3,154 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test System - Arkib Sekolah</title>
+    <title>Arkib Memori Zaman Sekolah</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .filter-btn { background-color: #1a1b20; border: 1px solid #2c2e36; color: #a1a1aa; }
-        .active-filter { background-color: #2563eb !important; border-color: #2563eb !important; color: #ffffff !important; }
+        .filter-btn { background-color: #1a1b20; border: 1px solid #2c2e36; color: #a1a1aa; transition: all 0.2s; }
+        .filter-btn:hover { background-color: #22242a; color: #fff; }
+        .active-filter { background-color: #2563eb !important; border-color: #2563eb !important; color: #ffffff !important; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+        /* Smooth Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #121316; }
+        ::-webkit-scrollbar-thumb { background: #2c2e36; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-[#121316] text-gray-200 font-sans min-h-screen">
+<body class="bg-[#121316] text-gray-200 font-sans min-h-screen selection:bg-blue-600 selection:text-white">
 
-    <header class="border-b border-[#22242a] bg-[#1a1b20] sticky top-0 z-45">
+    <header class="border-b border-[#22242a] bg-[#1a1b20] sticky top-0 z-40 backdrop-blur-md bg-opacity-90">
         <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
             <div>
-                <h1 class="text-xl font-bold text-white">🎓 Zaman Sekolah Archive</h1>
-                <p class="text-xs text-gray-500">Sistem ujian offline - Gerenti berfungsi.</p>
+                <h1 class="text-xl font-bold text-white tracking-tight">🎓 Zaman Sekolah <span class="text-blue-500">Archive</span></h1>
+                <p class="text-xs text-gray-500">Tempat kumpul memori, cerita pendek, dan gambar terlepas kita.</p>
             </div>
-            <button id="openModalBtn" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all">
+            <button id="openModalBtn" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20 active:scale-95">
                 + Kongsi Memori
             </button>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 py-8">
-        <div id="eventFilterContainer" class="flex flex-wrap gap-2 mb-6">
-            <button id="filterAllBtn" class="filter-btn active-filter px-4 py-2 rounded-xl text-xs font-medium">Semua Gambar</button>
-        </div>
+        
+        <section class="mb-8">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3 flex items-center gap-2">
+                <span class="w-1.5 h-3 bg-blue-500 rounded-full"></span> Pilih Acara
+            </h2>
+            <div id="eventFilterContainer" class="flex flex-wrap gap-2 pb-2 overflow-x-auto">
+                <button id="filterAllBtn" class="filter-btn active-filter px-4 py-2 rounded-xl text-xs font-medium">Semua Gambar</button>
+            </div>
+        </section>
 
-        <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        <section>
+            <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
+        </section>
     </main>
 
-    <div id="uploadModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-[#1a1b20] border border-[#2c2e36] w-full max-w-md rounded-2xl p-6 shadow-2xl">
+    <div id="uploadModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#1a1b20] border border-[#2c2e36] w-full max-w-md rounded-2xl p-6 shadow-2xl transform transition-all duration-300">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-bold text-white">Muat Naik Gambar</h3>
-                <button id="closeModalBtn" class="text-gray-400 hover:text-white text-2xl">&times;</button>
+                <h3 class="text-md font-bold text-white uppercase tracking-wider">Tambah Memori Baru</h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-white text-2xl px-2">&times;</button>
             </div>
             <form id="postForm" class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Pilih Gambar</label>
-                    <input type="file" id="imageInput" accept="image/*" class="w-full text-xs text-gray-400" required>
+                    <input type="file" id="imageInput" accept="image/*" class="w-full text-xs text-gray-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:bg-zinc-800 file:text-zinc-200 cursor-pointer" required>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Nama Acara / Event</label>
-                    <input type="text" id="eventInput" placeholder="Contoh: Birthday Cikgu" class="w-full bg-[#121316] border border-[#2c2e36] rounded-xl px-4 py-3 text-xs text-white focus:outline-none" required>
-                </div>
-                <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-3 text-xs rounded-xl">Simpan Gambar</button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        // Ambil elemen
-        const uploadModal = document.getElementById('uploadModal');
-        const openModalBtn = document.getElementById('openModalBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const postForm = document.getElementById('postForm');
-        const galleryGrid = document.getElementById('galleryGrid');
-        const eventFilterContainer = document.getElementById('eventFilterContainer');
-        const filterAllBtn = document.getElementById('filterAllBtn');
-
-        let localMemories = JSON.parse(localStorage.getItem('sekolah_memori')) || [];
-        let currentFilter = "Semua Gambar";
-
-        // Fungsi Buka Tutup Modal (100% Vanilla JS)
-        openModalBtn.onclick = function() { uploadModal.classList.remove('hidden'); };
-        closeModalBtn.onclick = function() { uploadModal.classList.add('hidden'); };
-        window.onclick = function(e) { if (e.target == uploadModal) { uploadModal.classList.add('hidden'); } };
-
-        // Fungsi Convert Gambar ke Base64 (supaya boleh simpan dalam browser)
-        postForm.onsubmit = function(e) {
-            e.preventDefault();
-            const eventName = document.getElementById('eventInput').value.trim();
-            const file = document.getElementById('imageInput').files[0];
-
-            const reader = new FileReader();
-            reader.onloadend = function() {
-                const base64Image = reader.result;
-                
-                // Simpan dalam array
-                localMemories.push({ event: eventName, imageUrl: base64Image });
-                localStorage.setItem('sekolah_memori', JSON.stringify(localMemories));
-
-                postForm.reset();
-                uploadModal.classList.add('hidden');
-                initSystem();
-            }
-            if (file) { reader.readAsDataURL(file); }
-        };
-
-        // Papar balik data
-        function initSystem() {
-            galleryGrid.innerHTML = "";
-            const eventsSet = new Set();
-            
-            // Dapatkan senarai event unik
-            localMemories.forEach(m => eventsSet.add(m.event));
-
-            // Render balik butang filter
-            eventFilterContainer.innerHTML = '';
-            eventFilterContainer.appendChild(filterAllBtn);
-            
-            eventsSet.forEach(evt => {
-                const btn = document.createElement('button');
-                btn.className = `filter-btn px-4 py-2 rounded-xl text-xs font-medium ${currentFilter === evt ? 'active-filter' : ''}`;
-                btn.innerText = evt;
-                btn.onclick = function() {
-                    currentFilter = evt;
-                    updateFilterStyle(btn);
-                    renderImages();
-                };
-                eventFilterContainer.appendChild(btn);
-            });
-
-            filterAllBtn.onclick = function() {
-                currentFilter = "Semua Gambar";
-                updateFilterStyle(filterAllBtn);
-                renderImages();
-            };
-
-            renderImages();
-        }
-
-        function updateFilterStyle(activeBtn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
-            activeBtn.classList.add('active-filter');
-        }
-
-        function renderImages() {
-            galleryGrid.innerHTML = "";
-            const filtered = currentFilter === "Semua Gambar" ? localMemories : localMemories.filter(m => m.event === currentFilter);
-
-            if(filtered.length === 0) {
-                galleryGrid.innerHTML = `<div class="col-span-full text-center text-gray-500 py-12 text-sm">Tiada gambar. Klik "+ Kongsi Memori" untuk tambah!</div>`;
-                return;
-            }
-
-            filtered.forEach(data => {
-                const card = document.createElement('div');
-                card.className = "bg-[#1a1b20] rounded-2xl overflow-hidden border border-[#2c2e36]";
-                card.innerHTML = `
-                    <div class="w-full h-56 bg-black"><img src="${data.imageUrl}" class="w-full h-full object-cover"></div>
-                    <div class="p-4"><p class="text-xs font-semibold text-gray-300">${data.event}</p></div>
-                `;
-                galleryGrid.appendChild(card);
-            });
-        }
-
-        // Jalankan sistem masa load
-        initSystem();
-    </script>
-</body>
-</html>
+                    <input type="text" id="eventInput" placeholder="Contoh: Birthday Cikgu / Hari Sukan" class="w-full bg-[#121316] border border-[#2c2e36] rounded-xl px-4 py-3 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-blue-500"
