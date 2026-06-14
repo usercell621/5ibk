@@ -39,12 +39,14 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .polaroid:nth-child(odd){transform:rotate(-2deg)}
 .polaroid:nth-child(even){transform:rotate(2deg)}
 .polaroid:hover{transform:rotate(0deg) scale(1.08) translateY(-8px);z-index:10}
-.pol-img{-fit:cover;display:block}
+
+/* FIX: Mengekalkan ratio gambar supaya tidak herot/penyek */
+.pol-img{object-fit:cover;display:block}
+
 .pol-placeholder{background:#ddd;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase;flex-direction:column;gap:4px}
 .pol-placeholder span{font-size:22px;color:#ccc}
 .pol-label{font-family:'Inter',sans-serif;font-size:9px;color:#555;text-align:center;margin-top:10px;letter-spacing:1px}
 
-/* Butang Delete Baru untuk Polaroid */
 .pol-item-del{position:absolute;top:15px;right:15px;width:24px;height:24px;background:rgba(0,0,0,.8);border:none;border-radius:50%;color:#fff;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:background .2s;line-height:1;z-index:15}
 .polaroid:hover .pol-item-del{display:flex}
 .pol-item-del:hover{background:#c00}
@@ -52,7 +54,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .section-hdr{padding:60px 60px 0}
 .section-label{font-size:10px;letter-spacing:5px;color:#444;text-transform:uppercase}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;color:#fff}
-.events-section{padding:40px 60px 100px}
+.events-section{padding:40px 60px 60px}
 .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}
 .event-card{position:relative;overflow:hidden;cursor:pointer;background:#111;aspect-ratio:4/3}
 .event-card-img{width:100%;height:100%;object-fit:cover;transition:transform .5s,opacity .3s;opacity:.7}
@@ -63,6 +65,10 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .event-card-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;line-height:1}
 .event-card-count{font-size:10px;color:#555;margin-top:6px;letter-spacing:1px}
 .no-events{text-align:center;padding:80px 20px;color:#333;font-size:11px;letter-spacing:4px;text-transform:uppercase;grid-column:1/-1}
+
+/* CSS untuk bahagian Kredit */
+.footer-credit {text-align:center;padding:40px 20px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#333;border-top:1px solid #111;font-family:'Inter',sans-serif}
+.footer-credit span {color:#666;font-weight:700}
 
 .fab{position:fixed;bottom:36px;right:36px;width:60px;height:60px;background:#fff;border-radius:50%;border:none;cursor:pointer;z-index:500;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.5);transition:transform .2s,background .2s}
 .fab:hover{transform:scale(1.1) rotate(90deg);background:#e0e0e0}
@@ -153,6 +159,10 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   <div class="events-grid" id="eventsGrid"></div>
 </section>
 
+<footer class="footer-credit">
+  Created by <span>anepimut</span>
+</footer>
+
 <button class="fab" onclick="openAddModal()">
   <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
@@ -233,7 +243,6 @@ function buildStrip(){
       
       if(src){
         html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="M${i+1}">`;
-        // Butang padam ditambah di sini jika gambar wujud
         html+=`<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
       }
       else{
@@ -246,9 +255,8 @@ function buildStrip(){
   track.innerHTML=html;
 }
 
-// Fungsi Baru: Padam gambar ahli/polaroid
 function deleteMemberPhoto(idx, e){
-  e.stopPropagation(); // Elakkan fungsi openMemberUpload dari ter-trigger
+  e.stopPropagation();
   if(!confirm('Padam gambar Member ' + (idx + 1) + '?')) return;
   memberPhotos[idx] = null;
   persist();
