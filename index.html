@@ -9,7 +9,7 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
-body{background:#0a0a0a;color:white;overflow-x:hidden}
+body{background:#0a0a0a;color:white}
 
 /* NAV */
 nav{
@@ -17,8 +17,6 @@ nav{
     top:0;
     width:100%;
     padding:20px 8%;
-    display:flex;
-    justify-content:space-between;
     background:rgba(0,0,0,0.4);
     backdrop-filter:blur(10px);
     z-index:10;
@@ -53,40 +51,64 @@ nav{
     transform:translate(-50%,-50%);
     text-align:center;
 }
-.hero-content h1{font-size:55px;font-weight:900}
+.hero-content h1{
+    font-size:55px;
+    font-weight:900;
+}
 
-/* EVENTS */
+/* EVENTS (TILE STYLE) */
 .container{
     padding:80px 8%;
 }
+
 .events{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
 }
 
 .card{
     background:#111;
-    padding:20px;
+    height:90px;
     border-radius:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px;
     cursor:pointer;
-    position:relative;
+    transition:0.3s;
 }
 
-.card h3{font-weight:600}
+.card:hover{
+    transform:scale(1.02);
+    background:#1a1a1a;
+}
+
+.card h3{
+    font-size:15px;
+    font-weight:600;
+}
+
+.enter{
+    padding:6px 12px;
+    background:white;
+    color:black;
+    font-size:12px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
 
 .del{
-    position:absolute;
-    top:10px;
-    right:10px;
     background:none;
     border:none;
     color:white;
-    opacity:0.6;
+    opacity:0.5;
     cursor:pointer;
+    margin-left:10px;
 }
 
-/* GALLERY */
+/* VIEW */
 #galleryPage{
     display:none;
     padding:80px 8%;
@@ -103,9 +125,10 @@ nav{
     height:120px;
     object-fit:cover;
     border-radius:8px;
+    cursor:pointer;
 }
 
-/* FLOAT BUTTON */
+/* FLOAT */
 .fab{
     position:fixed;
     right:20px;
@@ -131,13 +154,13 @@ nav{
 }
 
 .box{
-    width:300px;
+    width:320px;
     background:#111;
     padding:20px;
     border-radius:12px;
 }
 
-.box input, .box select{
+.box input,.box select{
     width:100%;
     padding:10px;
     margin:8px 0;
@@ -174,13 +197,13 @@ nav{
     </div>
 </section>
 
-<!-- EVENTS -->
+<!-- HOME -->
 <div class="container" id="home">
-    <h2>Events</h2>
+    <h2 style="margin-bottom:20px;">Events</h2>
     <div class="events" id="events"></div>
 </div>
 
-<!-- GALLERY PAGE -->
+<!-- GALLERY -->
 <div id="galleryPage">
     <h2 id="title"></h2>
     <div class="grid" id="grid"></div>
@@ -200,11 +223,11 @@ nav{
 
         <select id="eventSelect"></select>
 
-        <input type="text" id="eventName" placeholder="Event name">
+        <input type="text" id="eventName" placeholder="Event name" style="display:none;">
 
         <input type="file" id="file">
 
-        <button onclick="action()">Confirm</button>
+        <button onclick="action()">ENTER</button>
 
     </div>
 </div>
@@ -233,9 +256,14 @@ function add(name){
 
     let div=document.createElement("div")
     div.className="card"
-    div.innerHTML=`<h3>${name}</h3><button class="del" onclick="del('${name}',event)">✕</button>`
 
-    div.onclick=()=>open(name)
+    div.innerHTML=`
+        <h3>${name}</h3>
+        <div>
+            <button class="enter" onclick="openEvent('${name}')">ENTER</button>
+            <button class="del" onclick="del('${name}',event)">✕</button>
+        </div>
+    `
 
     document.getElementById("events").appendChild(div)
 
@@ -254,30 +282,23 @@ function updateSelect(){
 }
 
 /* OPEN EVENT */
-function open(name){
-
+function openEvent(name){
     current=name
-
     document.getElementById("home").style.display="none"
     document.getElementById("galleryPage").style.display="block"
-
     document.getElementById("title").innerText=name
-
     render()
 }
 
 /* RENDER */
 function render(){
-
     let g=document.getElementById("grid")
     g.innerHTML=""
-
     data[current].forEach(src=>{
-
         let img=document.createElement("img")
         img.src=src
+        img.onclick=()=>window.open(src,"_blank")
         g.appendChild(img)
-
     })
 }
 
@@ -297,36 +318,31 @@ function modeChange(){
 
     let m=document.getElementById("mode").value
 
-    document.getElementById("eventSelect").style.display = m==="upload"?"block":"none"
-    document.getElementById("file").style.display = m==="upload"?"block":"none"
-    document.getElementById("eventName").style.display = m==="add"?"block":"none"
+    document.getElementById("eventSelect").style.display=m==="upload"?"block":"none"
+    document.getElementById("file").style.display=m==="upload"?"block":"none"
+    document.getElementById("eventName").style.display=m==="add"?"block":"none"
 }
 
-/* ACTION */
 function action(){
 
-    let mode=document.getElementById("mode").value
+    let m=document.getElementById("mode").value
 
-    if(mode==="add"){
+    if(m==="add"){
         let name=document.getElementById("eventName").value
         if(!name) return
         add(name)
     }
 
-    if(mode==="upload"){
-
+    if(m==="upload"){
         let file=document.getElementById("file").files[0]
         let event=document.getElementById("eventSelect").value
-
         if(!file) return
 
         let reader=new FileReader()
-
         reader.onload=(e)=>{
             data[event].push(e.target.result)
             if(event===current) render()
         }
-
         reader.readAsDataURL(file)
     }
 
