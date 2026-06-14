@@ -179,6 +179,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
 
+<!-- MODAL TAMBAH EVENT -->
 <div class="modal-bg" id="addModal">
   <div class="modal">
     <button class="close-x" onclick="closeAddModal()">×</button>
@@ -195,6 +196,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   </div>
 </div>
 
+<!-- MODAL URUS LATAR BELAKANG -->
 <div class="modal-bg" id="bgModal">
   <div class="modal">
     <button class="close-x" onclick="closeBgModal()">×</button>
@@ -229,11 +231,30 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   <img id="lightboxImg" src="" alt="">
 </div>
 
+<!-- FIREBASE SDK SCRIPTS -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 <script>
-// Balikkan fungsi LocalStorage asal - Khusus untuk run kat satu laptop kau sahaja!
-let events=JSON.parse(localStorage.getItem('ibk_events')||'[]');
-let heroSlides=JSON.parse(localStorage.getItem('ibk_hero_slides')||'[]');
-let memberPhotos=JSON.parse(localStorage.getItem('ibk_member_photos')||'[]');
+// KOD CONFIG FIREBASE KAU YANG ASLI
+const firebaseConfig = {
+  apiKey: "AIzaSyC9nXPZMXkS6EyEgOwIZ6NHuKX2DOa1uKA",
+  authDomain: "ibk-465f5.firebaseapp.com",
+  projectId: "ibk-465f5",
+  storageBucket: "ibk-465f5.firebasestorage.app",
+  messagingSenderId: "1969212157",
+  appId: "1:1969212157:web:e9c99d3facfc68ad14cc94",
+  measurementId: "G-0VYXT9NEG8",
+  databaseURL: "https://ibk-465f5-default-rtdb.asia-southeast1.firebasedatabase.app/"
+};
+
+// Hubungkan ke Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let events = [];
+let heroSlides = [];
+let memberPhotos = Array(25).fill(null);
 
 const memberNames = [
   "adam", "asya", "darin", "dina", "amir", 
@@ -243,19 +264,38 @@ const memberNames = [
   "sofia", "tasnim", "qaseh", "qayyum", "qash"
 ];
 
-if(!Array.isArray(memberPhotos) || memberPhotos.length !== 25) {
-  memberPhotos = Array(25).fill(null);
-}
+let currentId = null, coverDataUrl = null;
+let slideIndex = 0;
+let slideTimer = null;
+const ITEM_W = 200;
 
-let currentId=null,coverDataUrl=null;
-let slideIndex=0;
-let slideTimer=null;
-const ITEM_W=200;
+// SINKRONISASI DATA REAL-TIME DARI FIREBASE KAU
+db.ref('galleryData').on('value', (snapshot) => {
+  const data = snapshot.val() || {};
+  events = data.events || [];
+  heroSlides = data.heroSlides || [];
+  memberPhotos = data.memberPhotos || Array(25).fill(null);
+  
+  if(!Array.isArray(memberPhotos) || memberPhotos.length !== 25) {
+    memberPhotos = Array(25).fill(null);
+  }
 
-function persist(){
-  localStorage.setItem('ibk_events',JSON.stringify(events));
-  localStorage.setItem('ibk_hero_slides',JSON.stringify(heroSlides));
-  localStorage.setItem('ibk_member_photos',JSON.stringify(memberPhotos));
+  initSlideshow();
+  buildStrip();
+  buildGrid();
+  
+  if (currentId) {
+    const currentEv = events.find(e => e.id === currentId);
+    if (currentEv) renderGallery(currentEv);
+  }
+});
+
+function syncToFirebase(){
+  db.ref('galleryData').set({
+    events: events,
+    heroSlides: heroSlides,
+    memberPhotos: memberPhotos
+  });
 }
 
 // ── HERO SLIDESHOW ──
@@ -312,7 +352,7 @@ document.getElementById('bgSlidesInput').onchange = function(){
       heroSlides.push(e.target.result);
       loaded++;
       if(loaded === files.length) {
-        persist();
+        syncToFirebase();
         renderBgThumbs();
       }
     };
@@ -322,48 +362,47 @@ document.getElementById('bgSlidesInput').onchange = function(){
 };
 function deleteBgSlide(i){
   heroSlides.splice(i, 1);
-  persist();
+  syncToFirebase();
   renderBgThumbs();
 }
 
 // ── POLAROID STRIP ──
-const track=document.getElementById('polaroidTrack');
-let polOffset=0;
-let isAuto=true;
-let autoTimer=null;
+const track = document.getElementById('polaroidTrack');
+let polOffset = 0;
+let isAuto = true;
+let autoTimer = null;
 
 function buildStrip(){
-  let html='';
-  for(let pass=0;pass<2;pass++){
-    for(let i=0;i<25;i++){
-      const src=memberPhotos[i];
-      const name=memberNames[i];
-      const size=176; 
+  let html = '';
+  for(let pass = 0; pass < 2; pass++){
+    for(let i = 0; i < 25; i++){
+      const src = memberPhotos[i];
+      const name = memberNames[i];
+      const size = 176; 
       
-      html+=`<div class="polaroid" onclick="openMemberUpload(${i})">`;
+      html += `<div class="polaroid" onclick="openMemberUpload(${i})">`;
       if(src){
-        html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">`;
-        html+=`<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
-        html+=`<div class="pol-label">${name}</div>`;
+        html += `<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">`;
+        html += `<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
+        html += `<div class="pol-label">${name}</div>`;
       } else {
-        html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
-        html+=`<div class="pol-label" style="color:#aaa">Upload (${name})</div>`;
+        html += `<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
+        html += `<div class="pol-label" style="color:#aaa">Upload (${name})</div>`;
       }
-      html+=`</div>`;
+      html += `</div>`;
     }
   }
-  track.innerHTML=html;
+  track.innerHTML = html;
 }
 
 function openMemberUpload(idx){
-  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
-  inp.onchange=()=>{
-    const f=inp.files[0]; if(!f)return;
-    const r=new FileReader();
-    r.onload=e=>{
-      memberPhotos[idx]=e.target.result;
-      persist();
-      buildStrip();
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = () => {
+    const f = inp.files[0]; if(!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+      memberPhotos[idx] = e.target.result;
+      syncToFirebase();
     };
     r.readAsDataURL(f);
   };
@@ -374,45 +413,44 @@ function deleteMemberPhoto(idx, e){
   e.stopPropagation();
   if(!confirm('Padam gambar polaroid ' + memberNames[idx] + '?')) return;
   memberPhotos[idx] = null;
-  persist();
-  buildStrip();
+  syncToFirebase();
 }
 
 function stopAuto(){
-  isAuto=false; track.classList.remove('auto');
-  track.style.transform=`translateX(${polOffset}px)`;
+  isAuto = false; track.classList.remove('auto');
+  track.style.transform = `translateX(${polOffset}px)`;
   clearTimeout(autoTimer);
 }
 function resumeAuto(){
   clearTimeout(autoTimer);
-  autoTimer=setTimeout(()=>{
-    isAuto=true; polOffset=0;
-    track.style.transform=''; track.classList.add('auto');
-  },4000);
+  autoTimer = setTimeout(() => {
+    isAuto = true; polOffset = 0;
+    track.style.transform = ''; track.classList.add('auto');
+  }, 4000);
 }
 function slideBy(dir){
   stopAuto();
-  polOffset+=dir*-(ITEM_W);
-  const maxOffset=-(25*ITEM_W);
-  if(polOffset<maxOffset)polOffset=0;
-  if(polOffset>0)polOffset=maxOffset+ITEM_W;
-  track.style.transition='transform .4s cubic-bezier(.25,.46,.45,.94)';
-  track.style.transform=`translateX(${polOffset}px)`;
+  polOffset += dir * -(ITEM_W);
+  const maxOffset = -(25 * ITEM_W);
+  if(polOffset < maxOffset) polOffset = 0;
+  if(polOffset > 0) polOffset = maxOffset + ITEM_W;
+  track.style.transition = 'transform .4s cubic-bezier(.25,.46,.45,.94)';
+  track.style.transform = `translateX(${polOffset}px)`;
   resumeAuto();
 }
-document.getElementById('polLeft').onclick=()=>slideBy(-1);
-document.getElementById('polRight').onclick=()=>slideBy(1);
+document.getElementById('polLeft').onclick = () => slideBy(-1);
+document.getElementById('polRight').onclick = () => slideBy(1);
 
 // ── EVENTS LOGIC ──
 function buildGrid(){
-  const grid=document.getElementById('eventsGrid');
-  if(!events.length){grid.innerHTML='<div class="no-events">Tiada event — tekan + untuk tambah</div>';return;}
-  grid.innerHTML=events.map(ev=>`
+  const grid = document.getElementById('eventsGrid');
+  if(!events.length){grid.innerHTML = '<div class="no-events">Tiada event — tekan + untuk tambah</div>'; return;}
+  grid.innerHTML = events.map(ev => `
     <div class="event-card" onclick="openGallery('${ev.id}')">
-      ${ev.cover?`<img class="event-card-img" src="${ev.cover}" alt="${ev.name}">`:`<div class="event-card-placeholder">◼</div>`}
+      ${ev.cover ? `<img class="event-card-img" src="${ev.cover}" alt="${ev.name}">` : `<div class="event-card-placeholder">◼</div>`}
       <div class="event-card-overlay">
         <div class="event-card-name">${ev.name}</div>
-        <div class="event-card-count">${(ev.photos||[]).length} gambar</div>
+        <div class="event-card-count">${(ev.photos || []).length} gambar</div>
       </div>
     </div>`).join('');
 }
@@ -420,71 +458,81 @@ function buildGrid(){
 function openAddModal(){document.getElementById('addModal').classList.add('open');}
 function closeAddModal(){
   document.getElementById('addModal').classList.remove('open');
-  document.getElementById('evtName').value='';
-  document.getElementById('coverLabel').textContent='↑ Upload gambar cover event';
-  coverDataUrl=null;
+  document.getElementById('evtName').value = '';
+  document.getElementById('coverLabel').textContent = '↑ Upload gambar cover event';
+  coverDataUrl = null;
 }
-document.getElementById('coverInput').onchange=function(){
-  const f=this.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=e=>{coverDataUrl=e.target.result;document.getElementById('coverLabel').textContent='✓ '+f.name;};
+document.getElementById('coverInput').onchange = function(){
+  const f = this.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = e => {coverDataUrl = e.target.result; document.getElementById('coverLabel').textContent = '✓ ' + f.name;};
   r.readAsDataURL(f);
 };
 function saveEvent(){
-  const name=document.getElementById('evtName').value.trim();
-  if(!name){document.getElementById('evtName').focus();return;}
-  events.push({id:'ev_'+Date.now(),name,cover:coverDataUrl||null,photos:[]});
-  persist();buildGrid();closeAddModal();
+  const name = document.getElementById('evtName').value.trim();
+  if(!name){document.getElementById('evtName').focus(); return;}
+  events.push({id: 'ev_' + Date.now(), name, cover: coverDataUrl || null, photos: []});
+  syncToFirebase();
+  closeAddModal();
 }
 
 function openGallery(id){
-  currentId=id;
-  const ev=events.find(e=>e.id===id);if(!ev)return;
-  document.getElementById('galName').textContent=ev.name;
+  currentId = id;
+  const ev = events.find(e => e.id === id); if(!ev) return;
+  document.getElementById('galName').textContent = ev.name;
   renderGallery(ev);
   document.getElementById('galleryScreen').classList.add('open');
 }
-function closeGallery(){document.getElementById('galleryScreen').classList.remove('open');}
+function closeGallery(){currentId = null; document.getElementById('galleryScreen').classList.remove('open');}
+
 function renderGallery(ev){
-  const content=document.getElementById('galContent');
-  const photos=ev.photos||[];
-  if(!photos.length){content.innerHTML=`<div class="gallery-empty"><div class="big">IBK</div><p>Belum ada gambar</p><p style="color:#222;margin-top:4px">Tekan Upload Gambar untuk mula</p></div>`;return;}
-  content.innerHTML=`<div class="gallery-grid">${photos.map((p,i)=>`<div class="g-item"><img src="${p}" alt="Photo ${i+1}" onclick="openLightbox('${p}')"><button class="g-item-del" onclick="deletePhoto(${i},event)">×</button></div>`).join('')}</div>`;
+  const content = document.getElementById('galContent');
+  const photos = ev.photos || [];
+  if(!photos.length){content.innerHTML = `<div class="gallery-empty"><div class="big">IBK</div><p>Belum ada gambar</p><p style="color:#222;margin-top:4px">Tekan Upload Gambar untuk mula</p></div>`; return;}
+  content.innerHTML = `<div class="gallery-grid">${photos.map((p, i) => `<div class="g-item"><img src="${p}" alt="Photo ${i + 1}" onclick="openLightbox('${p}')"><button class="g-item-del" onclick="deletePhoto(${i},event)">×</button></div>`).join('')}</div>`;
 }
-document.getElementById('galUpload').onchange=function(){
-  const ev=events.find(e=>e.id===currentId);if(!ev)return;
-  if(!ev.photos)ev.photos=[];
-  const files=Array.from(this.files);let done=0;
-  files.forEach(f=>{
-    const r=new FileReader();
-    r.onload=e=>{ev.photos.push(e.target.result);done++;if(done===files.length){persist();buildGrid();renderGallery(ev);}};
+
+document.getElementById('galUpload').onchange = function(){
+  const ev = events.find(e => e.id === currentId); if(!ev) return;
+  if(!ev.photos) ev.photos = [];
+  const files = Array.from(this.files); let done = 0;
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      ev.photos.push(e.target.result);
+      done++;
+      if(done === files.length){
+        syncToFirebase();
+      }
+    };
     r.readAsDataURL(f);
   });
-  this.value='';
+  this.value = '';
 };
-function deletePhoto(idx,e){
+
+function deletePhoto(idx, e){
   e.stopPropagation();
-  const ev=events.find(e=>e.id===currentId);if(!ev)return;
-  if(!confirm('Padam gambar ini?'))return;
-  ev.photos.splice(idx,1);persist();buildGrid();renderGallery(ev);
+  const ev = events.find(e => e.id === currentId); if(!ev) return;
+  if(!confirm('Padam gambar ini?')) return;
+  ev.photos.splice(idx, 1);
+  syncToFirebase();
 }
+
 function deleteCurrentEvent(){
-  const ev=events.find(e=>e.id===currentId);if(!ev)return;
-  if(!confirm('Padam event "'+ev.name+'" dan semua gambarnya?'))return;
-  events=events.filter(e=>e.id!==currentId);
-  persist();buildGrid();closeGallery();
+  const ev = events.find(e => e.id === currentId); if(!ev) return;
+  if(!confirm('Padam event "' + ev.name + '" dan semua gambarnya?')) return;
+  events = events.filter(e => e.id !== currentId);
+  syncToFirebase();
+  closeGallery();
 }
 
-function openLightbox(src){document.getElementById('lightboxImg').src=src;document.getElementById('lightbox').classList.add('open');}
+function openLightbox(src){document.getElementById('lightboxImg').src = src; document.getElementById('lightbox').classList.add('open');}
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
-document.getElementById('lightbox').onclick=function(e){if(e.target===this)closeLightbox();};
-document.getElementById('addModal').onclick=function(e){if(e.target===this)closeAddModal();};
-document.getElementById('bgModal').onclick=function(e){if(e.target===this)closeBgModal();};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeGallery();closeAddModal();closeBgModal();}});
+document.getElementById('lightbox').onclick = function(e){if(e.target === this) closeLightbox();};
+document.getElementById('addModal').onclick = function(e){if(e.target === this) closeAddModal();};
+document.getElementById('bgModal').onclick = function(e){if(e.target === this) closeBgModal();};
+document.addEventListener('keydown', e => {if(e.key === 'Escape'){closeLightbox(); closeGallery(); closeAddModal(); closeBgModal();}});
 
-initSlideshow();
-buildStrip();
-buildGrid();
 </script>
 </body>
 </html>
