@@ -18,18 +18,24 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,15vw,12rem);line-height:.85;color:#fff;display:flex;flex-direction:column;align-items:center}
 .hero-title .sub{font-size:clamp(2rem,5vw,4rem);letter-spacing:10px;color:#888;font-family:'Inter',sans-serif;font-weight:300}
 .hero-badge{display:inline-block;margin-top:24px;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#555;border-top:1px solid #222;border-bottom:1px solid #222;padding:8px 24px}
-.hero-upload-btn{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:3;background:none;border:1px solid #333;color:#555;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
-.hero-upload-btn:hover{border-color:#aaa;color:#aaa}
 #heroFileInput{display:none}
-.polaroid-section{background:#000;overflow:hidden;border-top:1px solid #111;border-bottom:1px solid #111}
+
+.polaroid-section{background:#000;overflow:hidden;border-top:1px solid #111;border-bottom:1px solid #111;position:relative}
 .polaroid-track-wrap{overflow:hidden;padding:50px 0;position:relative}
 .polaroid-track-wrap::before,.polaroid-track-wrap::after{content:'';position:absolute;top:0;bottom:0;width:140px;z-index:2;pointer-events:none}
 .polaroid-track-wrap::before{left:0;background:linear-gradient(to right,#000,transparent)}
 .polaroid-track-wrap::after{right:0;background:linear-gradient(to left,#000,transparent)}
-.polaroid-track{display:flex;gap:28px;animation:scrollLeft 35s linear infinite;width:max-content;align-items:center}
-.polaroid-track:hover{animation-play-state:paused}
-@keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.polaroid{background:#fff;padding:12px 12px 36px;box-shadow:4px 4px 20px rgba(0,0,0,.8);flex-shrink:0;transform-origin:bottom center;transition:transform .3s;cursor:pointer;position:relative}
+.polaroid-track{display:flex;gap:28px;width:max-content;align-items:center;transition:transform .4s cubic-bezier(.25,.46,.45,.94)}
+.polaroid-track.animating{animation:none}
+.polaroid-track.auto{animation:scrollLeft 35s linear infinite}
+@keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(calc(-50% - 14px))}}
+
+.pol-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:rgba(255,255,255,0.08);border:1px solid #333;color:#fff;width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;backdrop-filter:blur(4px)}
+.pol-nav:hover{background:rgba(255,255,255,0.18);border-color:#888}
+.pol-nav.left{left:16px}
+.pol-nav.right{right:16px}
+
+.polaroid{background:#fff;padding:10px 10px 30px;box-shadow:4px 4px 20px rgba(0,0,0,.8);flex-shrink:0;transform-origin:bottom center;transition:transform .3s;cursor:pointer;position:relative}
 .polaroid:nth-child(odd){transform:rotate(-2deg)}
 .polaroid:nth-child(even){transform:rotate(2deg)}
 .polaroid:hover{transform:rotate(0deg) scale(1.08) translateY(-8px);z-index:10}
@@ -37,7 +43,8 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .pol-placeholder{background:#ddd;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase;flex-direction:column;gap:4px}
 .pol-placeholder span{font-size:22px;color:#ccc}
 .pol-label{font-family:'Inter',sans-serif;font-size:9px;color:#555;text-align:center;margin-top:10px;letter-spacing:1px}
-.section-hdr{padding:60px 60px 0;display:flex;align-items:baseline;justify-content:space-between}
+
+.section-hdr{padding:60px 60px 0}
 .section-label{font-size:10px;letter-spacing:5px;color:#444;text-transform:uppercase}
 .section-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;color:#fff}
 .events-section{padding:40px 60px 100px}
@@ -46,14 +53,16 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .event-card-img{width:100%;height:100%;object-fit:cover;transition:transform .5s,opacity .3s;opacity:.7}
 .event-card:hover .event-card-img{transform:scale(1.05);opacity:1}
 .event-card-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#0d0d0d;color:#222;font-size:48px}
-.event-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9),transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px;transition:background .3s}
+.event-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9),transparent 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
 .event-card:hover .event-card-overlay{background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.2) 60%)}
 .event-card-name{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;line-height:1}
 .event-card-count{font-size:10px;color:#555;margin-top:6px;letter-spacing:1px}
 .no-events{text-align:center;padding:80px 20px;color:#333;font-size:11px;letter-spacing:4px;text-transform:uppercase;grid-column:1/-1}
+
 .fab{position:fixed;bottom:36px;right:36px;width:60px;height:60px;background:#fff;border-radius:50%;border:none;cursor:pointer;z-index:500;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 24px rgba(0,0,0,.5);transition:transform .2s,background .2s}
 .fab:hover{transform:scale(1.1) rotate(90deg);background:#e0e0e0}
 .fab svg{width:28px;height:28px;stroke:#000;fill:none;stroke-width:2.5;stroke-linecap:round}
+
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:1000;align-items:center;justify-content:center;padding:20px}
 .modal-bg.open{display:flex}
 .modal{background:#0d0d0d;border:1px solid #1e1e1e;width:100%;max-width:460px;padding:40px;position:relative}
@@ -71,6 +80,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .btn-ghost:hover{border-color:#555;color:#aaa}
 .close-x{position:absolute;top:16px;right:20px;background:none;border:none;color:#555;font-size:24px;cursor:pointer;line-height:1;font-family:'Inter',sans-serif}
 .close-x:hover{color:#fff}
+
 .gallery-screen{display:none;position:fixed;inset:0;background:#000;z-index:800;flex-direction:column}
 .gallery-screen.open{display:flex}
 .gallery-topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid #111;background:#000;flex-shrink:0}
@@ -81,7 +91,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .gallery-topbar-right{display:flex;gap:12px;align-items:center}
 .btn-danger{background:transparent;color:#c00;border:1px solid #300;padding:10px 20px;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
 .btn-danger:hover{background:#200;border-color:#600;color:#f44}
-.upload-label{display:inline-block;background:#fff;color:#000;padding:10px 22px;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s;border:none}
+.upload-label{display:inline-block;background:#fff;color:#000;padding:10px 22px;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s}
 .upload-label:hover{background:#ddd}
 .upload-label input{display:none}
 .gallery-body{flex:1;overflow-y:auto;padding:4px}
@@ -92,13 +102,14 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .g-item-del{position:absolute;top:8px;right:8px;width:28px;height:28px;background:rgba(0,0,0,.85);border:none;border-radius:50%;color:#fff;font-size:16px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:background .2s;line-height:1}
 .g-item:hover .g-item-del{display:flex}
 .g-item-del:hover{background:#c00}
-.gallery-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;gap:12px;color:#2a2a2a}
+.gallery-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;gap:12px}
 .gallery-empty .big{font-family:'Bebas Neue',sans-serif;font-size:80px;color:#111}
 .gallery-empty p{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#333}
+
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:1200;align-items:center;justify-content:center}
 .lightbox.open{display:flex}
 .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain}
-.lightbox-close{position:absolute;top:20px;right:28px;background:none;border:none;color:#fff;font-size:36px;cursor:pointer;font-family:'Inter',sans-serif;line-height:1}
+.lightbox-close{position:absolute;top:20px;right:28px;background:none;border:none;color:#fff;font-size:36px;cursor:pointer;line-height:1}
 .lightbox-close:hover{color:#aaa}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:#000}
@@ -107,7 +118,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 </head>
 <body>
 
-<section class="hero" id="hero">
+<section class="hero">
   <div class="hero-bg"><img id="heroBg" alt="Class Photo"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -118,27 +129,26 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
     </div>
     <div class="hero-badge">Sekolah Menengah · 2025</div>
   </div>
-  <button class="hero-upload-btn" onclick="document.getElementById('heroFileInput').click()">↑ Upload Class Photo</button>
   <input type="file" id="heroFileInput" accept="image/*">
 </section>
 
 <div class="polaroid-section">
+  <button class="pol-nav left" id="polLeft">&#8249;</button>
+  <button class="pol-nav right" id="polRight">&#8250;</button>
   <div class="polaroid-track-wrap">
-    <div class="polaroid-track" id="polaroidTrack"></div>
+    <div class="polaroid-track auto" id="polaroidTrack"></div>
   </div>
 </div>
 
 <div class="section-hdr" id="events">
-  <div>
-    <p class="section-label">Koleksi Kelas</p>
-    <h2 class="section-title">EVENTS</h2>
-  </div>
+  <p class="section-label">Koleksi Kelas</p>
+  <h2 class="section-title">EVENTS</h2>
 </div>
 <section class="events-section">
   <div class="events-grid" id="eventsGrid"></div>
 </section>
 
-<button class="fab" onclick="openAddModal()" title="Tambah Event">
+<button class="fab" onclick="openAddModal()">
   <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
 
@@ -169,9 +179,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
       <label class="upload-label">↑ Upload Gambar<input type="file" id="galUpload" accept="image/*" multiple></label>
     </div>
   </div>
-  <div class="gallery-body">
-    <div id="galContent"></div>
-  </div>
+  <div class="gallery-body"><div id="galContent"></div></div>
 </div>
 
 <div class="lightbox" id="lightbox">
@@ -186,20 +194,28 @@ try{memberPhotos=JSON.parse(localStorage.getItem('ibk_members'))||[];}catch(e){}
 if(!Array.isArray(memberPhotos)||memberPhotos.length!==25)memberPhotos=Array(25).fill(null);
 let currentId=null,coverDataUrl=null;
 
-function persist(){localStorage.setItem('ibk_events',JSON.stringify(events));localStorage.setItem('ibk_members',JSON.stringify(memberPhotos));}
+function persist(){
+  localStorage.setItem('ibk_events',JSON.stringify(events));
+  localStorage.setItem('ibk_members',JSON.stringify(memberPhotos));
+}
 
+const savedHero=localStorage.getItem('ibk_heroBg');
+if(savedHero){const img=document.getElementById('heroBg');img.src=savedHero;img.classList.add('loaded');}
 document.getElementById('heroFileInput').onchange=function(){
   const f=this.files[0];if(!f)return;
   const r=new FileReader();
-  r.onload=e=>{localStorage.setItem('ibk_heroBg',e.target.result);setHeroBg(e.target.result);};
+  r.onload=e=>{localStorage.setItem('ibk_heroBg',e.target.result);const img=document.getElementById('heroBg');img.src=e.target.result;img.classList.add('loaded');};
   r.readAsDataURL(f);
 };
-function setHeroBg(src){const img=document.getElementById('heroBg');img.src=src;img.classList.add('loaded');}
-const savedHero=localStorage.getItem('ibk_heroBg');
-if(savedHero)setHeroBg(savedHero);
+
+// ── POLAROID STRIP with < > nav ──
+const track=document.getElementById('polaroidTrack');
+let polOffset=0;
+let isAuto=true;
+let autoTimer=null;
+const ITEM_W=154; // polaroid width + gap approx
 
 function buildStrip(){
-  const track=document.getElementById('polaroidTrack');
   let html='';
   for(let pass=0;pass<2;pass++){
     for(let i=0;i<25;i++){
@@ -208,13 +224,44 @@ function buildStrip(){
       const size=isCentre?176:126;
       const pad=isCentre?'12px 12px 36px':'10px 10px 30px';
       html+=`<div class="polaroid" style="padding:${pad}" onclick="openMemberUpload(${i})">`;
-      if(src){html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="Member ${i+1}">`;}
+      if(src){html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="M${i+1}">`;}
       else{html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;}
       html+=`<div class="pol-label">${src?'Member '+(i+1):'Klik upload'}</div></div>`;
     }
   }
   track.innerHTML=html;
 }
+
+function stopAuto(){
+  isAuto=false;
+  track.classList.remove('auto');
+  track.style.transform=`translateX(${polOffset}px)`;
+  clearTimeout(autoTimer);
+}
+
+function resumeAuto(){
+  clearTimeout(autoTimer);
+  autoTimer=setTimeout(()=>{
+    isAuto=true;
+    polOffset=0;
+    track.style.transform='';
+    track.classList.add('auto');
+  },4000);
+}
+
+function slideBy(dir){
+  stopAuto();
+  polOffset+=dir*-(ITEM_W);
+  const maxOffset=-(25*ITEM_W);
+  if(polOffset<maxOffset)polOffset=0;
+  if(polOffset>0)polOffset=maxOffset+ITEM_W;
+  track.style.transition='transform .4s cubic-bezier(.25,.46,.45,.94)';
+  track.style.transform=`translateX(${polOffset}px)`;
+  resumeAuto();
+}
+
+document.getElementById('polLeft').onclick=()=>slideBy(-1);
+document.getElementById('polRight').onclick=()=>slideBy(1);
 
 function openMemberUpload(idx){
   const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
@@ -227,6 +274,7 @@ function openMemberUpload(idx){
   inp.click();
 }
 
+// ── EVENTS ──
 function buildGrid(){
   const grid=document.getElementById('eventsGrid');
   if(!events.length){grid.innerHTML='<div class="no-events">Tiada event — tekan + untuk tambah</div>';return;}
@@ -247,14 +295,12 @@ function closeAddModal(){
   document.getElementById('coverLabel').textContent='↑ Upload gambar cover event';
   coverDataUrl=null;
 }
-
 document.getElementById('coverInput').onchange=function(){
   const f=this.files[0];if(!f)return;
   const r=new FileReader();
   r.onload=e=>{coverDataUrl=e.target.result;document.getElementById('coverLabel').textContent='✓ '+f.name;};
   r.readAsDataURL(f);
 };
-
 function saveEvent(){
   const name=document.getElementById('evtName').value.trim();
   if(!name){document.getElementById('evtName').focus();return;}
@@ -268,17 +314,14 @@ function openGallery(id){
   document.getElementById('galName').textContent=ev.name;
   renderGallery(ev);
   document.getElementById('galleryScreen').classList.add('open');
-  document.getElementById('galleryScreen').scrollTop=0;
 }
 function closeGallery(){document.getElementById('galleryScreen').classList.remove('open');}
-
 function renderGallery(ev){
   const content=document.getElementById('galContent');
   const photos=ev.photos||[];
-  if(!photos.length){content.innerHTML=`<div class="gallery-empty"><div class="big">IBK</div><p>Belum ada gambar</p><p style="color:#222">Tekan Upload Gambar untuk mula</p></div>`;return;}
+  if(!photos.length){content.innerHTML=`<div class="gallery-empty"><div class="big">IBK</div><p>Belum ada gambar</p><p style="color:#222;margin-top:4px">Tekan Upload Gambar untuk mula</p></div>`;return;}
   content.innerHTML=`<div class="gallery-grid">${photos.map((p,i)=>`<div class="g-item"><img src="${p}" alt="Photo ${i+1}" onclick="openLightbox('${p}')"><button class="g-item-del" onclick="deletePhoto(${i},event)">×</button></div>`).join('')}</div>`;
 }
-
 document.getElementById('galUpload').onchange=function(){
   const ev=events.find(e=>e.id===currentId);if(!ev)return;
   if(!ev.photos)ev.photos=[];
@@ -290,14 +333,12 @@ document.getElementById('galUpload').onchange=function(){
   });
   this.value='';
 };
-
 function deletePhoto(idx,e){
   e.stopPropagation();
   const ev=events.find(e=>e.id===currentId);if(!ev)return;
   if(!confirm('Padam gambar ini?'))return;
   ev.photos.splice(idx,1);persist();buildGrid();renderGallery(ev);
 }
-
 function deleteCurrentEvent(){
   const ev=events.find(e=>e.id===currentId);if(!ev)return;
   if(!confirm('Padam event "'+ev.name+'" dan semua gambarnya?'))return;
