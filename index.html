@@ -236,7 +236,6 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-// KOD CONFIG FIREBASE KAU YANG ASLI
 const firebaseConfig = {
   apiKey: "AIzaSyC9nXPZMXkS6EyEgOwIZ6NHuKX2DOa1uKA",
   authDomain: "ibk-465f5.firebaseapp.com",
@@ -248,7 +247,6 @@ const firebaseConfig = {
   databaseURL: "https://ibk-465f5-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
-// Hubungkan ke Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
@@ -269,14 +267,16 @@ let slideIndex = 0;
 let slideTimer = null;
 const ITEM_W = 200;
 
-// SINKRONISASI DATA REAL-TIME DARI FIREBASE KAU
+// SINKRONISASI DATA REAL-TIME (DENGAN FIX DATABASE KOSONG)
 db.ref('galleryData').on('value', (snapshot) => {
   const data = snapshot.val() || {};
+  
   events = data.events || [];
   heroSlides = data.heroSlides || [];
-  memberPhotos = data.memberPhotos || Array(25).fill(null);
   
-  if(!Array.isArray(memberPhotos) || memberPhotos.length !== 25) {
+  if (data.memberPhotos && Array.isArray(data.memberPhotos) && data.memberPhotos.length === 25) {
+    memberPhotos = data.memberPhotos;
+  } else {
     memberPhotos = Array(25).fill(null);
   }
 
