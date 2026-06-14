@@ -5,182 +5,135 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>5 IBK Galleries</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
 body{background:#0a0a0a;color:white}
 
-/* HERO */
-.hero{
-    height:100vh;
-    position:relative;
-    overflow:hidden;
-}
-.hero img{
-    position:absolute;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    opacity:0;
-    transition:1s;
-}
-.hero img.active{opacity:1}
-.hero::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.6);
-}
-.hero-content{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    text-align:center;
-}
-.hero-content h1{
-    font-size:55px;
-    font-weight:900;
-}
-
 /* EVENTS */
-.container{
-    padding:80px 8%;
-}
+.container{padding:80px 8%}
 
 .events{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
 }
 
-/* FULL CLICK CARD */
+/* CARD FIX */
 .card{
-    background:#111;
-    padding:18px;
-    border-radius:12px;
-    cursor:pointer;
-    position:relative;
-    transition:0.2s;
+  background:#111;
+  padding:18px;
+  border-radius:12px;
+  position:relative;
+  cursor:pointer;
+  user-select:none;
+  transition:0.2s;
 }
 
 .card:hover{
-    background:#1a1a1a;
-    transform:scale(1.02);
+  background:#1a1a1a;
+  transform:scale(1.02);
 }
 
 .title{
-    font-size:15px;
-    font-weight:600;
+  font-weight:600;
 }
 
-/* DELETE */
+/* DELETE BUTTON */
 .del{
-    position:absolute;
-    top:10px;
-    right:10px;
-    background:none;
-    border:none;
-    color:white;
-    opacity:0.5;
-    cursor:pointer;
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:none;
+  border:none;
+  color:white;
+  opacity:0.5;
+  cursor:pointer;
 }
 
-/* VIEW */
+/* GALLERY */
 #galleryPage{
-    display:none;
-    padding:80px 8%;
+  display:none;
+  padding:80px 8%;
 }
 
 .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-    gap:10px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+  gap:10px;
 }
 
 .grid img{
-    width:100%;
-    height:120px;
-    object-fit:cover;
-    border-radius:8px;
+  width:100%;
+  height:120px;
+  object-fit:cover;
+  border-radius:8px;
 }
 
-/* FLOAT BUTTON */
+/* FLOAT */
 .fab{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    width:60px;
-    height:60px;
-    border-radius:50%;
-    background:white;
-    color:black;
-    font-size:28px;
-    border:none;
-    cursor:pointer;
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:white;
+  color:black;
+  font-size:28px;
+  border:none;
+  cursor:pointer;
 }
 
 /* PANEL */
 .panel{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.85);
-    display:none;
-    justify-content:center;
-    align-items:center;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  justify-content:center;
+  align-items:center;
 }
 
 .box{
-    width:320px;
-    background:#111;
-    padding:20px;
-    border-radius:12px;
+  width:320px;
+  background:#111;
+  padding:20px;
+  border-radius:12px;
 }
 
 .box input,.box select{
-    width:100%;
-    padding:10px;
-    margin:8px 0;
-    background:#1a1a1a;
-    border:none;
-    color:white;
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  background:#1a1a1a;
+  border:none;
+  color:white;
 }
 
 .box button{
-    width:100%;
-    padding:10px;
-    background:white;
-    border:none;
-    cursor:pointer;
-    font-weight:600;
+  width:100%;
+  padding:10px;
+  background:white;
+  border:none;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
-<section class="hero">
-    <img class="slide active" src="https://picsum.photos/id/1011/1600/900">
-    <img class="slide" src="https://picsum.photos/id/1015/1600/900">
-    <img class="slide" src="https://picsum.photos/id/1016/1600/900">
-
-    <div class="hero-content">
-        <h1>5 IBK GALLERIES</h1>
-    </div>
-</section>
-
 <!-- EVENTS -->
-<div class="container" id="home">
-    <h2 style="margin-bottom:20px;">Events</h2>
-    <div class="events" id="events"></div>
+<div class="container">
+  <h2>Events</h2>
+  <div class="events" id="events"></div>
 </div>
 
 <!-- GALLERY -->
 <div id="galleryPage">
-    <h2 id="title"></h2>
-    <div class="grid" id="grid"></div>
+  <h2 id="title"></h2>
+  <div class="grid" id="grid"></div>
 </div>
 
 <!-- FLOAT -->
@@ -188,137 +141,142 @@ body{background:#0a0a0a;color:white}
 
 <!-- PANEL -->
 <div class="panel" id="panel">
-    <div class="box">
+  <div class="box">
 
-        <select id="mode" onchange="modeChange()">
-            <option value="upload">Upload Image</option>
-            <option value="add">Add Event</option>
-        </select>
+    <select id="mode" onchange="modeChange()">
+      <option value="upload">Upload Image</option>
+      <option value="add">Add Event</option>
+    </select>
 
-        <select id="eventSelect"></select>
+    <select id="eventSelect"></select>
 
-        <input type="text" id="eventName" placeholder="Event name" style="display:none;">
+    <input type="text" id="eventName" placeholder="Event name" style="display:none">
 
-        <input type="file" id="file">
+    <input type="file" id="file">
 
-        <button onclick="action()">CONFIRM</button>
+    <button onclick="action()">CONFIRM</button>
 
-    </div>
+  </div>
 </div>
 
 <script>
 
-/* SLIDE */
-let s=document.querySelectorAll(".slide")
-let i=0
-setInterval(()=>{
-    s[i].classList.remove("active")
-    i=(i+1)%s.length
-    s[i].classList.add("active")
-},4000)
-
-/* DATA */
-let data={}
-let current=""
+let data = {}
+let current = ""
 
 /* INIT */
-["Hari Sukan","Graduasi","Hari Guru"].forEach(add)
+["Hari Sukan","Graduasi","Hari Guru"].forEach(addEvent)
 
-function add(name){
+function addEvent(name){
 
-    data[name]=[]
+  data[name] = []
 
-    let div=document.createElement("div")
-    div.className="card"
+  let div = document.createElement("div")
+  div.className = "card"
+  div.dataset.name = name   // 🔥 IMPORTANT
 
-    div.innerHTML=`
-        <div class="title">${name}</div>
-        <button class="del" onclick="del('${name}',event)">✕</button>
-    `
+  div.innerHTML = `
+    <div class="title">${name}</div>
+    <button class="del">✕</button>
+  `
 
-    div.onclick=()=>openEvent(name)
+  /* CLICK EVENT (FULL CARD) */
+  div.addEventListener("click", function(e){
 
-    document.getElementById("events").appendChild(div)
+    if(e.target.classList.contains("del")) return
 
-    updateSelect()
+    open(name)
+
+  })
+
+  /* DELETE SAFE */
+  div.querySelector(".del").addEventListener("click", function(e){
+    e.stopPropagation()
+    delete data[name]
+    location.reload()
+  })
+
+  document.getElementById("events").appendChild(div)
+
+  updateSelect()
 }
 
 function updateSelect(){
-    let sel=document.getElementById("eventSelect")
-    sel.innerHTML=""
-    Object.keys(data).forEach(e=>{
-        let opt=document.createElement("option")
-        opt.value=e
-        opt.textContent=e
-        sel.appendChild(opt)
-    })
+  let sel = document.getElementById("eventSelect")
+  sel.innerHTML = ""
+  Object.keys(data).forEach(e=>{
+    let opt = document.createElement("option")
+    opt.value = e
+    opt.textContent = e
+    sel.appendChild(opt)
+  })
 }
 
 /* OPEN EVENT */
-function openEvent(name){
-    current=name
-    document.getElementById("home").style.display="none"
-    document.getElementById("galleryPage").style.display="block"
-    document.getElementById("title").innerText=name
-    render()
+function open(name){
+  current = name
+  document.getElementById("galleryPage").style.display = "block"
+  document.getElementById("title").innerText = name
+  render()
 }
 
 /* RENDER */
 function render(){
-    let g=document.getElementById("grid")
-    g.innerHTML=""
-    data[current].forEach(src=>{
-        let img=document.createElement("img")
-        img.src=src
-        g.appendChild(img)
-    })
-}
+  let g = document.getElementById("grid")
+  g.innerHTML = ""
 
-/* DELETE */
-function del(name,e){
-    e.stopPropagation()
-    delete data[name]
-    location.reload()
+  data[current].forEach(src=>{
+    let img = document.createElement("img")
+    img.src = src
+    g.appendChild(img)
+  })
 }
 
 /* PANEL */
 function openPanel(){
-    document.getElementById("panel").style.display="flex"
+  document.getElementById("panel").style.display = "flex"
 }
 
 function modeChange(){
 
-    let m=document.getElementById("mode").value
+  let m = document.getElementById("mode").value
 
-    document.getElementById("eventSelect").style.display=m==="upload"?"block":"none"
-    document.getElementById("file").style.display=m==="upload"?"block":"none"
-    document.getElementById("eventName").style.display=m==="add"?"block":"none"
+  document.getElementById("eventSelect").style.display = m==="upload"?"block":"none"
+  document.getElementById("file").style.display = m==="upload"?"block":"none"
+  document.getElementById("eventName").style.display = m==="add"?"block":"none"
 }
 
 function action(){
 
-    let m=document.getElementById("mode").value
+  let mode = document.getElementById("mode").value
 
-    if(m==="add"){
-        let name=document.getElementById("eventName").value
-        if(!name) return
-        add(name)
+  if(mode==="add"){
+    let name = document.getElementById("eventName").value
+    if(!name) return
+    addEvent(name)
+  }
+
+  if(mode==="upload"){
+
+    let file = document.getElementById("file").files[0]
+    let event = document.getElementById("eventSelect").value
+
+    if(!file || !event) return
+
+    let reader = new FileReader()
+
+    reader.onload = function(e){
+
+      data[event].push(e.target.result)
+
+      if(event === current) render()
+
     }
 
-    if(m==="upload"){
-        let file=document.getElementById("file").files[0]
-        let event=document.getElementById("eventSelect").value
-        if(!file) return
+    reader.readAsDataURL(file)
+  }
 
-        let reader=new FileReader()
-        reader.onload=(e)=>{
-            data[event].push(e.target.result)
-            if(event===current) render()
-        }
-        reader.readAsDataURL(file)
-    }
-
-    document.getElementById("panel").style.display="none"
+  document.getElementById("panel").style.display = "none"
 }
 
 </script>
