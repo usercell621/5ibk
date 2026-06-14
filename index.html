@@ -1,48 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 IBK Galleries</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+body{
+    background:#0a0a0a;
+    color:white;
+}
+
+/* NAVBAR */
+nav{
+    position:fixed;
+    top:0;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 8%;
+    background:rgba(0,0,0,0.4);
+    backdrop-filter:blur(10px);
+    z-index:10;
+}
+
+.logo{
+    font-weight:800;
+    letter-spacing:2px;
+}
+
+nav ul{
+    display:flex;
+    gap:20px;
+    list-style:none;
+    font-size:14px;
+    opacity:0.8;
+}
+
+/* HERO */
+.hero{
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero img{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    transition:1s;
+}
+
+.hero img.active{
+    opacity:1;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+}
+
+.hero-content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align:center;
+    z-index:2;
+}
+
+.hero-content h1{
+    font-size:60px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+
+.hero-content p{
+    margin-top:10px;
+    opacity:0.7;
+}
+
+.btn{
+    margin-top:20px;
+    padding:12px 25px;
+    border:none;
+    background:white;
+    color:black;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* SECTION */
+.container{
+    padding:80px 8%;
+}
+
+.section-title{
+    font-size:24px;
+    margin-bottom:20px;
+    font-weight:700;
+}
+
+/* UPLOAD */
+.upload-box{
+    background:#111;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:40px;
+}
+
+input,select{
+    padding:10px;
+    margin:10px 0;
+    width:100%;
+    background:#1a1a1a;
+    border:none;
+    color:white;
+    border-radius:8px;
+}
+
+button{
+    padding:10px 15px;
+    border:none;
+    background:white;
+    color:black;
+    font-weight:600;
+    cursor:pointer;
+    border-radius:8px;
+}
+
+/* EVENTS */
+.events{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#111;
+    padding:15px;
+    border-radius:12px;
+}
+
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
+    gap:8px;
+    margin-top:10px;
+}
+
+.gallery img{
+    width:100%;
+    height:90px;
+    object-fit:cover;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.gallery img:hover{
+    transform:scale(1.05);
+}
+
+/* MODAL */
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.95);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:999;
+}
+
+.modal img{
+    max-width:90%;
+    max-height:80vh;
+    border-radius:10px;
+}
+
+.actions{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+.actions button{
+    background:white;
+    color:black;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
 <nav>
-    <div class="logo">5 IBK Galleries</div>
+    <div class="logo">5 IBK GALLERIES</div>
+    <ul>
+        <li>Home</li>
+        <li>Events</li>
+        <li onclick="addEvent()" style="cursor:pointer;">+ Add Event</li>
+    </ul>
 </nav>
 
-<button onclick="addEvent()">+ Add Event</button>
+<!-- HERO -->
+<section class="hero">
 
-<select id="eventSelect">
-    <option>Hari Sukan</option>
-    <option>Hari Guru</option>
-    <option>Graduasi</option>
-</select>
+    <img class="slide active" src="https://picsum.photos/id/1011/1600/900">
+    <img class="slide" src="https://picsum.photos/id/1015/1600/900">
+    <img class="slide" src="https://picsum.photos/id/1016/1600/900">
 
-<input type="file" id="imageInput" accept="image/*">
-<button onclick="uploadImage()">Upload</button>
-
-<div class="events" id="eventsContainer">
-
-    <div class="event-card">
-        <h3>Hari Sukan</h3>
-        <div class="gallery" id="Hari Sukan"></div>
+    <div class="hero-content">
+        <h1>5 IBK GALLERIES</h1>
+        <p>Preserving every moment, every memory.</p>
+        <button class="btn" onclick="document.getElementById('upload').scrollIntoView()">Explore</button>
     </div>
 
-    <div class="event-card">
-        <h3>Hari Guru</h3>
-        <div class="gallery" id="Hari Guru"></div>
+</section>
+
+<!-- UPLOAD -->
+<div class="container" id="upload">
+
+    <div class="upload-box">
+
+        <h2 class="section-title">Upload Memory</h2>
+
+        <select id="eventSelect"></select>
+
+        <input type="file" id="fileInput">
+
+        <button onclick="uploadImage()">Upload</button>
+
     </div>
 
-    <div class="event-card">
-        <h3>Graduasi</h3>
-        <div class="gallery" id="Graduasi"></div>
+    <h2 class="section-title">Events</h2>
+
+    <div class="events" id="events">
+
+        <div class="card">
+            <h3>Hari Sukan</h3>
+            <div class="gallery" id="Hari Sukan"></div>
+        </div>
+
+        <div class="card">
+            <h3>Graduasi</h3>
+            <div class="gallery" id="Graduasi"></div>
+        </div>
+
+        <div class="card">
+            <h3>Hari Guru</h3>
+            <div class="gallery" id="Hari Guru"></div>
+        </div>
+
     </div>
 
 </div>
 
-<div class="modal" id="imageModal">
-    <img id="modalImage">
+<!-- MODAL -->
+<div class="modal" id="modal">
 
-    <div class="modal-actions">
+    <img id="modalImg">
 
-        <a id="downloadBtn" download>
+    <div class="actions">
+
+        <a id="downloadLink" download>
             <button>Download</button>
         </a>
 
-        <button id="deleteBtn">Delete</button>
+        <button onclick="deleteImg()">Delete</button>
         <button onclick="closeModal()">Close</button>
 
     </div>
+
 </div>
+
+<script>
+
+let currentWrapper = null;
+
+/* HERO SLIDESHOW */
+let slides = document.querySelectorAll(".slide");
+let i = 0;
+
+setInterval(()=>{
+    slides[i].classList.remove("active");
+    i = (i+1) % slides.length;
+    slides[i].classList.add("active");
+},4000);
+
+/* INIT EVENTS */
+let eventSelect = document.getElementById("eventSelect");
+
+function initEvents(){
+    document.querySelectorAll(".card h3").forEach(e=>{
+        let opt = document.createElement("option");
+        opt.value = e.innerText;
+        opt.textContent = e.innerText;
+        eventSelect.appendChild(opt);
+    });
+}
+initEvents();
+
+/* ADD EVENT */
+function addEvent(){
+
+    let name = prompt("Nama event baru:");
+
+    if(!name) return;
+
+    let card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+        <h3>${name}</h3>
+        <div class="gallery" id="${name}"></div>
+    `;
+
+    document.getElementById("events").appendChild(card);
+
+    let opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+
+    eventSelect.appendChild(opt);
+}
+
+/* UPLOAD */
+function uploadImage(){
+
+    let file = document.getElementById("fileInput").files[0];
+    let event = document.getElementById("eventSelect").value;
+
+    if(!file || !event) return;
+
+    let reader = new FileReader();
+
+    reader.onload = function(e){
+
+        let img = document.createElement("img");
+        let wrapper = document.createElement("div");
+
+        img.src = e.target.result;
+
+        img.onclick = () => openModal(img.src, wrapper);
+
+        wrapper.appendChild(img);
+
+        document.getElementById(event).appendChild(wrapper);
+    }
+
+    reader.readAsDataURL(file);
+}
+
+/* MODAL */
+function openModal(src, wrapper){
+
+    currentWrapper = wrapper;
+
+    document.getElementById("modal").style.display="flex";
+    document.getElementById("modalImg").src = src;
+    document.getElementById("downloadLink").href = src;
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display="none";
+}
+
+function deleteImg(){
+    if(currentWrapper){
+        currentWrapper.remove();
+        closeModal();
+    }
+}
+
+</script>
+
+</body>
+</html>
