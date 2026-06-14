@@ -5,47 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>5 IBK Galleries</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Inter',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
+body{background:#0a0a0a;color:white}
 
-body{
-    background:#0a0a0a;
-    color:white;
-}
-
-/* NAVBAR */
+/* NAV */
 nav{
     position:fixed;
     top:0;
     width:100%;
+    padding:20px 8%;
     display:flex;
     justify-content:space-between;
-    align-items:center;
-    padding:20px 8%;
     background:rgba(0,0,0,0.4);
     backdrop-filter:blur(10px);
     z-index:10;
 }
-
-.logo{
-    font-weight:800;
-    letter-spacing:2px;
-}
-
-nav ul{
-    display:flex;
-    gap:20px;
-    list-style:none;
-    font-size:14px;
-    opacity:0.8;
-}
+.logo{font-weight:800;letter-spacing:2px}
 
 /* HERO */
 .hero{
@@ -53,7 +31,6 @@ nav ul{
     position:relative;
     overflow:hidden;
 }
-
 .hero img{
     position:absolute;
     width:100%;
@@ -62,133 +39,131 @@ nav ul{
     opacity:0;
     transition:1s;
 }
-
-.hero img.active{
-    opacity:1;
-}
-
+.hero img.active{opacity:1}
 .hero::after{
     content:"";
     position:absolute;
     inset:0;
     background:rgba(0,0,0,0.6);
 }
-
 .hero-content{
     position:absolute;
-    top:50%;
-    left:50%;
+    top:50%;left:50%;
     transform:translate(-50%,-50%);
     text-align:center;
-    z-index:2;
+}
+.hero-content h1{font-size:55px;font-weight:800}
+.hero-content p{opacity:.7;margin-top:10px}
+
+/* BUTTON + FLOAT */
+.fab-container{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    z-index:20;
 }
 
-.hero-content h1{
-    font-size:60px;
-    font-weight:900;
-    letter-spacing:3px;
-}
-
-.hero-content p{
-    margin-top:10px;
-    opacity:0.7;
-}
-
-.btn{
-    margin-top:20px;
-    padding:12px 25px;
-    border:none;
+.fab{
+    width:55px;
+    height:55px;
+    border-radius:50%;
     background:white;
     color:black;
-    font-weight:600;
-    cursor:pointer;
-}
-
-/* SECTION */
-.container{
-    padding:80px 8%;
-}
-
-.section-title{
-    font-size:24px;
-    margin-bottom:20px;
-    font-weight:700;
-}
-
-/* UPLOAD */
-.upload-box{
-    background:#111;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:40px;
-}
-
-input,select{
-    padding:10px;
-    margin:10px 0;
-    width:100%;
-    background:#1a1a1a;
+    font-size:22px;
     border:none;
-    color:white;
-    border-radius:8px;
-}
-
-button{
-    padding:10px 15px;
-    border:none;
-    background:white;
-    color:black;
-    font-weight:600;
     cursor:pointer;
-    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
 /* EVENTS */
+.container{padding:80px 8%}
+.section-title{margin-bottom:20px;font-weight:700}
+
 .events{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
     gap:20px;
 }
 
 .card{
     background:#111;
-    padding:15px;
+    padding:20px;
     border-radius:12px;
+    cursor:pointer;
+    position:relative;
 }
 
-.gallery{
+.card h3{font-weight:600}
+
+.del-event{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:red;
+    border:none;
+    color:white;
+    border-radius:6px;
+    padding:5px;
+    cursor:pointer;
+}
+
+/* GALLERY VIEW */
+.viewer{
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:none;
+    flex-direction:column;
+    overflow-y:auto;
+    z-index:999;
+}
+
+.viewer-header{
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    background:#000;
+}
+
+.viewer-title{font-weight:700}
+
+.grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
-    gap:8px;
-    margin-top:10px;
+    grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+    gap:10px;
+    padding:20px;
 }
 
-.gallery img{
+.grid img{
     width:100%;
-    height:90px;
+    height:120px;
     object-fit:cover;
     border-radius:8px;
     cursor:pointer;
-    transition:0.3s;
 }
 
-.gallery img:hover{
-    transform:scale(1.05);
-}
-
-/* MODAL */
-.modal{
+/* FULL IMAGE */
+.full{
     position:fixed;
     inset:0;
     background:rgba(0,0,0,0.95);
     display:none;
-    justify-content:center;
     align-items:center;
+    justify-content:center;
     flex-direction:column;
-    z-index:999;
+    z-index:1000;
 }
 
-.modal img{
+.full img{
     max-width:90%;
     max-height:80vh;
     border-radius:10px;
@@ -197,196 +172,188 @@ button{
 .actions{
     margin-top:20px;
     display:flex;
-    gap:10px;
+    gap:20px;
+    font-size:22px;
 }
 
-.actions button{
-    background:white;
-    color:black;
+.icon-btn{
+    background:none;
+    border:none;
+    color:white;
+    cursor:pointer;
+    font-size:22px;
 }
+
+/* UPLOAD INPUT HIDDEN */
+input{display:none}
+
 </style>
 </head>
 
 <body>
 
-<!-- NAV -->
 <nav>
     <div class="logo">5 IBK GALLERIES</div>
-    <ul>
-        <li>Home</li>
-        <li>Events</li>
-        <li onclick="addEvent()" style="cursor:pointer;">+ Add Event</li>
-    </ul>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-
     <img class="slide active" src="https://picsum.photos/id/1011/1600/900">
     <img class="slide" src="https://picsum.photos/id/1015/1600/900">
     <img class="slide" src="https://picsum.photos/id/1016/1600/900">
 
     <div class="hero-content">
         <h1>5 IBK GALLERIES</h1>
-        <p>Preserving every moment, every memory.</p>
-        <button class="btn" onclick="document.getElementById('upload').scrollIntoView()">Explore</button>
+        <p>Every memory stays forever</p>
     </div>
-
 </section>
 
-<!-- UPLOAD -->
-<div class="container" id="upload">
-
-    <div class="upload-box">
-
-        <h2 class="section-title">Upload Memory</h2>
-
-        <select id="eventSelect"></select>
-
-        <input type="file" id="fileInput">
-
-        <button onclick="uploadImage()">Upload</button>
-
-    </div>
-
+<!-- EVENTS -->
+<div class="container">
     <h2 class="section-title">Events</h2>
-
-    <div class="events" id="events">
-
-        <div class="card">
-            <h3>Hari Sukan</h3>
-            <div class="gallery" id="Hari Sukan"></div>
-        </div>
-
-        <div class="card">
-            <h3>Graduasi</h3>
-            <div class="gallery" id="Graduasi"></div>
-        </div>
-
-        <div class="card">
-            <h3>Hari Guru</h3>
-            <div class="gallery" id="Hari Guru"></div>
-        </div>
-
-    </div>
-
+    <div class="events" id="events"></div>
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="modal">
+<!-- FLOAT BUTTONS -->
+<div class="fab-container">
+    <button class="fab" onclick="addEvent()">＋</button>
+    <button class="fab" onclick="document.getElementById('file').click()">⬆</button>
+</div>
 
-    <img id="modalImg">
+<input type="file" id="file" accept="image/*">
 
-    <div class="actions">
-
-        <a id="downloadLink" download>
-            <button>Download</button>
-        </a>
-
-        <button onclick="deleteImg()">Delete</button>
-        <button onclick="closeModal()">Close</button>
-
+<!-- VIEWER -->
+<div class="viewer" id="viewer">
+    <div class="viewer-header">
+        <div class="viewer-title" id="viewerTitle"></div>
     </div>
+    <div class="grid" id="grid"></div>
+</div>
 
+<!-- FULL IMAGE -->
+<div class="full" id="full">
+    <img id="fullImg">
+    <div class="actions">
+        <button class="icon-btn" onclick="downloadImg()">⬇</button>
+        <button class="icon-btn" onclick="deleteImg()">🗑</button>
+    </div>
 </div>
 
 <script>
 
-let currentWrapper = null;
+let data = {};
+let currentEvent = "";
+let currentImgEl = null;
 
-/* HERO SLIDESHOW */
+/* HERO SLIDE */
 let slides = document.querySelectorAll(".slide");
-let i = 0;
-
+let i=0;
 setInterval(()=>{
     slides[i].classList.remove("active");
-    i = (i+1) % slides.length;
+    i=(i+1)%slides.length;
     slides[i].classList.add("active");
 },4000);
 
-/* INIT EVENTS */
-let eventSelect = document.getElementById("eventSelect");
-
-function initEvents(){
-    document.querySelectorAll(".card h3").forEach(e=>{
-        let opt = document.createElement("option");
-        opt.value = e.innerText;
-        opt.textContent = e.innerText;
-        eventSelect.appendChild(opt);
-    });
-}
-initEvents();
+/* INIT DEFAULT EVENTS */
+["Hari Sukan","Graduasi","Hari Guru"].forEach(addEventCard);
 
 /* ADD EVENT */
 function addEvent(){
-
-    let name = prompt("Nama event baru:");
-
+    let name = prompt("Event name:");
     if(!name) return;
+    addEventCard(name);
+}
 
-    let card = document.createElement("div");
-    card.className = "card";
+function addEventCard(name){
 
-    card.innerHTML = `
+    if(data[name]) return;
+
+    data[name]=[];
+
+    let card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
         <h3>${name}</h3>
-        <div class="gallery" id="${name}"></div>
+        <button class="del-event" onclick="deleteEvent('${name}')">✕</button>
     `;
 
+    card.onclick=()=>openEvent(name);
+
     document.getElementById("events").appendChild(card);
+}
 
-    let opt = document.createElement("option");
-    opt.value = name;
-    opt.textContent = name;
+/* DELETE EVENT */
+function deleteEvent(name){
+    delete data[name];
+    document.querySelectorAll(".card").forEach(c=>{
+        if(c.innerText.includes(name)) c.remove();
+    });
+}
 
-    eventSelect.appendChild(opt);
+/* OPEN EVENT */
+function openEvent(name){
+    currentEvent=name;
+    document.getElementById("viewer").style.display="flex";
+    document.getElementById("viewerTitle").innerText=name;
+    renderGrid();
+}
+
+/* RENDER IMAGES */
+function renderGrid(){
+
+    let grid=document.getElementById("grid");
+    grid.innerHTML="";
+
+    data[currentEvent].forEach((src,i)=>{
+
+        let img=document.createElement("img");
+        img.src=src;
+
+        img.onclick=()=>{
+            currentImgEl=i;
+            document.getElementById("fullImg").src=src;
+            document.getElementById("full").style.display="flex";
+        };
+
+        grid.appendChild(img);
+    });
 }
 
 /* UPLOAD */
-function uploadImage(){
+document.getElementById("file").addEventListener("change",function(e){
 
-    let file = document.getElementById("fileInput").files[0];
-    let event = document.getElementById("eventSelect").value;
-
-    if(!file || !event) return;
-
-    let reader = new FileReader();
-
-    reader.onload = function(e){
-
-        let img = document.createElement("img");
-        let wrapper = document.createElement("div");
-
-        img.src = e.target.result;
-
-        img.onclick = () => openModal(img.src, wrapper);
-
-        wrapper.appendChild(img);
-
-        document.getElementById(event).appendChild(wrapper);
+    if(!currentEvent){
+        alert("Open event first");
+        return;
     }
 
+    let file=e.target.files[0];
+    if(!file) return;
+
+    let reader=new FileReader();
+
+    reader.onload=function(ev){
+        data[currentEvent].push(ev.target.result);
+        renderGrid();
+    };
+
     reader.readAsDataURL(file);
-}
 
-/* MODAL */
-function openModal(src, wrapper){
+    this.value=""; // RESET FILE INPUT
+});
 
-    currentWrapper = wrapper;
-
-    document.getElementById("modal").style.display="flex";
-    document.getElementById("modalImg").src = src;
-    document.getElementById("downloadLink").href = src;
-}
-
-function closeModal(){
-    document.getElementById("modal").style.display="none";
+/* FULL VIEW */
+function downloadImg(){
+    let a=document.createElement("a");
+    a.href=document.getElementById("fullImg").src;
+    a.download="image";
+    a.click();
 }
 
 function deleteImg(){
-    if(currentWrapper){
-        currentWrapper.remove();
-        closeModal();
-    }
+    data[currentEvent].splice(currentImgEl,1);
+    document.getElementById("full").style.display="none";
+    renderGrid();
 }
 
 </script>
