@@ -11,18 +11,6 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
 body{background:#0a0a0a;color:white}
 
-/* NAV */
-nav{
-    position:fixed;
-    top:0;
-    width:100%;
-    padding:20px 8%;
-    background:rgba(0,0,0,0.4);
-    backdrop-filter:blur(10px);
-    z-index:10;
-}
-.logo{font-weight:800}
-
 /* HERO */
 .hero{
     height:100vh;
@@ -56,7 +44,7 @@ nav{
     font-weight:900;
 }
 
-/* EVENTS (TILE STYLE) */
+/* EVENTS */
 .container{
     padding:80px 8%;
 }
@@ -67,45 +55,36 @@ nav{
     gap:15px;
 }
 
+/* FULL CLICK CARD */
 .card{
     background:#111;
-    height:90px;
+    padding:18px;
     border-radius:12px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px;
     cursor:pointer;
-    transition:0.3s;
+    position:relative;
+    transition:0.2s;
 }
 
 .card:hover{
-    transform:scale(1.02);
     background:#1a1a1a;
+    transform:scale(1.02);
 }
 
-.card h3{
+.title{
     font-size:15px;
     font-weight:600;
 }
 
-.enter{
-    padding:6px 12px;
-    background:white;
-    color:black;
-    font-size:12px;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-}
-
+/* DELETE */
 .del{
+    position:absolute;
+    top:10px;
+    right:10px;
     background:none;
     border:none;
     color:white;
     opacity:0.5;
     cursor:pointer;
-    margin-left:10px;
 }
 
 /* VIEW */
@@ -125,10 +104,9 @@ nav{
     height:120px;
     object-fit:cover;
     border-radius:8px;
-    cursor:pointer;
 }
 
-/* FLOAT */
+/* FLOAT BUTTON */
 .fab{
     position:fixed;
     right:20px;
@@ -182,10 +160,6 @@ nav{
 
 <body>
 
-<nav>
-<div class="logo">5 IBK GALLERIES</div>
-</nav>
-
 <!-- HERO -->
 <section class="hero">
     <img class="slide active" src="https://picsum.photos/id/1011/1600/900">
@@ -197,7 +171,7 @@ nav{
     </div>
 </section>
 
-<!-- HOME -->
+<!-- EVENTS -->
 <div class="container" id="home">
     <h2 style="margin-bottom:20px;">Events</h2>
     <div class="events" id="events"></div>
@@ -227,7 +201,7 @@ nav{
 
         <input type="file" id="file">
 
-        <button onclick="action()">ENTER</button>
+        <button onclick="action()">CONFIRM</button>
 
     </div>
 </div>
@@ -258,12 +232,11 @@ function add(name){
     div.className="card"
 
     div.innerHTML=`
-        <h3>${name}</h3>
-        <div>
-            <button class="enter" onclick="openEvent('${name}')">ENTER</button>
-            <button class="del" onclick="del('${name}',event)">✕</button>
-        </div>
+        <div class="title">${name}</div>
+        <button class="del" onclick="del('${name}',event)">✕</button>
     `
+
+    div.onclick=()=>openEvent(name)
 
     document.getElementById("events").appendChild(div)
 
@@ -297,12 +270,11 @@ function render(){
     data[current].forEach(src=>{
         let img=document.createElement("img")
         img.src=src
-        img.onclick=()=>window.open(src,"_blank")
         g.appendChild(img)
     })
 }
 
-/* DELETE EVENT */
+/* DELETE */
 function del(name,e){
     e.stopPropagation()
     delete data[name]
