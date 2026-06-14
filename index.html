@@ -22,6 +22,10 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .hero-title .sub{font-size:clamp(2rem,5vw,4rem);letter-spacing:10px;color:#888;font-family:'Inter',sans-serif;font-weight:300}
 .hero-badge{display:inline-block;margin-top:24px;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#555;border-top:1px solid #222;border-bottom:1px solid #222;padding:8px 24px}
 
+/* BG MANAGEMENT BUTTON */
+.bg-manage-btn{position:absolute;bottom:24px;left:24px;z-index:10;background:rgba(0,0,0,0.6);border:1px solid #333;color:#aaa;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:10px 16px;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px)}
+.bg-manage-btn:hover{background:#fff;color:#000;border-color:#fff}
+
 /* POLAROID SECTION */
 .polaroid-section{background:#000;overflow:hidden;border-top:1px solid #111;border-bottom:1px solid #111;position:relative}
 .polaroid-track-wrap{overflow:hidden;padding:50px 0;position:relative}
@@ -42,7 +46,13 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .polaroid:nth-child(even){transform:rotate(2deg)}
 .polaroid:hover{transform:rotate(0deg) scale(1.08) translateY(-8px);z-index:10}
 .pol-img{object-fit:cover;display:block}
+.pol-placeholder{background:#ddd;display:flex;align-items:center;justify-content:center;font-size:11px;color:#aaa;font-family:'Inter',sans-serif;letter-spacing:1px;text-transform:uppercase;flex-direction:column;gap:4px}
+.pol-placeholder span{font-size:22px;color:#ccc}
 .pol-label{font-family:'Inter',sans-serif;font-size:10px;font-weight:700;color:#333;text-align:center;margin-top:10px;letter-spacing:1px;text-transform:uppercase}
+
+.pol-item-del{position:absolute;top:15px;right:15px;width:24px;height:24px;background:rgba(0,0,0,.8);border:none;border-radius:50%;color:#fff;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;transition:background .2s;line-height:1;z-index:15}
+.polaroid:hover .pol-item-del{display:flex}
+.pol-item-del:hover{background:#c00}
 
 /* EVENTS */
 .section-hdr{padding:60px 60px 0}
@@ -85,6 +95,13 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 .btn-ghost:hover{border-color:#555;color:#aaa}
 .close-x{position:absolute;top:16px;right:20px;background:none;border:none;color:#555;font-size:24px;cursor:pointer;line-height:1;font-family:'Inter',sans-serif}
 .close-x:hover{color:#fff}
+
+/* MANAGED HERO LIST IN MODAL */
+.bg-thumb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;max-height:160px;overflow-y:auto;padding-right:4px}
+.bg-thumb{aspect-ratio:1;background:#222;position:relative;border:1px solid #333}
+.bg-thumb img{width:100%;height:100%;object-fit:cover}
+.bg-thumb-del{position:absolute;top:2px;right:2px;width:16px;height:16px;background:rgba(0,0,0,0.8);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.bg-thumb-del:hover{background:#c00}
 
 /* GALLERY SCREEN */
 .gallery-screen{display:none;position:fixed;inset:0;background:#000;z-index:800;flex-direction:column}
@@ -135,6 +152,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
     </div>
     <div class="hero-badge">Sekolah Menengah · 2025</div>
   </div>
+  <button class="bg-manage-btn" onclick="openBgModal()">Urus Latar Belakang</button>
 </section>
 
 <div class="polaroid-section">
@@ -161,6 +179,7 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
   <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
 </button>
 
+<!-- MODAL TAMBAH EVENT -->
 <div class="modal-bg" id="addModal">
   <div class="modal">
     <button class="close-x" onclick="closeAddModal()">×</button>
@@ -173,6 +192,22 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
     <div class="modal-actions">
       <button class="btn-white" onclick="saveEvent()">SIMPAN</button>
       <button class="btn-ghost" onclick="closeAddModal()">BATAL</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL URUS LATAR BELAKANG -->
+<div class="modal-bg" id="bgModal">
+  <div class="modal">
+    <button class="close-x" onclick="closeBgModal()">×</button>
+    <div class="modal-title">GAMBAR SLIDESHOW</div>
+    <div class="bg-thumb-grid" id="bgThumbGrid"></div>
+    <div class="upload-zone" onclick="document.getElementById('bgSlidesInput').click()">
+      <input type="file" id="bgSlidesInput" accept="image/*" multiple>
+      <p>+ Tambah Gambar Latar Belakang</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-white" onclick="closeBgModal()">SELESAI</button>
     </div>
   </div>
 </div>
@@ -198,20 +233,9 @@ body{background:#000;color:#fff;font-family:'Inter',sans-serif;overflow-x:hidden
 
 <script>
 let events=JSON.parse(localStorage.getItem('ibk_events')||'[]');
+let heroSlides=JSON.parse(localStorage.getItem('ibk_hero_slides')||'[]');
+let memberPhotos=JSON.parse(localStorage.getItem('ibk_member_photos')||'[]');
 
-// =========================================================================
-// 1. JUMLAH GAMBAR SLIDESHOW (Ubah nombor ni ikut total fail hero kau ada)
-// =========================================================================
-const TOTAL_HERO_SLIDES = 10; 
-
-let heroSlides = [];
-for (let i = 1; i <= TOTAL_HERO_SLIDES; i++) {
-  heroSlides.push(`images/hero${i}.jpg`);
-}
-
-// =========================================================================
-// 2. TURUTAN NAMA POLAROID (Ikut susunan asal yang kau bagi)
-// =========================================================================
 const memberNames = [
   "adam", "asya", "darin", "dina", "amir", 
   "hanief", "melisa", "icam", "syawal", "fauzan", 
@@ -220,29 +244,35 @@ const memberNames = [
   "sofia", "tasnim", "qaseh", "qayyum", "qash"
 ];
 
-// Map automatik cari fail images/nama.jpg
-let memberPhotos = memberNames.map(name => `images/${name}.jpg`);
+// Set default layout array size 25 kosong kalau first time load
+if(!Array.isArray(memberPhotos) || memberPhotos.length !== 25) {
+  memberPhotos = Array(25).fill(null);
+}
 
 let currentId=null,coverDataUrl=null;
 let slideIndex=0;
 let slideTimer=null;
+const ITEM_W=200;
 
 function persist(){
   localStorage.setItem('ibk_events',JSON.stringify(events));
+  localStorage.setItem('ibk_hero_slides',JSON.stringify(heroSlides));
+  localStorage.setItem('ibk_member_photos',JSON.stringify(memberPhotos));
 }
 
-// ── HERO SLIDESHOW LOGIC ──
+// ── HERO SLIDESHOW ──
 function initSlideshow(){
   const container = document.getElementById('heroBgContainer');
   clearInterval(slideTimer);
   
-  if(heroSlides.length === 0){
+  if(!heroSlides || heroSlides.length === 0){
+    // Gambar placeholder default kalau takde gambar lagi
     container.innerHTML = `<div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1470')"></div>`;
     return;
   }
   
   container.innerHTML = heroSlides.map((src, i) => `
-    <div class="hero-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${src}')" onerror="this.style.display='none'"></div>
+    <div class="hero-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${src}')"></div>
   `).join('');
   
   slideIndex = 0;
@@ -259,61 +289,125 @@ function nextSlide(){
   slides[slideIndex].classList.add('active');
 }
 
+// URUS MODAL BACKGROUND SLIDESHOW
+function openBgModal(){
+  document.getElementById('bgModal').classList.add('open');
+  renderBgThumbs();
+}
+function closeBgModal(){
+  document.getElementById('bgModal').classList.remove('open');
+  initSlideshow();
+}
+function renderBgThumbs(){
+  const grid = document.getElementById('bgThumbGrid');
+  grid.innerHTML = heroSlides.map((src, i) => `
+    <div class="bg-thumb">
+      <img src="${src}">
+      <button class="bg-thumb-del" onclick="deleteBgSlide(${i})">×</button>
+    </div>
+  `).join('');
+}
+document.getElementById('bgSlidesInput').onchange = function(){
+  const files = Array.from(this.files);
+  let loaded = 0;
+  files.forEach(f => {
+    const r = new FileReader();
+    r.onload = e => {
+      heroSlides.push(e.target.result);
+      loaded++;
+      if(loaded === files.length) {
+        persist();
+        renderBgThumbs();
+      }
+    };
+    r.readAsDataURL(f);
+  });
+  this.value = '';
+};
+function deleteBgSlide(i){
+  heroSlides.splice(i, 1);
+  persist();
+  renderBgThumbs();
+}
+
 // ── POLAROID STRIP ──
 const track=document.getElementById('polaroidTrack');
 let polOffset=0;
 let isAuto=true;
 let autoTimer=null;
-const ITEM_W=200; 
 
 function buildStrip(){
   let html='';
   for(let pass=0;pass<2;pass++){
-    for(let i=0;i<memberNames.length;i++){
+    for(let i=0;i<25;i++){
       const src=memberPhotos[i];
       const name=memberNames[i];
       const size=176; 
       
-      html+=`<div class="polaroid">`;
-      html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22176%22 height=%22176%22><rect width=%22176%22 height=%22176%22 fill=%22%23ddd%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2224%22 fill=%22%23aaa%22>+</text></svg>'">`;
-      html+=`<div class="pol-label">${name}</div></div>`;
+      html+=`<div class="polaroid" onclick="openMemberUpload(${i})">`;
+      if(src){
+        html+=`<img class="pol-img" src="${src}" style="width:${size}px;height:${size}px" alt="${name}">`;
+        html+=`<button class="pol-item-del" onclick="deleteMemberPhoto(${i}, event)">×</button>`;
+        html+=`<div class="pol-label">${name}</div>`;
+      } else {
+        html+=`<div class="pol-placeholder" style="width:${size}px;height:${size}px"><span>+</span>${String(i+1).padStart(2,'0')}</div>`;
+        html+=`<div class="pol-label" style="color:#aaa">Upload (${name})</div>`;
+      }
+      html+=`</div>`;
     }
   }
   track.innerHTML=html;
 }
 
+function openMemberUpload(idx){
+  const inp=document.createElement('input'); inp.type='file'; inp.accept='image/*';
+  inp.onchange=()=>{
+    const f=inp.files[0]; if(!f)return;
+    const r=new FileReader();
+    r.onload=e=>{
+      memberPhotos[idx]=e.target.result;
+      persist();
+      buildStrip();
+    };
+    r.readAsDataURL(f);
+  };
+  inp.click();
+}
+
+function deleteMemberPhoto(idx, e){
+  e.stopPropagation();
+  if(!confirm('Padam gambar polaroid ' + memberNames[idx] + '?')) return;
+  memberPhotos[idx] = null;
+  persist();
+  buildStrip();
+}
+
 function stopAuto(){
-  isAuto=false;
-  track.classList.remove('auto');
+  isAuto=false; track.classList.remove('auto');
   track.style.transform=`translateX(${polOffset}px)`;
   clearTimeout(autoTimer);
 }
-
 function resumeAuto(){
   clearTimeout(autoTimer);
   autoTimer=setTimeout(()=>{
-    isAuto=true;
-    polOffset=0;
-    track.style.transform='';
-    track.classList.add('auto');
+    isAuto=true; polOffset=0;
+    track.style.transform=''; track.classList.add('auto');
   },4000);
 }
-
 function slideBy(dir){
   stopAuto();
   polOffset+=dir*-(ITEM_W);
-  const maxOffset=-(memberNames.length*ITEM_W);
+  const maxOffset=-(25*ITEM_W);
   if(polOffset<maxOffset)polOffset=0;
   if(polOffset>0)polOffset=maxOffset+ITEM_W;
   track.style.transition='transform .4s cubic-bezier(.25,.46,.45,.94)';
   track.style.transform=`translateX(${polOffset}px)`;
   resumeAuto();
 }
-
 document.getElementById('polLeft').onclick=()=>slideBy(-1);
 document.getElementById('polRight').onclick=()=>slideBy(1);
 
-// ── EVENTS ──
+// ── EVENTS LOGIC ──
 function buildGrid(){
   const grid=document.getElementById('eventsGrid');
   if(!events.length){grid.innerHTML='<div class="no-events">Tiada event — tekan + untuk tambah</div>';return;}
@@ -389,7 +483,8 @@ function openLightbox(src){document.getElementById('lightboxImg').src=src;docume
 function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
 document.getElementById('lightbox').onclick=function(e){if(e.target===this)closeLightbox();};
 document.getElementById('addModal').onclick=function(e){if(e.target===this)closeAddModal();};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeGallery();closeAddModal();}});
+document.getElementById('bgModal').onclick=function(e){if(e.target===this)closeBgModal();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightbox();closeGallery();closeAddModal();closeBgModal();}});
 
 initSlideshow();
 buildStrip();
